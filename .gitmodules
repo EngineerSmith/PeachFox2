@@ -1,0 +1,3 @@
+[submodule "vendor/LsonLib"]
+	path = vendor/LsonLib
+	url = https://github.com/EngineerSmith/LsonLib
