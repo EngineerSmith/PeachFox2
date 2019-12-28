@@ -6,23 +6,25 @@ namespace PeachFox.TileEditor
 {
     static class TileSetBox
     {
+        private static PictureBox _pictureBox;
         public static PictureBox PictureBox
         {
-            get => PictureBox;
+            get => _pictureBox;
             set
             {
-                PictureBox = value;
+                _pictureBox = value;
                 PictureBox.Paint += new PaintEventHandler(Draw);
                 PictureBox.MouseDown += new MouseEventHandler(MouseDown);
                 PictureBox.MouseUp += new MouseEventHandler(MouseUp);
             }
         }
+        private static Image _image;
         public static Image Image
         {
-            get => Image;
+            get=> _image;
             set
             {
-                Image = value;
+                _image = value;
                 // Ratio
                 if (value.Width > value.Height)
                 {
@@ -47,14 +49,15 @@ namespace PeachFox.TileEditor
                 }
             }
         }
+        private static List<int> _quads;
         public static List<int> Quads
         {
-            get => Quads;
+            get => _quads;
             set
             {
-                if (Quads.Count % 4 != 0)
+                if (value.Count % 4 != 0)
                     throw new System.Exception("Invalid list size");
-                Quads = value;
+                _quads = value;
             }
         }
 
@@ -70,6 +73,11 @@ namespace PeachFox.TileEditor
         private static int CellCountX = 0, CellCountY = 0;
         private static float TranslateStartX = 0f, TranslateStartY = 0f;
 
+        public static void Dispose()
+        {
+            if (Image != null) 
+                Image.Dispose();
+        }
         public static void Reset()
         {
             ZoomFactor = 1f;
