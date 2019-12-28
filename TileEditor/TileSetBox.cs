@@ -64,8 +64,10 @@ namespace PeachFox.TileEditor
             set
             {
                 _zoomFactor = value;
-                if (_zoomFactor < 1)
-                    _zoomFactor = 1;
+                if (_zoomFactor < 1f)
+                    _zoomFactor = 1f;
+                else if (_zoomFactor > 8f)
+                    _zoomFactor = 8f;
             }
         }
         public static int CellSize = 0;
@@ -156,7 +158,7 @@ namespace PeachFox.TileEditor
             float step = e.Delta * ScrollStep;
             ZoomFactor += step;
 
-            if (ZoomFactor > 1f)
+            if (ZoomFactor > 1f && ZoomFactor < 8f)
             {
                 TranslateX = (TranslateX - e.X) * (TranslateRatio / ZoomFactor);
                 TranslateY = (TranslateY - e.Y) * (TranslateRatio / ZoomFactor);
@@ -198,12 +200,13 @@ namespace PeachFox.TileEditor
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             g.DrawImage(Image, 0, 0);
 
-            Pen p = new Pen(CellColor);
+            Pen p = new Pen(CellColor, 1/ZoomFactor);
             float penOffset = p.Width / 2;
+            float penDistanceOffset = 0.5f; // Width * ZoomFactor / 2 // (Width * ZoomFactor) will always be 1
             for (int y = 0; y < CellCountY + 1; y++)
-                g.DrawLine(p, -penOffset, y * CellSize, CellCountX * CellSize + penOffset, y * CellSize);
+                g.DrawLine(p, -penOffset, y * CellSize - penDistanceOffset, CellCountX * CellSize + penOffset, y * CellSize - penDistanceOffset);
             for (int x = 0; x < CellCountX + 1; x++)
-                g.DrawLine(p, x * CellSize, -penOffset, x * CellSize, CellCountY * CellSize + penOffset);
+                g.DrawLine(p, x * CellSize - penDistanceOffset, -penOffset, x * CellSize - penDistanceOffset, CellCountY * CellSize + penOffset);
             p.Dispose();
 
             if (Quads != null)
