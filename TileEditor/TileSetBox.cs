@@ -82,6 +82,35 @@ namespace PeachFox.TileEditor
             PictureBox.Refresh();
         }
 
+        public static Image GetThumbnail(int width = 100, int height = 100)
+        {
+            if (Quads.Count < 4 || Image == null) 
+                return null;
+
+            Bitmap export = new Bitmap(width, height, Image.PixelFormat);
+
+            try
+            {
+                export.SetResolution(Image.HorizontalResolution, Image.VerticalResolution);
+
+                Graphics gExport = Graphics.FromImage(export);
+                gExport.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+                gExport.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                gExport.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                 
+                gExport.DrawImage(Image, new Rectangle(0, 0, width, height), Quads[0], Quads[1], Quads[2], Quads[3], GraphicsUnit.Pixel);
+
+                gExport.Dispose();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show($"Exception while creating Thumbnail: {ex.Message}");
+                export.Dispose();
+                return null;
+            }
+            return export;
+        }
+
         private static void MouseDown(object sender, MouseEventArgs e)
         {
             TranslateStartX = e.X;
