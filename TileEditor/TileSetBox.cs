@@ -13,40 +13,36 @@ namespace PeachFox.TileEditor
             set
             {
                 _pictureBox = value;
-                PictureBox.Paint += new PaintEventHandler(Draw);
                 PictureBox.MouseDown += new MouseEventHandler(MouseDown);
                 PictureBox.MouseUp += new MouseEventHandler(MouseUp);
+                PictureBox.MouseWheel += new MouseEventHandler(MouseWheel);
+                PictureBox.MouseClick += new MouseEventHandler(MouseClick);
+                PictureBox.Paint += new PaintEventHandler(Draw);
+                PictureBox.Resize += new System.EventHandler(Resize);
             }
         }
         private static Image _image;
         public static Image Image
         {
-            get=> _image;
+            get => _image;
             set
             {
                 _image = value;
                 // Ratio
-                if (value.Width > value.Height)
-                {
-                    ImageRatio = (float)PictureBox.Width / value.Width;
-                    TranslateRatio = value.Width / (float)PictureBox.Width;
-                }
-                else
-                {
-                    ImageRatio = (float)PictureBox.Height / value.Height;
-                    TranslateRatio = value.Height / (float)PictureBox.Height;
-                }
+                Resize(null, null);
                 // Cells
                 if (CellSize != 0)
                 {
-                    CellCountX = (int)(value.Width / CellSize);
-                    CellCountY = (int)(value.Height / CellSize);
+                    CellCountX = value.Width / CellSize;
+                    CellCountY = value.Height / CellSize;
                 }
                 else
                 {
                     CellCountX = 0;
                     CellCountY = 0;
                 }
+                //
+                CenterImage();
             }
         }
         private static List<int> _quads;
@@ -61,9 +57,19 @@ namespace PeachFox.TileEditor
             }
         }
 
-        public static float ZoomFactor = 1f;
-        public static float TranslateX = 0f, TranslateY = 0f;
-        public static float CellSize = 0f;
+        private static float _zoomFactor = 1f;
+        public static float ZoomFactor
+        {
+            get => _zoomFactor;
+            set
+            {
+                _zoomFactor = value;
+                if (_zoomFactor < 1)
+                    _zoomFactor = 1;
+            }
+        }
+        public static int CellSize = 0;
+        public static float ScrollStep = 0.01f;
 
         public static Color CellColor = Color.FromArgb(150, Color.DarkGray);
         public static Color SelectedColor = Color.FromArgb(175, Color.Red);
@@ -71,6 +77,7 @@ namespace PeachFox.TileEditor
         private static float ImageRatio;
         private static float TranslateRatio;
         private static int CellCountX = 0, CellCountY = 0;
+        private static float TranslateX = 0f, TranslateY = 0f;
         private static float TranslateStartX = 0f, TranslateStartY = 0f;
 
         public static void Dispose()
@@ -83,8 +90,10 @@ namespace PeachFox.TileEditor
             ZoomFactor = 1f;
             TranslateX = 0f;
             TranslateY = 0f;
-            CellSize = 0f;
+
+            Redraw();
         }
+        
         public static void Redraw()
         {
             PictureBox.Refresh();
@@ -118,6 +127,17 @@ namespace PeachFox.TileEditor
             }
             return export;
         }
+        public static void CenterImage()
+        {
+            if (Image == null || PictureBox == null)
+                return;
+            ZoomFactor = 1f;
+
+            TranslateX = ((PictureBox.Width / 2) * (TranslateRatio / ZoomFactor)) - (Image.Width / 2);
+            TranslateY = ((PictureBox.Height / 2) * (TranslateRatio / ZoomFactor)) - (Image.Height / 2);
+
+            Redraw();
+        }
 
         private static void MouseDown(object sender, MouseEventArgs e)
         {
@@ -129,7 +149,42 @@ namespace PeachFox.TileEditor
             TranslateX += (e.X - TranslateStartX) * (TranslateRatio / ZoomFactor);
             TranslateY += (e.Y - TranslateStartY) * (TranslateRatio / ZoomFactor);
 
-            PictureBox.Refresh();
+            Redraw();
+        }
+        private static void MouseWheel(object sender, MouseEventArgs e)
+        {
+            float step = e.Delta * ScrollStep;
+            ZoomFactor += step;
+
+            if (ZoomFactor > 1f)
+            {
+                TranslateX = (TranslateX - e.X) * (TranslateRatio / ZoomFactor);
+                TranslateY = (TranslateY - e.Y) * (TranslateRatio / ZoomFactor);
+            }
+
+            Redraw();
+        }
+        private static void MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Middle)
+            {
+                CenterImage();
+            }
+        }
+        private static void Resize(object sender, System.EventArgs e)
+        {
+            if (Image.Width > Image.Height)
+            {
+                ImageRatio = (float)PictureBox.Width / Image.Width;
+                TranslateRatio = Image.Width / (float)PictureBox.Width;
+            }
+            else
+            {
+                ImageRatio = (float)PictureBox.Height / Image.Height;
+                TranslateRatio = Image.Height / (float)PictureBox.Height;
+            }
+
+            CenterImage();
         }
         private static void Draw(object sender, PaintEventArgs e)
         {
@@ -144,17 +199,21 @@ namespace PeachFox.TileEditor
             g.DrawImage(Image, 0, 0);
 
             Pen p = new Pen(CellColor);
+            float penOffset = p.Width / 2;
             for (int y = 0; y < CellCountY + 1; y++)
-                g.DrawLine(p, 0, y * CellSize, CellCountX * CellSize, y * CellSize);
+                g.DrawLine(p, -penOffset, y * CellSize, CellCountX * CellSize + penOffset, y * CellSize);
             for (int x = 0; x < CellCountX + 1; x++)
-                g.DrawLine(p, x * CellSize, 0, x * CellSize, CellCountY * CellSize);
+                g.DrawLine(p, x * CellSize, -penOffset, x * CellSize, CellCountY * CellSize + penOffset);
             p.Dispose();
 
-            p = new Pen(SelectedColor);
-            for (int i = 0; i < Quads.Count / 4; i += 4)
-                g.DrawRectangle(p, Quads[i], Quads[i+1], Quads[i+2], Quads[i+3]);
+            if (Quads != null)
+            {
+                p = new Pen(SelectedColor);
+                for (int i = 0; i < Quads.Count / 4; i += 4)
+                    g.DrawRectangle(p, Quads[i], Quads[i + 1], Quads[i + 2], Quads[i + 3]);
 
-            p.Dispose();
+                p.Dispose();
+            }
         }
     }
 }
