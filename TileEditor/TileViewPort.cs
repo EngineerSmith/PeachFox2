@@ -4,23 +4,8 @@ using System.Windows.Forms;
 
 namespace PeachFox.TileEditor
 {
-    public class TileViewPort
+    public class TileViewPort : ViewPort
     {
-        private PictureBox _pictureBox;
-        public PictureBox PictureBox
-        {
-            get => _pictureBox;
-            set
-            {
-                _pictureBox = value;
-                PictureBox.MouseDown += new MouseEventHandler(MouseDown);
-                PictureBox.MouseUp += new MouseEventHandler(MouseUp);
-                PictureBox.MouseWheel += new MouseEventHandler(MouseWheel);
-                PictureBox.MouseClick += new MouseEventHandler(MouseClick);
-                PictureBox.Paint += new PaintEventHandler(Draw);
-                PictureBox.Resize += new System.EventHandler(Resize);
-            }
-        }
         private Image _image;
         public Image Image
         {
@@ -58,54 +43,28 @@ namespace PeachFox.TileEditor
             }
         }
 
-        private float _zoomFactor = 1f;
-        public float ZoomFactor
-        {
-            get => _zoomFactor;
-            set
-            {
-                _zoomFactor = value;
-                if (_zoomFactor < 1f)
-                    _zoomFactor = 1f;
-                else if (_zoomFactor > 8f)
-                    _zoomFactor = 8f;
-            }
-        }
         public int CellSize = 0;
-        public float ScrollStep = 0.01f;
 
         public Color CellColor = Color.FromArgb(150, Color.DarkGray);
         public Color QuadColor = Color.FromArgb(175, Color.Blue);
         public Color SelectedColor = Color.FromArgb(175, Color.Red);
 
         private float ImageRatio;
-        private float TranslateRatio;
         private int CellCountX = 0, CellCountY = 0;
-        private float TranslateX = 0f, TranslateY = 0f;
-        private float TranslateStartX = 0f, TranslateStartY = 0f;
 
         public TileViewPort(PictureBox pictureBox)
         {
             PictureBox = pictureBox;
+
+            PictureBox.MouseClick += new MouseEventHandler(MouseClick);
+            PictureBox.Paint += new PaintEventHandler(Draw);
+            PictureBox.Resize += new System.EventHandler(Resize);
         }
 
         public void Dispose()
         {
             if (Image != null) 
                 Image.Dispose();
-        }
-        public void Reset()
-        {
-            ZoomFactor = 1f;
-            TranslateX = 0f;
-            TranslateY = 0f;
-
-            Redraw();
-        }
-        
-        public void Redraw()
-        {
-            PictureBox.Refresh();
         }
 
         public void CenterImage()
@@ -149,32 +108,6 @@ namespace PeachFox.TileEditor
             return export;
         }
         
-
-        private void MouseDown(object sender, MouseEventArgs e)
-        {
-            TranslateStartX = e.X;
-            TranslateStartY = e.Y;
-        }
-        private void MouseUp(object sender, MouseEventArgs e)
-        {
-            TranslateX += (e.X - TranslateStartX) * (TranslateRatio / ZoomFactor);
-            TranslateY += (e.Y - TranslateStartY) * (TranslateRatio / ZoomFactor);
-
-            Redraw();
-        }
-        private void MouseWheel(object sender, MouseEventArgs e)
-        {
-            float step = e.Delta * ScrollStep;
-            ZoomFactor += step;
-
-            if (ZoomFactor > 1f && ZoomFactor < 8f)
-            {
-                TranslateX = (TranslateX - e.X) * (TranslateRatio / ZoomFactor);
-                TranslateY = (TranslateY - e.Y) * (TranslateRatio / ZoomFactor);
-            }
-
-            Redraw();
-        }
         private void MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Middle)
