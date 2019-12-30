@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace PeachFox
 {
@@ -10,7 +11,7 @@ namespace PeachFox
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TileEditorForm());
+            Application.Run(new TileEditorForm(new Bitmap("C:\\dev\\YogGJ\\Assets\\Logo.png")));
         }
     }
 }

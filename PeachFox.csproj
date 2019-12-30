@@ -49,6 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TileEditor\ButtonRemove.cs" />
+    <Compile Include="TileEditor\ExportSettings.cs" />
+    <Compile Include="TileEditor\QuadList.cs" />
+    <Compile Include="TileEditor\QuadSettings.cs" />
     <Compile Include="TileEditor\TileEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,7 +61,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="TileEditor\Tile.cs" />
-    <Compile Include="TileEditor\TileSetBox.cs" />
+    <Compile Include="TileEditor\TileViewPort.cs" />
     <Compile Include="LuaTilemap.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
