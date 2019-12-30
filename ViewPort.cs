@@ -3,18 +3,20 @@ using System.Windows.Forms;
 
 namespace PeachFox
 {
-    public class ViewPort
+    public abstract class ViewPort
     {
         private PictureBox _pictureBox;
-        public PictureBox PictureBox
+        protected PictureBox PictureBox
         {
             get => _pictureBox;
             set
             {
                 _pictureBox = value;
-                PictureBox.MouseDown += new MouseEventHandler(MouseDown);
-                PictureBox.MouseUp += new MouseEventHandler(MouseUp);
-                PictureBox.MouseWheel += new MouseEventHandler(MouseWheel);
+                PictureBox.MouseDown += MouseDown;
+                PictureBox.MouseUp += MouseUp;
+                PictureBox.MouseWheel += MouseWheel;
+                PictureBox.Resize += Resize;
+                PictureBox.Paint += Draw;
             }
         }
 
@@ -32,8 +34,7 @@ namespace PeachFox
             }
         }
 
-        public float ScrollStep = 0.01f;
-
+        protected float ScrollStep = 0.01f;
         protected float TranslateRatio;
         protected float TranslateX = 0f, TranslateY = 0f;
         private float TranslateStartX = 0f, TranslateStartY = 0f;
@@ -76,5 +77,8 @@ namespace PeachFox
 
             Redraw();
         }
+
+        protected abstract void Resize(object sender, System.EventArgs e);
+        protected abstract void Draw(object sender, PaintEventArgs e);
     }
 }

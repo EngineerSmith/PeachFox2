@@ -57,8 +57,6 @@ namespace PeachFox.TileEditor
             PictureBox = pictureBox;
 
             PictureBox.MouseClick += new MouseEventHandler(MouseClick);
-            PictureBox.Paint += new PaintEventHandler(Draw);
-            PictureBox.Resize += new System.EventHandler(Resize);
         }
 
         public void Dispose()
@@ -115,7 +113,7 @@ namespace PeachFox.TileEditor
                 CenterImage();
             }
         }
-        private void Resize(object sender, System.EventArgs e)
+        protected override void Resize(object sender, System.EventArgs e)
         {
             if (Image.Width > Image.Height)
             {
@@ -130,7 +128,7 @@ namespace PeachFox.TileEditor
 
             CenterImage();
         }
-        private void Draw(object sender, PaintEventArgs e)
+        protected override void Draw(object sender, PaintEventArgs e)
         {
             if (Image == null) return;
 
