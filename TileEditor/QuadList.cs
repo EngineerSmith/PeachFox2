@@ -91,10 +91,15 @@ namespace PeachFox.TileEditor
             UpdateViewPort();
         }
 
-        public void Clear()
+        public void Clear(List<string> quads = null)
         {
             _listBox.Items.Clear();
             _listBox.ClearSelected();
+
+            if (quads != null)
+                foreach (string quad in quads)
+                    _listBox.Items.Add(quad);
+            UpdateViewPort();
         }
 
         private void MouseDown(object sender, MouseEventArgs e)

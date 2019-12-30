@@ -80,8 +80,6 @@ namespace PeachFox.TileEditor
         private QuadList _list;
         private ExportSettings _exportSettings;
 
-        
-
         public QuadSettings(QuadList list, ExportSettings exportSettings)
         {
             _list = list;
@@ -107,9 +105,14 @@ namespace PeachFox.TileEditor
             Height.Maximum = ImageHeight;
         }
 
+        public string GenerateString(int x, int y, int w, int h)
+        {
+            return $"{x},{y},{w},{h}";
+        }
+
         private string GenerateString()
         {
-            return $"{X.Value},{Y.Value},{Width.Value},{Height.Value}";
+            return GenerateString((int)X.Value, (int)Y.Value, (int)Width.Value, (int)Height.Value);
         }
 
         private void OnChange(object sender, System.EventArgs e)

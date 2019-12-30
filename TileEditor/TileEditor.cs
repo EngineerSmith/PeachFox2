@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using PeachFox.TileEditor;
@@ -14,15 +15,17 @@ namespace PeachFox
 
         private ButtonRemove _buttonRemove;
 
-        public TileEditorForm(Image image) 
+        public TileEditorForm() 
         {
             InitializeComponent();
+            Hide();
 
             this.Disposed += new EventHandler(DisposeForm);
+            this.FormClosing += new FormClosingEventHandler(HideForm);
+
             _tileSetBox = new TileViewPort(viewPort)
             {
-                CellSize = 16,
-                Image = image
+                CellSize = 16 //TODO Make a setting
             };
 
             listBox.SelectedValueChanged += QuadSelectionChanged;
@@ -42,9 +45,7 @@ namespace PeachFox
                 Y = numericY,
                 Width = numericWidth,
                 Height = numericHeight,
-                AddButton = buttonAdd,
-                ImageWidth = image.Width,
-                ImageHeight = image.Height
+                AddButton = buttonAdd
             };
 
             _buttonRemove = new ButtonRemove(_quadList, _exportSettings)
@@ -54,12 +55,25 @@ namespace PeachFox
             };
         }
 
-        public void NewTilesetImage(Image image)
+        public void NewTilesetImage(Image image, List<int> quads = null)
         {
+            Show();
             _tileSetBox.Image = image;
-            _quadList.Clear();
+            List<string> quadsStr = null;
+            if (quads != null && quads.Count % 4 == 0)
+            {
+                quadsStr = new List<string>(quads.Count / 4);
+                for (int i = 0; i < quads.Count; i += 4)
+                    quadsStr.Add(_quadSettings.GenerateString(quads[i], quads[i+1], quads[i+2], quads[i+3]));
+            }
+            _quadList.Clear(quadsStr);
             _quadSettings.ImageWidth = image.Width;
             _quadSettings.ImageHeight = image.Height;
+        }
+        private void HideForm(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
         }
 
         private void DisposeForm(object sender, EventArgs e)
@@ -84,5 +98,7 @@ namespace PeachFox
             MessageBox.Show("This window helps you select a tile.\nUse muiltple Quads for animated tiles.\n\nControls:\n\tRight-click inside Quads to unselect.\n\tMiddle-click in view port to re-centre image.","Help");
             e.Cancel = true;
         }
+
+
     }
 }

@@ -100,10 +100,6 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             // 
             this.listBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox.FormattingEnabled = true;
-            this.listBox.Items.AddRange(new object[] {
-            "0,0,16,16",
-            "16,16,16,16",
-            "64,64,16,16"});
             this.listBox.Location = new System.Drawing.Point(3, 16);
             this.listBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 4);
             this.listBox.Name = "listBox";
