@@ -64,10 +64,22 @@
     <Compile Include="TileEditor\TileViewPort.cs" />
     <Compile Include="LuaTilemap.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TileMapEditor\TileMapEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TileMapEditor\TileMapEditor.Designer.cs">
+      <DependentUpon>TileMapEditor.cs</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="TileMapEditor\TileMapViewPort.cs" />
+    <Compile Include="ViewPort.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TileEditor\TileEditor.resx">
       <DependentUpon>TileEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TileMapEditor\TileMapEditor.resx">
+      <DependentUpon>TileMapEditor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
