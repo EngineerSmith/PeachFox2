@@ -351,6 +351,8 @@ namespace PeachFox
             this.Controls.Add(this.groupBoxViewPort);
             this.Controls.Add(this.menuStrip);
             this.Name = "TileMapEditorForm";
+            this.ShowIcon = false;
+            this.Text = "Tile Map Editor";
             this.groupBoxViewPort.ResumeLayout(false);
             this.groupBoxRight.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).EndInit();

@@ -14,6 +14,7 @@ namespace PeachFox
                 _pictureBox = value;
                 PictureBox.MouseDown += MouseDown;
                 PictureBox.MouseUp += MouseUp;
+                PictureBox.MouseClick += MouseClick;
                 PictureBox.MouseWheel += MouseWheel;
                 PictureBox.Resize += Resize;
                 PictureBox.Paint += Draw;
@@ -35,7 +36,7 @@ namespace PeachFox
         }
 
         protected float ScrollStep = 0.01f;
-        protected float TranslateRatio;
+        protected float TranslateRatio = 1f;
         protected float TranslateX = 0f, TranslateY = 0f;
         private float TranslateStartX = 0f, TranslateStartY = 0f;
 
@@ -48,10 +49,20 @@ namespace PeachFox
             Redraw();
         }
 
+        public virtual void CenterViewPort()
+        {
+            ZoomFactor = 1f;
+            TranslateX = PictureBox.Width / 2f;
+            TranslateY = PictureBox.Height / 2f;
+
+            Redraw();
+        }
+
         public void Redraw()
         {
             PictureBox.Refresh();
         }
+
         private void MouseDown(object sender, MouseEventArgs e)
         {
             TranslateStartX = e.X;
@@ -63,6 +74,11 @@ namespace PeachFox
             TranslateY += (e.Y - TranslateStartY) * (TranslateRatio / ZoomFactor);
 
             Redraw();
+        }
+        private void MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Middle)
+                CenterViewPort();
         }
         private void MouseWheel(object sender, MouseEventArgs e)
         {
@@ -79,6 +95,7 @@ namespace PeachFox
         }
 
         protected abstract void Resize(object sender, System.EventArgs e);
+       
         protected abstract void Draw(object sender, PaintEventArgs e);
     }
 }

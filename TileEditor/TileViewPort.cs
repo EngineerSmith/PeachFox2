@@ -27,7 +27,7 @@ namespace PeachFox.TileEditor
                     CellCountY = 0;
                 }
                 // Redraw
-                CenterImage();
+                CenterViewPort();
             }
         }
         private List<int> _quads;
@@ -55,8 +55,6 @@ namespace PeachFox.TileEditor
         public TileViewPort(PictureBox pictureBox)
         {
             PictureBox = pictureBox;
-
-            PictureBox.MouseClick += new MouseEventHandler(MouseClick);
         }
 
         public void Dispose()
@@ -65,12 +63,9 @@ namespace PeachFox.TileEditor
                 Image.Dispose();
         }
 
-        public void CenterImage()
+        public override void CenterViewPort()
         {
-            if (Image == null || PictureBox == null)
-                return;
             ZoomFactor = 1f;
-
             TranslateX = ((PictureBox.Width / 2) * (TranslateRatio / ZoomFactor)) - (Image.Width / 2);
             TranslateY = ((PictureBox.Height / 2) * (TranslateRatio / ZoomFactor)) - (Image.Height / 2);
 
@@ -104,15 +99,8 @@ namespace PeachFox.TileEditor
                 return null;
             }
             return export;
-        }
+        }        
         
-        private void MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Middle)
-            {
-                CenterImage();
-            }
-        }
         protected override void Resize(object sender, System.EventArgs e)
         {
             if (Image.Width > Image.Height)
@@ -126,11 +114,12 @@ namespace PeachFox.TileEditor
                 TranslateRatio = Image.Height / (float)PictureBox.Height;
             }
 
-            CenterImage();
+            CenterViewPort();
         }
         protected override void Draw(object sender, PaintEventArgs e)
         {
-            if (Image == null) return;
+            if (Image == null) 
+                return;
 
             Graphics g = e.Graphics;
 
