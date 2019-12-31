@@ -8,7 +8,7 @@ namespace PeachFox
 {
     public partial class TileEditorForm : Form
     {
-        private TileViewPort _tileSetBox;
+        private TileViewPort _tileViewPort;
         private QuadList _quadList;
         private QuadSettings _quadSettings;
         private ExportSettings _exportSettings;
@@ -23,14 +23,14 @@ namespace PeachFox
             this.Disposed += new EventHandler(DisposeForm);
             this.FormClosing += new FormClosingEventHandler(HideForm);
 
-            _tileSetBox = new TileViewPort(viewPort)
+            _tileViewPort = new TileViewPort(viewPort)
             {
                 CellSize = 16 //TODO Make a setting
             };
 
             listBox.SelectedValueChanged += QuadSelectionChanged;
 
-            _quadList = new QuadList(listBox, _tileSetBox);
+            _quadList = new QuadList(listBox, _tileViewPort);
 
             _exportSettings = new ExportSettings(_quadList)
             {
@@ -58,7 +58,7 @@ namespace PeachFox
         public void NewTilesetImage(Image image, List<int> quads = null)
         {
             Show();
-            _tileSetBox.Image = image;
+            _tileViewPort.Image = image;
             List<string> quadsStr = null;
             if (quads != null && quads.Count % 4 == 0)
             {
@@ -78,7 +78,7 @@ namespace PeachFox
 
         private void DisposeForm(object sender, EventArgs e)
         {
-            _tileSetBox.Dispose();
+            _tileViewPort.Dispose();
         }
 
         private void QuadSelectionChanged(object sender, EventArgs e)

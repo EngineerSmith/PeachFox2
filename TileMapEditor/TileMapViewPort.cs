@@ -6,14 +6,9 @@ namespace PeachFox.TileMapEditor
 {
     public class TileMapViewPort : ViewPort
     {
-        private List<Tile> _tiles;
-        public List<Tile> Tiles
-        {
-            get => _tiles;
-            set => _tiles = value;
-        }
+        public Tilemap Tilemap;
 
-        public Dictionary<string, Image> Images;
+        public List<Image> Images;
 
         private float ScaleRatio = 1f;
 
@@ -24,6 +19,8 @@ namespace PeachFox.TileMapEditor
 
         protected override void Draw(object sender, PaintEventArgs e)
         {
+            if (Tilemap == null) 
+                return;
             Graphics g = e.Graphics;
             g.ScaleTransform(ScaleRatio * ZoomFactor, ScaleRatio * ZoomFactor);
             g.TranslateTransform(TranslateX, TranslateY);
@@ -32,10 +29,9 @@ namespace PeachFox.TileMapEditor
             g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighSpeed;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
 
-            foreach (Tile tile in Tiles)
-            {
-                g.DrawImage(Images[tile.Image], (float)tile.X, (float)tile.Y);
-            }
+            foreach (Layer layer in Tilemap.Layers)
+                foreach (LayerTile tile in layer.Tiles)
+                    g.DrawImage(Images[(int)tile.TileIndex], (int)tile.X, (int)tile.Y);
         }
 
         protected override void Resize(object sender, System.EventArgs e)

@@ -8,9 +8,13 @@ namespace PeachFox
 {
     public partial class TileMapEditorForm : Form
     {
+        private TileMapViewPort _tileMapViewPort;
+
         public TileMapEditorForm()
         {
             InitializeComponent();
+
+            _tileMapViewPort = new TileMapViewPort(viewPort);
         }
     }
 }
