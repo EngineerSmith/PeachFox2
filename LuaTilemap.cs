@@ -2,26 +2,30 @@
 using LsonLib;
 
 /// <summary>
-/// This C# file converts 'String' luaTables and makes them editable 
-/// A single Tile looks like:
-/// {quad={x, y, w, h}, time=time, image=image, x=x, y=y, colliable=colliable}
-/// Examples:
-/// {quad={0, 0, 8, 8}, image="path/to/img.png", x=0, y=0, colliable=true}
-/// {quad={0, 0, 8, 8, 1, 1, 8, 8}, time=0.2, image="Asset.Images.SpriteSheet54", x=0, y=0, colliable=false}
 /// 
-/// Quad is an int array, this is so muiltple quads can be put into a tile
-/// E.g. 0,0,8,8, 1,1,8,8 this allows for animation
+/// Aim is to produce a file similar to the one below
 /// 
-/// Time is a variable that dictates how long each quad will last if there are muiltple
-/// 
-/// Image is a string, designed to take any string information.
-/// So if you don't want a path to be inserted, but say an ID of a lua table of 
-/// assets you can do that.
-/// 
-/// X and Y will be where the tile is drawn
-/// 
-/// Colliable is a boolean to check if the tile is passable
-/// 
+/// ----
+///local tiles =
+///{
+///     {quad={ 0, 0,16,16}, image="tileset.base"}, -- Basic tile
+///     {quad={ 0,16,16,16, 16,16,16,16}, time=0.1, image="tileset.base"} --Animated Tile
+///}
+///
+///local layers =
+///{
+///    {
+///        name="Foreground", -- SetValue("name", "Foreground")
+///        {tile=1, x= 0, y= 0, colliable=true},
+///        {tile=2, x=16, y=16, colliable=false},
+///    },
+///    {
+///        name="Background" -- SetValue("name", "Background")
+///    }
+///}
+///
+///return {tiles=tiles, layers=layers}
+/// ----
 /// </summary>
 
 namespace PeachFox
@@ -33,22 +37,18 @@ namespace PeachFox
             get
             {
                 List<int> r = new List<int>();
-                for (int i = 1; _root[i].GetIntSafe() != null; i++)
-                {
+                for (int i = 1; _root.ContainsKey(i); i++)
                     r.Add(_root[i].GetInt());
-                }
                 return r;
             }
             set
             {
                 for (int i = 0; i < value.Count; i++)
-                {
                     _root[i] = value[i];
-                }
             }
         }
 
-        private LsonDict _root;
+        private readonly LsonDict _root;
 
         public Quad()
         {
@@ -91,6 +91,47 @@ namespace PeachFox
             get => _root["image"].GetStringSafe();
             set => _root["image"] = value;
         }
+
+        private readonly LsonDict _root;
+
+        public Tile()
+        {
+            _root = new LsonDict();
+        }
+        public Tile(Quad quad, string image, double? time = null)
+        {
+            _root = new LsonDict();
+            Quad = quad;
+            Image = image;
+            if (time != null) Time = time;
+        }
+        public Tile(LsonDict root)
+        {
+            _root = root;
+        } 
+
+        public void SetValue(string key, LsonValue value)
+        {
+            _root[key] = value;
+        }
+
+        public static explicit operator LsonDict(Tile value)
+        {
+            return value._root;
+        }
+        public static explicit operator Tile(LsonDict value)
+        {
+            return new Tile(value);
+        }
+    }
+
+    public class LayerTile
+    {
+        public int? TileIndex
+        {
+            get => _root["tile"].GetIntSafe();
+            set => _root["tile"] = value;
+        }
         public int? X
         {
             get => _root["x"].GetIntSafe();
@@ -107,76 +148,174 @@ namespace PeachFox
             set => _root["colliable"] = value;
         }
 
-        private LsonDict _root;
+        private readonly LsonDict _root;
 
-        public Tile()
+        public LayerTile()
         {
             _root = new LsonDict();
         }
-        public Tile(Quad quad, string image, int x, int y, bool colliable, double time = 0d)
+        public LayerTile(int tileIndex, int x, int y, bool colliable)
         {
             _root = new LsonDict();
-            Quad = quad;
-            Image = image;
+            TileIndex = tileIndex;
             X = x;
             Y = y;
             Colliable = colliable;
-            if (time != 0d) Time = time;
+        }
+        public LayerTile(LsonDict root)
+        {
+            _root = root;
         }
 
-        public Tile(LsonDict root)
+        public void SetValue(string key, LsonValue value)
         {
-            _root = new LsonDict();
-        } 
+            _root[key] = value;
+        }
 
-        public static explicit operator LsonDict(Tile value)
+        public LsonSafeValue GetValue(string key)
+        {
+            return _root[key].Safe;
+        }
+
+        public Dictionary<LsonValue, LsonValue> GetValues()
+        {
+            Dictionary<LsonValue, LsonValue> values = new Dictionary<LsonValue, LsonValue>();
+            foreach (KeyValuePair<LsonValue, LsonValue> value in _root)
+                if (value.Key.GetIntSafe() == null)
+                    values[value.Key] = value.Value;
+            return values;
+        }
+
+        public static explicit operator LsonDict(LayerTile value)
         {
             return value._root;
         }
-        public static explicit operator Tile(LsonDict value)
+        public static explicit operator LayerTile(LsonDict value)
         {
-            return new Tile(value);
+            return new LayerTile(value);
         }
     }
-    
-    public class Tilemap
+
+    public class Layer
     {
-        private readonly Dictionary<string, LsonValue> _maps;
-        private readonly string _key;
-        public LsonDict MapRaw
-        {
-            get => _maps[_key].GetDict();
-        }
-        public List<Tile> Map
-        {
+        public List<LayerTile> Tiles
+		{
             get
             {
-                List<Tile> r = new List<Tile>();
-                for (int i = 1; _maps[_key][i].GetDictSafe() != null; i++)
-                    r.Add((Tile)_maps[_key][i].GetDict());
-                return r;
+                List<LayerTile> tiles = new List<LayerTile>();
+                for (int i = 1; _root.ContainsKey(i); i++)
+                    tiles.Add((LayerTile)_root[i]);
+                return tiles;
             }
-            set
+            set 
             {
-                LsonDict map = new LsonDict();
                 for (int i = 0; i < value.Count; i++)
-                    map.Add(i, (LsonDict)value[i]);
-                _maps[_key] = map;
+                        _root[i] = (LsonDict)value[i];
             }
+	    }
+
+        private readonly LsonDict _root;
+
+        public Layer()
+        {
+            _root = new LsonDict();
+        }
+        public Layer(bool? temp)
+        {
+            _root = new LsonDict();
+        }
+        public Layer(LsonDict root)
+        {
+            _root = root;
         }
 
-        public Tilemap(string name, string luaTable)
+        public void SetValue(string key, LsonValue value)
         {
-            _key = name;
-            _maps = LsonVars.Parse(luaTable);
-
-            if (_maps.ContainsKey(name) == false)
-                throw new System.Exception($"luaTable does not contain: {name}");
+            _root[key] = value;
         }
 
-        public string String()
+        public LsonSafeValue GetValue(string key)
         {
-            return LsonVars.ToString(_maps);
+            return _root[key].Safe;
+        }
+
+        public static explicit operator LsonDict(Layer value)
+        {
+            return value._root;
+        }
+        public static explicit operator Layer(LsonDict value)
+        {
+            return new Layer(value);
+        }
+    }
+
+    public class Tilemap
+    {
+        private Dictionary<string, LsonValue> _tables;
+
+        public List<Tile> Tiles { get; private set; }
+        public List<Layer> Layers { get; private set; }
+
+
+        public Tilemap(string luatable = null)
+        {
+            if (luatable == null)
+                NewTileMap();
+            else
+                OpenTileMap(luatable);
+        }
+
+        public void OpenTileMap(string luaTable)
+        {
+            _tables = LsonVars.Parse(luaTable);
+
+            // Tiles
+            Tiles = new List<Tile>();
+            var tiles = _tables["tiles"].GetDictSafe();
+            if (tiles != null)
+                foreach (LsonDict tile in tiles.ToEnumerable())
+                    Tiles.Add((Tile)tile);
+            else
+                _tables["tiles"] = new LsonDict();
+
+            // Layers
+            Layers = new List<Layer>();
+            var layers = _tables["layers"].GetDictSafe();
+            if (layers != null)
+                foreach (LsonDict layer in layers.ToEnumerable())
+                    Layers.Add((Layer)layer);
+            else
+                _tables["layers"] = new LsonDict();
+        }
+
+        public void NewTileMap()
+        {
+            _tables = new Dictionary<string, LsonValue>();
+            Tiles = new List<Tile>();
+            Layers = new List<Layer>();
+        }
+
+        public override string ToString()
+        {
+            _tables["tiles"] = ToLsonDict(Tiles);
+            _tables["layers"] = ToLsonDict(Layers);
+            return LsonVars.ToString(_tables);
+        }
+
+        private static LsonDict ToLsonDict(List<Tile> value)
+        {
+            LsonDict dict = new LsonDict();
+                for (int i = 0; i<value.Count; i++)
+                    dict.Add(i, (LsonDict) value[i]);
+            return dict;
+        }
+
+        private static LsonDict ToLsonDict(List<Layer> value)
+        {
+            LsonDict dict = new LsonDict();
+            for (int i = 0; i < value.Count; i++)
+                dict.Add(i, (LsonDict)value[i]);
+            return dict;
         }
     }
 }
