@@ -39,7 +39,8 @@ namespace PeachFox
 
         private void newCallback(TileSetData tileSetData)
         {
-
+            Program.TileMapEditor.NewTileSet(tileSetData);
+            comboBoxTileSets.Items.Add(tileSetData.ExportString);
         }
     }
 }

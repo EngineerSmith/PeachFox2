@@ -68,22 +68,14 @@ namespace PeachFox
             };
 
             SetTileSelectionMenuItem();
+
+            buttonNewTile.Click += (sender, e) =>
+            {
+                Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
+            };
         }
 
-        private void SetTileSelectionMenuItem()
-        {
-            toolStripComboBox.Items.Clear();
-            toolStripComboBox.Items.AddRange(new List<string>(_tilesets.Keys).ToArray());
-            editExistingTileSetToolStripMenuItem.Enabled = (toolStripComboBox.Items.Count != 0);
-        }
-
-        private void SelectCallback(string selectedName)
-        {
-            if (selectedName != null)
-                Program.NewTileSetNewForm(NewTileSetCallback, _tilesets[selectedName]);
-        }
-
-        private void NewTileSetCallback(TileSet.TileSetData tileSetData)
+        public void NewTileSet(TileSet.TileSetData tileSetData)
         {
             if (tileSetData != null)
             {
@@ -97,6 +89,33 @@ namespace PeachFox
 
                 SetTileSelectionMenuItem();
             }
+        }
+
+        private void SetTileSelectionMenuItem()
+        {
+            toolStripComboBox.Items.Clear();
+            toolStripComboBox.Items.AddRange(new List<string>(_tilesets.Keys).ToArray());
+            editExistingTileSetToolStripMenuItem.Enabled = (toolStripComboBox.Items.Count != 0);
+        }
+
+        private void NewTileSelectCallback(string selectedName)
+        {
+            if (selectedName != null)
+            {
+                Bitmap image = new Bitmap(_tilesets[selectedName].Path);
+                Program.TileEditor.NewTilesetImage(image);
+            }
+        }
+
+        private void SelectCallback(string selectedName)
+        {
+            if (selectedName != null)
+                Program.NewTileSetNewForm(NewTileSetCallback, _tilesets[selectedName]);
+        }
+
+        private void NewTileSetCallback(TileSet.TileSetData tileSetData)
+        {
+            NewTileSet(tileSetData);
         }
     }
 }

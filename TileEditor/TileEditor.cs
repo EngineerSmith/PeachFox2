@@ -58,6 +58,7 @@ namespace PeachFox
         public void NewTilesetImage(Image image, List<int> quads = null)
         {
             Show();
+            Activate();
             _tileViewPort.Image = image;
             List<string> quadsStr = null;
             if (quads != null && quads.Count % 4 == 0)

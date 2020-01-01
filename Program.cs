@@ -12,6 +12,9 @@ namespace PeachFox
         private static TileSetNewForm _tileSetNewForm;
         private static TileSetSelectionForm _tileSetSelectionForm;
 
+        public static TileEditorForm TileEditor { get => _tileEditorForm; }
+        public static TileMapEditorForm TileMapEditor { get => _tileMapEditorForm; }
+
         [STAThread]
         static void Main()
         {
@@ -19,9 +22,9 @@ namespace PeachFox
             Application.SetCompatibleTextRenderingDefault(false);
 
             _tileEditorForm = new TileEditorForm();
-            _tileEditorForm.NewTilesetImage(new Bitmap("C:\\dev\\YogGJ\\Assets\\Logo.png"),
-                new List<int>(){0,0,16,16, 16,16,16,16, 64,64,16,16});
-
+            //_tileEditorForm.NewTilesetImage(new Bitmap("C:\\dev\\YogGJ\\Assets\\Logo.png"),
+            //    new List<int>(){0,0,16,16, 16,16,16,16, 64,64,16,16});
+            
             _tileMapEditorForm = new TileMapEditorForm();
             _tileMapEditorForm.Activated += (sender, e) =>
             {
