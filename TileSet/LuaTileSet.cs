@@ -59,9 +59,9 @@ namespace PeachFox.TileSet
         }
     }
 
-    public class LuaTileSets
+    public class LuaTileSetLoad
     {
-        private Dictionary<string, LsonValue> _tables;
+        private Dictionary<string, LsonValue> _tables = new Dictionary<string, LsonValue>();
 
         public List<TileSetData> TileSetData
         {

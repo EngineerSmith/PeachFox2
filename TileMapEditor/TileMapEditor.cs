@@ -26,6 +26,55 @@ namespace PeachFox
             {
                 Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), false, SelectCallback);
             };
+
+            toolStripComboBox.SelectedIndexChanged += (sender, e) =>
+            {
+                if (toolStripComboBox.SelectedItem != null)
+                    if (_tilesets.ContainsKey(toolStripComboBox.SelectedItem.ToString()))
+                    {
+                        Program.NewTileSetNewForm(NewTileSetCallback, _tilesets[toolStripComboBox.SelectedItem.ToString()]);
+                        return;
+                    }
+                Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), false, SelectCallback);
+            };
+
+            openFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
+
+            loadTileSetsToolStripMenuItem.Click += (sender, e) =>
+            {
+                DialogResult result = openFileDialog.ShowDialog();
+                if (result == DialogResult.OK || result == DialogResult.Yes)
+                {
+                    TileSet.LuaTileSetLoad load = new TileSet.LuaTileSetLoad();
+                    load.Open(System.IO.File.ReadAllText(openFileDialog.FileName));
+                    _tilesets.Clear();
+                    foreach (var set in load.TileSetData)
+                        _tilesets[set.ExportString] = set;
+                    SetTileSelectionMenuItem();
+                }
+            };
+
+            saveFileDialog.Filter = openFileDialog.Filter;
+
+            saveTileSetsToolStripMenuItem.Click += (sender, e) =>
+            {
+                DialogResult result = saveFileDialog.ShowDialog();
+                if (result == DialogResult.OK || result == DialogResult.Yes)
+                {
+                    TileSet.LuaTileSetLoad save = new TileSet.LuaTileSetLoad();
+                    save.TileSetData = new List<TileSet.TileSetData>(_tilesets.Values);
+                    System.IO.File.WriteAllText(saveFileDialog.FileName, save.ToString());
+                }
+            };
+
+            SetTileSelectionMenuItem();
+        }
+
+        private void SetTileSelectionMenuItem()
+        {
+            toolStripComboBox.Items.Clear();
+            toolStripComboBox.Items.AddRange(new List<string>(_tilesets.Keys).ToArray());
+            editExistingTileSetToolStripMenuItem.Enabled = (toolStripComboBox.Items.Count != 0);
         }
 
         private void SelectCallback(string selectedName)
@@ -45,6 +94,8 @@ namespace PeachFox
                 }
 
                 _tilesets[tileSetData.ExportString] = tileSetData;
+
+                SetTileSelectionMenuItem();
             }
         }
     }
