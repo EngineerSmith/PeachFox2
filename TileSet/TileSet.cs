@@ -10,6 +10,7 @@ namespace PeachFox.TileSet
     {
         public string Path;
         public string ExportString;
+        public string PreviousExportString;
         public int CellSize;
     }
 }

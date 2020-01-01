@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using PeachFox.TileSet;
 
 public delegate void SelectFormCallback(string selectedName);
 
@@ -39,7 +33,13 @@ namespace PeachFox
 
             buttonNewTileSet.Click += (sender, e) =>
             {
+                Program.NewTileSetNewForm(newCallback);
             };
+        }
+
+        private void newCallback(TileSetData tileSetData)
+        {
+
         }
     }
 }

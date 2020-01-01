@@ -43,7 +43,7 @@
             // 
             // openFileDialog
             // 
-            this.openFileDialog.FileName = "Open Tile Set";
+            this.openFileDialog.FileName = "TileSet.png";
             // 
             // buttonOpen
             // 
@@ -78,7 +78,7 @@
             this.infoBox.Name = "infoBox";
             this.infoBox.Size = new System.Drawing.Size(397, 51);
             this.infoBox.TabIndex = 3;
-            this.infoBox.Text = "";
+            this.infoBox.Text = "test\ntest";
             // 
             // buttonCancel
             // 

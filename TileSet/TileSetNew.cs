@@ -20,7 +20,10 @@ namespace PeachFox
                 EnableTileSetOptions(true);
                 Bitmap bmp = OpenImage(data.Path);
                 SetBitmapOptions(bmp);
+                if (bmp != null)
+                    textBoxFilePath.Text = data.Path;
                 textBoxExportString.Text = data.ExportString;
+                data.PreviousExportString = data.ExportString;
                 numericCellSize.Value = data.CellSize;
             }
             else
@@ -48,9 +51,10 @@ namespace PeachFox
 
             numericCellSize.ValueChanged += (sender, e) =>
             {
-                decimal width = numericCellSize.Value / _width;
-                decimal height = numericCellSize.Value / _height;
-                infoBox.Lines[1] = $"Est. cell count: Width {width}, Height {height}";
+                decimal width = _width / numericCellSize.Value;
+                decimal height = _height / numericCellSize.Value;
+                changeLine(infoBox, 1, $"Est. cell count: Width {width}, Height {height}, Total {(width*height)}");
+
             };
 
             textBoxExportString.TextChanged += (sender, e) =>
@@ -65,6 +69,7 @@ namespace PeachFox
                 else
                 {
                     data.ExportString = RemoveShowWhiteSpace(textBoxExportString.Text);
+                    data.CellSize = (int)numericCellSize.Value;
                     callback(data);
                 }
                 this.Close();
@@ -72,7 +77,7 @@ namespace PeachFox
 
             buttonCancel.Click += (sender, e) =>
             {
-                callback(null);
+                callback?.Invoke(null);
                 this.Close();
             };
         }
@@ -97,7 +102,7 @@ namespace PeachFox
             Bitmap bmp;
             try
             {
-                bmp = new Bitmap(openFileDialog.FileName);
+                bmp = new Bitmap(path);
             }
             catch (System.Exception ex)
             {
@@ -112,14 +117,14 @@ namespace PeachFox
             if (bmp != null)
             {
                 numericCellSize.Maximum = bmp.Width < bmp.Height ? bmp.Width : bmp.Height;
-                infoBox.Lines[0] = $"Width {bmp.Width}px, Height {bmp.Height}px";
+                changeLine(infoBox, 0, $"Width {bmp.Width}px, Height {bmp.Height}px");
                 EnableTileSetOptions(true);
                 _width = bmp.Width;
                 _height = bmp.Height;
             }
             else
             {
-                infoBox.Lines[0] = "";
+                changeLine(infoBox, 0, "");
                 EnableTileSetOptions(false);
             }
         }
@@ -144,6 +149,16 @@ namespace PeachFox
                 else
                     result += str[i];
             return result;
+        }
+
+        private void changeLine(RichTextBox RTB, int line, string text)
+        {
+            int s1 = RTB.GetFirstCharIndexFromLine(line);
+            int s2 = line < RTB.Lines.Length - 1 ?
+                      RTB.GetFirstCharIndexFromLine(line + 1) - 1 :
+                      RTB.Text.Length;
+            RTB.Select(s1, s2 - s1);
+            RTB.SelectedText = text;
         }
     }
 }

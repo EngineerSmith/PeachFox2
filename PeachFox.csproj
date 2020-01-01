@@ -72,6 +72,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="TileMapEditor\TileMapViewPort.cs" />
+    <Compile Include="TileSet\LuaTileSet.cs" />
     <Compile Include="TileSet\TileSet.cs" />
     <Compile Include="TileSet\TileSetNew.cs">
       <SubType>Form</SubType>
