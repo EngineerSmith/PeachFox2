@@ -72,6 +72,19 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="TileMapEditor\TileMapViewPort.cs" />
+    <Compile Include="TileSet\TileSet.cs" />
+    <Compile Include="TileSet\TileSetNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TileSet\TileSetNew.Designer.cs">
+      <DependentUpon>TileSetNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TileSet\TileSetSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TileSet\TileSetSelection.Designer.cs">
+      <DependentUpon>TileSetSelection.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewPort.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +93,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TileMapEditor\TileMapEditor.resx">
       <DependentUpon>TileMapEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TileSet\TileSetNew.resx">
+      <DependentUpon>TileSetNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TileSet\TileSetSelection.resx">
+      <DependentUpon>TileSetSelection.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
