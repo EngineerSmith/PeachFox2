@@ -11,6 +11,8 @@ namespace PeachFox
         private TileMapViewPort _tileMapViewPort;
         private Dictionary<string, TileSet.TileSetData> _tilesets = new Dictionary<string, TileSet.TileSetData>();
 
+        private Tilemap _tilemap = new Tilemap();
+
         public TileMapEditorForm()
         {
             InitializeComponent();
@@ -91,6 +93,28 @@ namespace PeachFox
             }
         }
 
+        public void NewTile(Tile tile, Image thumbnail, int previousIndex = -1)
+        {
+            if (previousIndex != -1 && previousIndex < _tilemap.Tiles.Count && previousIndex > -1)
+                _tilemap.Tiles[previousIndex] = tile;
+            else
+            {
+                _tilemap.Tiles.Add(tile);
+                AddNewTileButton(tile, thumbnail);
+            }
+        }
+
+        private void AddNewTileButton(Tile tile, Image thumbnail)
+        {
+            Button button = new Button
+            {
+                Size = new Size(40, 40),
+                BackgroundImage = thumbnail,
+            };
+
+            flowLayoutPanelTiles.Controls.Add(button);
+        }
+
         private void SetTileSelectionMenuItem()
         {
             toolStripComboBox.Items.Clear();
@@ -101,11 +125,7 @@ namespace PeachFox
         private void NewTileSelectCallback(string selectedName)
         {
             if (selectedName != null)
-            {
-                Bitmap image = new Bitmap(_tilesets[selectedName].Path);
-                Program.TileEditor.NewTilesetImage(image);
-                Program.TileEditor.CellSize = _tilesets[selectedName].CellSize;
-            }
+                Program.TileEditor.NewTilesetImage(_tilesets[selectedName]);
         }
 
         private void SelectCallback(string selectedName)

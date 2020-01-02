@@ -15,6 +15,8 @@ namespace PeachFox
 
         private ButtonRemove _buttonRemove;
 
+        private TileSet.TileSetData _tileSetData = null;
+
         public int CellSize
         {
             get => _tileViewPort.CellSize;
@@ -62,13 +64,22 @@ namespace PeachFox
                 ButtonSelected = buttonRemove,
                 ButtonAll = buttonClear
             };
+
+            buttonExport.Click += (sender, e) =>
+            {
+                Export();
+                Hide();
+            };
         }
 
-        public void NewTilesetImage(Image image, List<int> quads = null)
+        public void NewTilesetImage(TileSet.TileSetData tileSet, List<int> quads = null)
         {
             Show();
             Activate();
+            _tileSetData = tileSet;
+            Bitmap image = new Bitmap(tileSet.Path);
             _tileViewPort.Image = image;
+            CellSize = tileSet.CellSize;
             List<string> quadsStr = null;
             if (quads != null && quads.Count % 4 == 0)
             {
@@ -80,6 +91,14 @@ namespace PeachFox
             _quadSettings.ImageWidth = image.Width;
             _quadSettings.ImageHeight = image.Height;
         }
+
+        public void Export()
+        {
+            var quads = _quadList.ExportQuads();
+            Tile tile = new Tile(new Quad(quads), _tileSetData.ExportString, quads.Count > 4 ? (double?)numericTime.Value : null);
+            Program.TileMapEditor.NewTile(tile, _tileViewPort.GetThumbnail(40, 40));
+        }
+
         private void HideForm(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
@@ -108,7 +127,6 @@ namespace PeachFox
             MessageBox.Show("This window helps you select a tile.\nUse muiltple Quads for animated tiles.\n\nControls:\n\tRight-click inside Quads to unselect.\n\tMiddle-click in view port to re-centre image.","Help");
             e.Cancel = true;
         }
-
 
     }
 }

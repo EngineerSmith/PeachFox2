@@ -8,16 +8,7 @@ namespace PeachFox.TileEditor
         public NumericUpDown Time { get; set; }
         public Label LabelTime {  get; set; }
 
-        private Button _buttonExport;
-        public Button ButtonExport
-        {
-            get => _buttonExport;
-            set
-            {
-                _buttonExport = value;
-                _buttonExport.Click += Export;
-            }
-        }
+        public Button ButtonExport { get; set; }
 
         private bool _showTime;
         private bool _showExport;
@@ -56,11 +47,6 @@ namespace PeachFox.TileEditor
             LabelTime.Enabled = _showTime;
 
             ButtonExport.Enabled = _showExport;
-        }
-
-        private void Export(object sender, EventArgs e)
-        {
-            //TODO
         }
     }
 }
