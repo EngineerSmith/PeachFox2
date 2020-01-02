@@ -7,6 +7,7 @@ namespace PeachFox
 
         #region Windows Form Designer generated code
         /// <summary>        /// Required method for Designer support - do not modify        /// the contents of this method with the code editor.        /// </summary>        private void InitializeComponent()        {
+            this.components = new System.ComponentModel.Container();
             this.groupBoxViewPort = new System.Windows.Forms.GroupBox();
             this.viewPort = new System.Windows.Forms.PictureBox();
             this.groupBoxRight = new System.Windows.Forms.GroupBox();
@@ -29,6 +30,7 @@ namespace PeachFox
             this.toolStripComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
@@ -45,7 +47,7 @@ namespace PeachFox
             this.groupBoxViewPort.Location = new System.Drawing.Point(0, 24);
             this.groupBoxViewPort.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.groupBoxViewPort.Name = "groupBoxViewPort";
-            this.groupBoxViewPort.Padding = new System.Windows.Forms.Padding(3, 3, 223, 3);
+            this.groupBoxViewPort.Padding = new System.Windows.Forms.Padding(3, 3, 243, 3);
             this.groupBoxViewPort.Size = new System.Drawing.Size(877, 444);
             this.groupBoxViewPort.TabIndex = 0;
             this.groupBoxViewPort.TabStop = false;
@@ -56,7 +58,7 @@ namespace PeachFox
             this.viewPort.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewPort.Location = new System.Drawing.Point(3, 16);
             this.viewPort.Name = "viewPort";
-            this.viewPort.Size = new System.Drawing.Size(651, 425);
+            this.viewPort.Size = new System.Drawing.Size(631, 425);
             this.viewPort.TabIndex = 0;
             this.viewPort.TabStop = false;
             // 
@@ -64,9 +66,9 @@ namespace PeachFox
             // 
             this.groupBoxRight.Controls.Add(this.flowLayoutPanel);
             this.groupBoxRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.groupBoxRight.Location = new System.Drawing.Point(657, 24);
+            this.groupBoxRight.Location = new System.Drawing.Point(637, 24);
             this.groupBoxRight.Name = "groupBoxRight";
-            this.groupBoxRight.Size = new System.Drawing.Size(220, 444);
+            this.groupBoxRight.Size = new System.Drawing.Size(240, 444);
             this.groupBoxRight.TabIndex = 1;
             this.groupBoxRight.TabStop = false;
             // 
@@ -77,7 +79,7 @@ namespace PeachFox
             this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(214, 425);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(234, 425);
             this.flowLayoutPanel.TabIndex = 0;
             // 
             // groupBoxTiles
@@ -87,7 +89,7 @@ namespace PeachFox
             this.groupBoxTiles.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.groupBoxTiles.Name = "groupBoxTiles";
             this.groupBoxTiles.Padding = new System.Windows.Forms.Padding(3, 3, 3, 1);
-            this.groupBoxTiles.Size = new System.Drawing.Size(208, 170);
+            this.groupBoxTiles.Size = new System.Drawing.Size(228, 170);
             this.groupBoxTiles.TabIndex = 0;
             this.groupBoxTiles.TabStop = false;
             this.groupBoxTiles.Text = "Tiles";
@@ -97,10 +99,10 @@ namespace PeachFox
             this.flowLayoutPanelTiles.AutoScroll = true;
             this.flowLayoutPanelTiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelTiles.Location = new System.Drawing.Point(3, 16);
-            this.flowLayoutPanelTiles.MaximumSize = new System.Drawing.Size(202, 0);
-            this.flowLayoutPanelTiles.MinimumSize = new System.Drawing.Size(202, 0);
+            this.flowLayoutPanelTiles.MaximumSize = new System.Drawing.Size(0, 150);
+            this.flowLayoutPanelTiles.MinimumSize = new System.Drawing.Size(0, 150);
             this.flowLayoutPanelTiles.Name = "flowLayoutPanelTiles";
-            this.flowLayoutPanelTiles.Size = new System.Drawing.Size(202, 153);
+            this.flowLayoutPanelTiles.Size = new System.Drawing.Size(222, 150);
             this.flowLayoutPanelTiles.TabIndex = 0;
             // 
             // groupBoxTilesButton
@@ -109,7 +111,7 @@ namespace PeachFox
             this.groupBoxTilesButton.Controls.Add(this.buttonNewTile);
             this.groupBoxTilesButton.Location = new System.Drawing.Point(3, 173);
             this.groupBoxTilesButton.Name = "groupBoxTilesButton";
-            this.groupBoxTilesButton.Size = new System.Drawing.Size(200, 40);
+            this.groupBoxTilesButton.Size = new System.Drawing.Size(228, 40);
             this.groupBoxTilesButton.TabIndex = 1;
             this.groupBoxTilesButton.TabStop = false;
             // 
@@ -195,7 +197,7 @@ namespace PeachFox
             // addNewTileSetToolStripMenuItem
             // 
             this.addNewTileSetToolStripMenuItem.Name = "addNewTileSetToolStripMenuItem";
-            this.addNewTileSetToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.addNewTileSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addNewTileSetToolStripMenuItem.Text = "Add new Tile Set";
             // 
             // editExistingTileSetToolStripMenuItem
@@ -203,7 +205,7 @@ namespace PeachFox
             this.editExistingTileSetToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox});
             this.editExistingTileSetToolStripMenuItem.Name = "editExistingTileSetToolStripMenuItem";
-            this.editExistingTileSetToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.editExistingTileSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.editExistingTileSetToolStripMenuItem.Text = "Edit existing Tile Set";
             // 
             // toolStripComboBox
@@ -269,4 +271,5 @@ namespace PeachFox
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ToolTip toolTip;
     }}

@@ -66,12 +66,7 @@ namespace PeachFox.TileEditor
             {
                 int[] values = GetValues(item.ToString());
                 if (values != null)
-                {
-                    list.Add(values[0]);
-                    list.Add(values[1]);
-                    list.Add(values[2]);
-                    list.Add(values[3]);
-                }
+                    list.AddRange(values);
             }
             return list;
         }

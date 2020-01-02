@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using PeachFox.TileMapEditor;
+using System.Linq;
 
 namespace PeachFox
 {
@@ -12,6 +14,8 @@ namespace PeachFox
         private Dictionary<string, TileSet.TileSetData> _tilesets = new Dictionary<string, TileSet.TileSetData>();
 
         private Tilemap _tilemap = new Tilemap();
+
+        private Button _selectedButton = null;
 
         public TileMapEditorForm()
         {
@@ -95,24 +99,68 @@ namespace PeachFox
 
         public void NewTile(Tile tile, Image thumbnail, int previousIndex = -1)
         {
+            Button bu = flowLayoutPanelTiles.Controls.OfType<Button>().SingleOrDefault((b) => b.Tag as Tile == tile);
+            if (bu != null)
+            {
+                SetSelectedButton(bu);
+                return;
+            }
+
             if (previousIndex != -1 && previousIndex < _tilemap.Tiles.Count && previousIndex > -1)
                 _tilemap.Tiles[previousIndex] = tile;
             else
             {
                 _tilemap.Tiles.Add(tile);
-                AddNewTileButton(tile, thumbnail);
+                Button button = AddNewTileButton(tile, thumbnail);
+                SetSelectedButton(button);
             }
         }
 
-        private void AddNewTileButton(Tile tile, Image thumbnail)
+        private Button AddNewTileButton(Tile tile, Image thumbnail)
         {
             Button button = new Button
             {
-                Size = new Size(40, 40),
-                BackgroundImage = thumbnail,
+                Size = new Size(44, 44),
+                Image = thumbnail,
+                FlatStyle = FlatStyle.Flat,
+                Tag = tile
+            };
+            button.FlatAppearance.BorderSize = 2;
+            button.FlatAppearance.BorderColor = Color.LightGray;
+
+            button.MouseEnter += (sender, e) => { if (button != _selectedButton) button.FlatAppearance.BorderColor = Color.FromArgb(110, 130, 190); };
+            button.MouseLeave += (sender, e) => { if (button != _selectedButton) button.FlatAppearance.BorderColor = Color.LightGray; };
+
+            button.Click += (sender, e) => { SetSelectedButton((Button)sender); };
+
+            button.Paint += (sender, e) =>
+            {
+                Graphics g = e.Graphics;
+                HatchBrush b = new HatchBrush(HatchStyle.Percent50, Color.LightGray, Color.White);
+                g.FillRectangle(b, new Rectangle(new Point(2,2), new Size(40, 40)));
+                b.Dispose();
+                if (button.Image != null)
+                    g.DrawImage(button.Image, 2, 2);
             };
 
+            string tip = $"{tile.Image}\n";
+            List<int> quads = tile.Quad.Values;
+            for (int i = 0; i < quads.Count; i += 4)
+                tip += $"{quads[i]},{quads[i+1]},{quads[i+2]},{quads[i+3]}  ";
+            toolTip.SetToolTip(button, tip);
+
             flowLayoutPanelTiles.Controls.Add(button);
+
+            return button;
+        }
+
+        private void SetSelectedButton(Button button)
+        {
+            if (_selectedButton != null)
+                _selectedButton.FlatAppearance.BorderColor = Color.LightGray;
+            _selectedButton = button;
+            if (_selectedButton != null)
+                button.FlatAppearance.BorderColor = Color.MediumBlue;
         }
 
         private void SetTileSelectionMenuItem()

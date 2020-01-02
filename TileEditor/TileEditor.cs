@@ -25,6 +25,8 @@ namespace PeachFox
                 _tileViewPort.CellSize = value;
                 numericWidth.Value = value;
                 numericHeight.Value = value;
+                numericX.Increment = value;
+                numericY.Increment = value;
             }
         }
 
@@ -90,6 +92,7 @@ namespace PeachFox
             _quadList.Clear(quadsStr);
             _quadSettings.ImageWidth = image.Width;
             _quadSettings.ImageHeight = image.Height;
+            _exportSettings.Update();
         }
 
         public void Export()

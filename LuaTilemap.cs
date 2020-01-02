@@ -44,7 +44,7 @@ namespace PeachFox
             set
             {
                 for (int i = 0; i < value.Count; i++)
-                    _root[i] = value[i];
+                    _root[i+1] = value[i];
             }
         }
 
@@ -72,6 +72,35 @@ namespace PeachFox
         {
             return new Quad(value);
         }
+
+        public static bool operator ==(Quad right, Quad left)
+        {
+            List<int> a = right?.Values;
+            List<int> b = left?.Values;
+            if (a == null) return b == null;
+            if (b == null || a.Count != b.Count) return false;
+            for (int i = 0; i < a.Count; i++)
+                if (!(a[i] == b[i]))
+                    return false;
+            return true;
+        }
+
+        public static bool operator !=(Quad right, Quad left)
+        {
+            return !(right == left);
+        }
+        /// MSVS Auto-Generated
+        public override bool Equals(object obj)
+        {
+            return obj is Quad quad;
+        }
+        public override int GetHashCode()
+        {
+            var hashCode = -1006183635;
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<int>>.Default.GetHashCode(Values);
+            hashCode = hashCode * -1521134295 + EqualityComparer<LsonDict>.Default.GetHashCode(_root);
+            return hashCode;
+        }
     }
 
     public class Tile
@@ -83,7 +112,7 @@ namespace PeachFox
         }
         public double? Time
         {
-            get => _root["time"].GetDoubleSafe();
+            get => _root.ContainsKey("time") ? _root["time"].GetDoubleSafe() : null;
             set => _root["time"] = value;
         }
         public string Image
@@ -108,7 +137,7 @@ namespace PeachFox
         public Tile(LsonDict root)
         {
             _root = root;
-        } 
+        }
 
         public void SetValue(string key, LsonValue value)
         {
@@ -122,6 +151,30 @@ namespace PeachFox
         public static explicit operator Tile(LsonDict value)
         {
             return new Tile(value);
+        }
+        public static bool operator ==(Tile right, Tile left)
+        {
+            return (right.Image == left.Image) && (right.Time == left.Time) && (right.Quad == left.Quad);
+        }
+
+        public static bool operator !=(Tile right, Tile left)
+        {
+            return !(right == left);
+        }
+
+        ///MSVS Auto-Generated
+        public override bool Equals(object obj)
+        {
+            return obj is Tile tile;
+        }
+        public override int GetHashCode()
+        {
+            var hashCode = -2036332282;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Quad>.Default.GetHashCode(Quad);
+            hashCode = hashCode * -1521134295 + Time.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Image);
+            hashCode = hashCode * -1521134295 + EqualityComparer<LsonDict>.Default.GetHashCode(_root);
+            return hashCode;
         }
     }
 
@@ -210,7 +263,7 @@ namespace PeachFox
             set 
             {
                 for (int i = 0; i < value.Count; i++)
-                        _root[i] = (LsonDict)value[i];
+                        _root[i+1] = (LsonDict)value[i];
             }
 	    }
 
