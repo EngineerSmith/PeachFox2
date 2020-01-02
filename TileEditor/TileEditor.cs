@@ -15,6 +15,17 @@ namespace PeachFox
 
         private ButtonRemove _buttonRemove;
 
+        public int CellSize
+        {
+            get => _tileViewPort.CellSize;
+            set
+            {
+                _tileViewPort.CellSize = value;
+                numericWidth.Value = value;
+                numericHeight.Value = value;
+            }
+        }
+
         public TileEditorForm() 
         {
             InitializeComponent();
@@ -23,10 +34,8 @@ namespace PeachFox
             this.Disposed += new EventHandler(DisposeForm);
             this.FormClosing += new FormClosingEventHandler(HideForm);
 
-            _tileViewPort = new TileViewPort(viewPort)
-            {
-                CellSize = 16 //TODO Make a setting
-            };
+            _tileViewPort = new TileViewPort(viewPort);
+            CellSize = 16; // Default
 
             listBox.SelectedValueChanged += QuadSelectionChanged;
 

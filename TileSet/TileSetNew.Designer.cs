@@ -49,7 +49,7 @@
             // 
             this.buttonOpen.Location = new System.Drawing.Point(12, 12);
             this.buttonOpen.Name = "buttonOpen";
-            this.buttonOpen.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpen.Size = new System.Drawing.Size(86, 23);
             this.buttonOpen.TabIndex = 0;
             this.buttonOpen.Text = "Open Tile Set";
             this.buttonOpen.UseVisualStyleBackColor = true;
@@ -57,9 +57,9 @@
             // textBoxFilePath
             // 
             this.textBoxFilePath.Enabled = false;
-            this.textBoxFilePath.Location = new System.Drawing.Point(94, 14);
+            this.textBoxFilePath.Location = new System.Drawing.Point(104, 14);
             this.textBoxFilePath.Name = "textBoxFilePath";
-            this.textBoxFilePath.Size = new System.Drawing.Size(315, 20);
+            this.textBoxFilePath.Size = new System.Drawing.Size(305, 20);
             this.textBoxFilePath.TabIndex = 1;
             // 
             // buttonImport
@@ -78,7 +78,7 @@
             this.infoBox.Name = "infoBox";
             this.infoBox.Size = new System.Drawing.Size(397, 51);
             this.infoBox.TabIndex = 3;
-            this.infoBox.Text = "test\ntest";
+            this.infoBox.Text = " \n ";
             // 
             // buttonCancel
             // 

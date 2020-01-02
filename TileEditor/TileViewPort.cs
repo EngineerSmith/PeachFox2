@@ -16,16 +16,8 @@ namespace PeachFox.TileEditor
                 // Ratio
                 Resize(null, null);
                 // Cells
-                if (CellSize != 0)
-                {
-                    CellCountX = value.Width / CellSize;
-                    CellCountY = value.Height / CellSize;
-                }
-                else
-                {
-                    CellCountX = 0;
-                    CellCountY = 0;
-                }
+                CellCountX = value.Width / CellSize;
+                CellCountY = value.Height / CellSize;
                 // Redraw
                 CenterViewPort();
             }
@@ -43,7 +35,22 @@ namespace PeachFox.TileEditor
             }
         }
 
-        public int CellSize = 0;
+        private int _cellSize = 16;
+        public int CellSize
+        {
+            get => _cellSize; 
+            set
+            {
+                _cellSize = value;
+                if (Image != null)
+                {
+                    CellCountX = Image.Width / value;
+                    CellCountY = Image.Height / value;
+                }
+                Redraw();
+            }
+        }
+
 
         public Color CellColor = Color.FromArgb(150, Color.DarkGray);
         public Color QuadColor = Color.FromArgb(175, Color.Blue);

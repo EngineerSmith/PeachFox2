@@ -104,6 +104,7 @@ namespace PeachFox
             {
                 Bitmap image = new Bitmap(_tilesets[selectedName].Path);
                 Program.TileEditor.NewTilesetImage(image);
+                Program.TileEditor.CellSize = _tilesets[selectedName].CellSize;
             }
         }
 
