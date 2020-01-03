@@ -12,6 +12,10 @@ namespace PeachFox.TileMapEditor
 
         private float ScaleRatio = 1f;
 
+        public int CellSize = 16;
+        public Color CellColor = Color.FromArgb(150, Color.DarkGray);
+
+
         public TileMapViewPort(PictureBox pictureBox)
         {
             PictureBox = pictureBox;
@@ -28,7 +32,22 @@ namespace PeachFox.TileMapEditor
             g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighSpeed;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
 
-            g.DrawRectangle(new Pen(Color.Red), new Rectangle(-10, -10, 10, 10));
+            //CellSize
+            float x = -TranslateX;
+            float y = -TranslateY;
+            float ix = x - (x % CellSize) - CellSize;
+            float iy = y - (y % CellSize) - CellSize;
+
+            Pen p = new Pen(CellColor, 1 / ZoomFactor);
+            float penDistanceOffset = 0.5f; // Width * ZoomFactor / 2. // (Width * ZoomFactor) will always be 1
+            for (y = iy; y < PictureBox.Height - TranslateY + CellSize*2; y+=CellSize)
+                g.DrawLine(p, ix-penDistanceOffset, y - penDistanceOffset, ix+PictureBox.Width + CellSize*2, y - penDistanceOffset);
+            for (x = ix; x < PictureBox.Width - TranslateX + CellSize*2; x+=CellSize)
+                g.DrawLine(p, x - penDistanceOffset, iy-penDistanceOffset, x - penDistanceOffset, iy+PictureBox.Height + CellSize*2);
+            p.Dispose();
+
+
+            g.DrawRectangle(new Pen(Color.Red), -penDistanceOffset, -penDistanceOffset, CellSize, CellSize);
 
             if (Tilemap == null)
                 return;

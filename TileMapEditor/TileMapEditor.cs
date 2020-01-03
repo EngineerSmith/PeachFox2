@@ -15,6 +15,8 @@ namespace PeachFox
 
         private Tilemap _tilemap = new Tilemap();
 
+        private ListBoxDragDrop _listBoxDragDrop;
+
         private Button _selectedButton = null;
 
         public TileMapEditorForm()
@@ -79,6 +81,10 @@ namespace PeachFox
             {
                 Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
             };
+
+            flowLayoutPanelTiles.Click += (sender, e) => { SetSelectedButton(null); };
+
+            _listBoxDragDrop = new ListBoxDragDrop(listBoxLayers);
         }
 
         public void NewTileSet(TileSet.TileSetData tileSetData)

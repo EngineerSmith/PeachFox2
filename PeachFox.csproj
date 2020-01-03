@@ -64,6 +64,7 @@
     <Compile Include="TileEditor\TileViewPort.cs" />
     <Compile Include="LuaTilemap.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TileMapEditor\ListBoxDragDrop.cs" />
     <Compile Include="TileMapEditor\TileMapEditor.cs">
       <SubType>Form</SubType>
     </Compile>

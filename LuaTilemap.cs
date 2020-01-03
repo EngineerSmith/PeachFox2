@@ -16,8 +16,8 @@ using LsonLib;
 ///{
 ///    {
 ///        name="Foreground", -- SetValue("name", "Foreground")
-///        {tile=1, x= 0, y= 0, colliable=true},
-///        {tile=2, x=16, y=16, colliable=false},
+///        {tile=1, x= 0, y= 0, colliable=true}, -- SetValue("colliable", true)
+///        {tile=2, x=16, y=16, colliable=false}, -- SetValue("colliable", true)
 ///    },
 ///    {
 ///        name="Background" -- SetValue("name", "Background")
@@ -195,11 +195,6 @@ namespace PeachFox
             get => _root["y"].GetIntSafe();
             set => _root["y"] = value;
         }
-        public bool? Colliable
-        {
-            get => _root["colliable"].GetBoolSafe();
-            set => _root["colliable"] = value;
-        }
 
         private readonly LsonDict _root;
 
@@ -207,13 +202,12 @@ namespace PeachFox
         {
             _root = new LsonDict();
         }
-        public LayerTile(int tileIndex, int x, int y, bool colliable)
+        public LayerTile(int tileIndex, int x, int y)
         {
             _root = new LsonDict();
             TileIndex = tileIndex;
             X = x;
             Y = y;
-            Colliable = colliable;
         }
         public LayerTile(LsonDict root)
         {

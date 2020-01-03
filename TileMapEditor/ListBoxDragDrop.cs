@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
+public delegate void OnOrderChange(object sender, object item);
+
 namespace PeachFox.TileMapEditor
 {
     public class ListBoxDragDrop
@@ -18,6 +20,8 @@ namespace PeachFox.TileMapEditor
                 _box.DragDrop += DragDrop;
             }
         }
+
+        public OnOrderChange Callback = null;
 
         public ListBoxDragDrop(ListBox box)
         {
@@ -45,6 +49,7 @@ namespace PeachFox.TileMapEditor
             object data = Box.SelectedItem;
             Box.Items.Remove(data);
             Box.Items.Insert(index, data);
+            Callback?.Invoke(Box, data);
         }
     }
 }
