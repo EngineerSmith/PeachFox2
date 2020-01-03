@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using LsonLib;
 
-/// <summary>
-/// 
-/// Aim is to produce a file similar to the one below
+/// Produces a file, of the following format
 /// 
 /// ----
 ///local tiles =
@@ -25,8 +23,6 @@ using LsonLib;
 ///}
 ///
 ///return {tiles=tiles, layers=layers}
-/// ----
-/// </summary>
 
 namespace PeachFox
 {
@@ -221,7 +217,7 @@ namespace PeachFox
 
         public LsonSafeValue GetValue(string key)
         {
-            return _root[key].Safe;
+            return _root.ContainsKey(key) ? _root[key].Safe : null;
         }
 
         public Dictionary<LsonValue, LsonValue> GetValues()
@@ -278,12 +274,24 @@ namespace PeachFox
 
         public void SetValue(string key, LsonValue value)
         {
-            _root[key] = value;
+            if (value != null)
+                _root[key] = value;
+            else
+                _root.Remove(key);
         }
 
         public LsonSafeValue GetValue(string key)
         {
-            return _root[key].Safe;
+            return _root.ContainsKey(key) ? _root[key].Safe : null;
+        }
+
+        public Dictionary<LsonValue, LsonValue> GetValues()
+        {
+            Dictionary<LsonValue, LsonValue> values = new Dictionary<LsonValue, LsonValue>();
+            foreach (KeyValuePair<LsonValue, LsonValue> value in _root)
+                if (value.Key.GetIntSafe() == null)
+                    values[value.Key] = value.Value;
+            return values;
         }
 
         public static explicit operator LsonDict(Layer value)

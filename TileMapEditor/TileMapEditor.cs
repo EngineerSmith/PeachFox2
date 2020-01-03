@@ -15,7 +15,7 @@ namespace PeachFox
 
         private Tilemap _tilemap = new Tilemap();
 
-        private ListBoxDragDrop _listBoxDragDrop;
+        private ListBoxLayers _layerList;
 
         private Button _selectedButton = null;
 
@@ -84,7 +84,15 @@ namespace PeachFox
 
             flowLayoutPanelTiles.Click += (sender, e) => { SetSelectedButton(null); };
 
-            _listBoxDragDrop = new ListBoxDragDrop(listBoxLayers);
+            _layerList = new ListBoxLayers(listBoxLayers);
+
+            foreach(var layer in _tilemap.Layers) //TODO on load/New of tilemap
+                _layerList.Add(layer);
+
+            buttonLayerNew.Click += (sender, e) =>
+            {
+                Program.NewLayerEditorForm(LayerCallback);
+            };
         }
 
         public void NewTileSet(TileSet.TileSetData tileSetData)
@@ -143,7 +151,7 @@ namespace PeachFox
             {
                 Graphics g = e.Graphics;
                 HatchBrush b = new HatchBrush(HatchStyle.Percent50, Color.LightGray, Color.White);
-                g.FillRectangle(b, new Rectangle(new Point(2,2), new Size(40, 40)));
+                g.FillRectangle(b, new Rectangle(new Point(2, 2), new Size(40, 40)));
                 b.Dispose();
                 if (button.Image != null)
                     g.DrawImage(button.Image, 2, 2);
@@ -152,7 +160,7 @@ namespace PeachFox
             string tip = $"{tile.Image}\n";
             List<int> quads = tile.Quad.Values;
             for (int i = 0; i < quads.Count; i += 4)
-                tip += $"{quads[i]},{quads[i+1]},{quads[i+2]},{quads[i+3]}  ";
+                tip += $"{quads[i]},{quads[i + 1]},{quads[i + 2]},{quads[i + 3]}  ";
             toolTip.SetToolTip(button, tip);
 
             flowLayoutPanelTiles.Controls.Add(button);
@@ -191,6 +199,20 @@ namespace PeachFox
         private void NewTileSetCallback(TileSet.TileSetData tileSetData)
         {
             NewTileSet(tileSetData);
+        }
+
+        private void LayerCallback(Layer layer)
+        {
+            if (layer == null)
+                return;
+
+            if (_tilemap.Layers.Contains(layer) == false)
+            {
+                _tilemap.Layers.Add(layer);
+                _layerList.Add(layer);
+            }
+            else { }
+                //TODO
         }
     }
 }

@@ -23,9 +23,10 @@ namespace PeachFox.TileMapEditor
 
         public OnOrderChange Callback = null;
 
-        public ListBoxDragDrop(ListBox box)
+        public ListBoxDragDrop(ListBox box = null)
         {
-            Box = box;
+            if (box != null)
+                Box = box;
         }
 
         private void MouseDown(object sender, MouseEventArgs e)

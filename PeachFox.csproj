@@ -64,7 +64,14 @@
     <Compile Include="TileEditor\TileViewPort.cs" />
     <Compile Include="LuaTilemap.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TileMapEditor\LayerEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TileMapEditor\LayerEditor.Designer.cs">
+      <DependentUpon>LayerEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="TileMapEditor\ListBoxDragDrop.cs" />
+    <Compile Include="TileMapEditor\ListBoxLayers.cs" />
     <Compile Include="TileMapEditor\TileMapEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +99,9 @@
   <ItemGroup>
     <EmbeddedResource Include="TileEditor\TileEditor.resx">
       <DependentUpon>TileEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TileMapEditor\LayerEditor.resx">
+      <DependentUpon>LayerEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TileMapEditor\TileMapEditor.resx">
       <DependentUpon>TileMapEditor.cs</DependentUpon>

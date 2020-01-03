@@ -11,6 +11,7 @@ namespace PeachFox
         private static TileMapEditorForm _tileMapEditorForm;
         private static TileSetNewForm _tileSetNewForm;
         private static TileSetSelectionForm _tileSetSelectionForm;
+        private static LayerEditorForm _layerEditorForm;
 
         public static TileEditorForm TileEditor { get => _tileEditorForm; }
         public static TileMapEditorForm TileMapEditor { get => _tileMapEditorForm; }
@@ -22,8 +23,6 @@ namespace PeachFox
             Application.SetCompatibleTextRenderingDefault(false);
 
             _tileEditorForm = new TileEditorForm();
-            //_tileEditorForm.NewTilesetImage(new Bitmap("C:\\dev\\YogGJ\\Assets\\Logo.png"),
-            //    new List<int>(){0,0,16,16, 16,16,16,16, 64,64,16,16});
             
             _tileMapEditorForm = new TileMapEditorForm();
             _tileMapEditorForm.Activated += (sender, e) =>
@@ -32,14 +31,15 @@ namespace PeachFox
                     _tileSetSelectionForm.Activate();
                 if (_tileSetNewForm != null)
                     _tileSetNewForm.Activate();
+                if (_layerEditorForm != null)
+                    _layerEditorForm.Activate();
             };
             Application.Run(_tileMapEditorForm);
         }
 
         public static void NewTileSetNewForm(NewTileSetCallback callback, TileSet.TileSetData data = null)
         {
-            if (_tileSetNewForm != null)
-                _tileSetNewForm.Close();
+            _tileSetNewForm?.Close();
             _tileSetNewForm = new TileSetNewForm(callback, data);
             _tileSetNewForm.FormClosed += (sender, e) => { _tileSetNewForm = null; };
             _tileSetNewForm.Show();
@@ -47,12 +47,20 @@ namespace PeachFox
         }
         public static void NewTileSetSelectionForm(List<string> tileSetNames, bool showNewTileSet, SelectFormCallback callback)
         {
-            if (_tileSetSelectionForm != null)
-                _tileSetSelectionForm.Close();
+            _tileSetSelectionForm?.Close();
             _tileSetSelectionForm = new TileSetSelectionForm(tileSetNames, showNewTileSet, callback);
             _tileSetSelectionForm.FormClosed += (sender, e) => { _tileSetSelectionForm = null; };
             _tileSetSelectionForm.Show();
             _tileSetSelectionForm.Activate();
+        }
+
+        public static void NewLayerEditorForm(LayerEditorCallback callback, Layer layer = null)
+        {
+            _layerEditorForm?.Close();
+            _layerEditorForm = new LayerEditorForm(callback, layer);
+            _layerEditorForm.FormClosed += (sender, e) => { _layerEditorForm = null; };
+            _layerEditorForm.Show();
+            _layerEditorForm.Activate();
         }
     }
 }
