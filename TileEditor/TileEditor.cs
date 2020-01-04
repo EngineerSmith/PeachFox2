@@ -23,10 +23,18 @@ namespace PeachFox
             set
             {
                 _tileViewPort.CellSize = value;
-                numericWidth.Value = value;
-                numericHeight.Value = value;
-                numericX.Increment = value;
-                numericY.Increment = value;
+                try
+                {
+                    numericWidth.Value = value;
+                    numericHeight.Value = value;
+                    numericX.Increment = value;
+                    numericY.Increment = value;
+                }
+                catch(System.Exception e)
+                {
+                    MessageBox.Show($"Survived Exception\nException: {e.Message}", "Exception While setting CellSize");
+                    Close();
+                }
             }
         }
 

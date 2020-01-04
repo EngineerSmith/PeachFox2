@@ -224,6 +224,7 @@ namespace PeachFox
             // 
             // buttonToolPaint
             // 
+            this.buttonToolPaint.Enabled = false;
             this.buttonToolPaint.Image = global::PeachFox.Properties.Resources.paint;
             this.buttonToolPaint.Location = new System.Drawing.Point(46, 19);
             this.buttonToolPaint.Name = "buttonToolPaint";

@@ -18,6 +18,12 @@ namespace PeachFox
                 PictureBox.MouseWheel += MouseWheel;
                 PictureBox.Resize += Resize;
                 PictureBox.Paint += Draw;
+                //Debug
+                if (DebugZoom) 
+                {
+                    PictureBox.MouseMove += DebugZoomMouseMove;
+                    PictureBox.Paint += DebugZoomDraw;
+                }
             }
         }
 
@@ -39,6 +45,11 @@ namespace PeachFox
         protected float TranslateRatio = 1f;
         protected float TranslateX = 0f, TranslateY = 0f;
         private float TranslateStartX = 0f, TranslateStartY = 0f;
+
+        public bool EnableMouseMovement = true;
+
+        private bool DebugZoom = false;
+        private float _debugTranslateX = 0f, _debugTranslateY = 0f, _debugZoomFactor = 1f;
 
         public void Reset()
         {
@@ -65,11 +76,15 @@ namespace PeachFox
 
         private void MouseDown(object sender, MouseEventArgs e)
         {
+            if (!EnableMouseMovement)
+                return;
             TranslateStartX = e.X;
             TranslateStartY = e.Y;
         }
         private void MouseUp(object sender, MouseEventArgs e)
         {
+            if (!EnableMouseMovement)
+                return;
             TranslateX += (e.X - TranslateStartX) * (TranslateRatio / ZoomFactor);
             TranslateY += (e.Y - TranslateStartY) * (TranslateRatio / ZoomFactor);
 
@@ -83,15 +98,32 @@ namespace PeachFox
         private void MouseWheel(object sender, MouseEventArgs e)
         {
             float step = e.Delta * ScrollStep;
+            float pre = ZoomFactor;
             ZoomFactor += step;
 
-            if (ZoomFactor > 1f && ZoomFactor < 8f)
-            {
-                TranslateX = (TranslateX - e.X) * (TranslateRatio / ZoomFactor);
-                TranslateY = (TranslateY - e.Y) * (TranslateRatio / ZoomFactor);
-            }
+            float width = (PictureBox.Width / ZoomFactor) /2, height = (PictureBox.Height / ZoomFactor) /2;
+            TranslateX = TranslateX - (e.X / pre) + width;
+            TranslateY = TranslateY - (e.Y / pre) +height;
 
             Redraw();
+        }
+
+        private void DebugZoomMouseMove(object sender, MouseEventArgs e)
+        {
+            //120 used as that is the value of e.Delta when mouse wheel moves to zoom in
+            _debugZoomFactor = ZoomFactor + (120 * ScrollStep); 
+
+            float width = (PictureBox.Width / _debugZoomFactor) /2, height = (PictureBox.Height / _debugZoomFactor) /2;
+            _debugTranslateX = TranslateX - (e.X / ZoomFactor) +width;
+            _debugTranslateY = TranslateY - (e.Y / ZoomFactor) +height;
+            
+            Redraw();
+        }
+
+        private void DebugZoomDraw(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawRectangle(Pens.Red, -_debugTranslateX, -_debugTranslateY, PictureBox.Width / _debugZoomFactor, PictureBox.Height / _debugZoomFactor);
         }
 
         protected abstract void Resize(object sender, System.EventArgs e);
