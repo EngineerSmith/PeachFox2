@@ -84,7 +84,7 @@ namespace PeachFox
 
             flowLayoutPanelTiles.Click += (sender, e) => { SetSelectedButton(null); };
 
-            _layerList = new ListBoxLayers(listBoxLayers);
+            _layerList = new ListBoxLayers(listBoxLayers, toolTip);
 
             foreach(var layer in _tilemap.Layers) //TODO on load/New of tilemap
                 _layerList.Add(layer);

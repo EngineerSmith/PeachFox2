@@ -15,6 +15,15 @@ namespace PeachFox
 
             buttonImport.Click += (sender, e) =>
             {
+                foreach(DataGridViewRow r in dataGridViewTags.Rows)
+                {
+                    if (r.Cells[0].Value == null)
+                        continue;
+                    if (r.Cells[1].Value != null && r.Cells[1].Value.ToString() != "")
+                        _layer.SetValue(r.Cells[0].Value.ToString(), r.Cells[1].Value.ToString());
+                    else
+                        _layer.SetValue(r.Cells[0].Value?.ToString(), null);
+                }
                 callback?.Invoke(_layer);
                 Close();
             };
@@ -29,13 +38,15 @@ namespace PeachFox
             textBoxName.Text = v != null ? v.Value.GetString() : "";
             textBoxName.TextChanged += (sender, e) =>
             {
-                if (textBoxName.Text != "")
-                    _layer.SetValue("name", textBoxName.Text);
-                else
-                    _layer.SetValue("name", null);
-                DataGridViewRow row = dataGridViewTags.Rows.OfType<DataGridViewRow>().SingleOrDefault(r => r.Cells[1].Value?.ToString() == "name");
+                //if (textBoxName.Text != "")
+                //    _layer.SetValue("name", textBoxName.Text);
+                //else
+                //    _layer.SetValue("name", null);
+                DataGridViewRow row = dataGridViewTags.Rows.OfType<DataGridViewRow>().SingleOrDefault(r => r.Cells[0].Value?.ToString() == "name");
                 if (row != null)
                     row.Cells[1].Value = textBoxName.Text;
+                else
+                    dataGridViewTags.Rows.Add("name", textBoxName.Text);
             };
 
             foreach( var kvp in _layer.GetValues())
@@ -43,12 +54,7 @@ namespace PeachFox
 
             dataGridViewTags.CellValueChanged += (sender, e) =>
             {
-                var r = dataGridViewTags.Rows[e.RowIndex];
-                if (r.Cells[1].Value.ToString() != "")
-                    _layer.SetValue(r.Cells[0].Value.ToString(), r.Cells[1].Value.ToString());
-                else
-                    _layer.SetValue(r.Cells[0].Value.ToString(), null);
-
+                DataGridViewRow r = dataGridViewTags.Rows[e.RowIndex];
                 if (r.Cells[0].Value.ToString() == "name")
                     textBoxName.Text = r.Cells[1].Value.ToString();
             };
@@ -57,14 +63,11 @@ namespace PeachFox
             {
                 if (e.ColumnIndex != 0)
                     return;
-                var row = dataGridViewTags.Rows[e.RowIndex];
-                if (row.Cells[0].Value == null)
-                    return;
                 for (int i = 0; i < dataGridViewTags.Rows.Count; i++)
                 {
                     if (i == e.RowIndex)
                         continue;
-                    if (dataGridViewTags.Rows[i].Cells[0].Value?.ToString() == row.Cells[0].Value.ToString())
+                    if (dataGridViewTags.Rows[i].Cells[0].Value?.ToString() == e.FormattedValue.ToString())
                     {
                         e.Cancel = true;
                         break;
