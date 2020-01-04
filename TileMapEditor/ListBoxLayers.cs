@@ -25,6 +25,27 @@ namespace PeachFox.TileMapEditor
         {
             Layers = layers;
             _toolTip = tip;
+            Flash();
+        }
+
+        public void Flash()
+        {
+            int tickCount = 0;
+            Timer timer = new Timer()
+            {
+                Interval = 310,
+                Enabled = false,
+            };
+            timer.Tick += (sender, e) =>
+            {
+                if (Layers.BackColor == System.Drawing.Color.LightBlue)
+                    Layers.BackColor = System.Drawing.Color.White;
+                else
+                    Layers.BackColor = System.Drawing.Color.LightBlue;
+                if (++tickCount >= 4)
+                    timer.Stop();
+            };
+            timer.Start();
         }
 
         public void Add(Layer layer)
