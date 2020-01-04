@@ -84,6 +84,7 @@
       <DependentUpon>TileMapEditor.cs</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="TileMapEditor\SelectableButtons.cs" />
     <Compile Include="TileMapEditor\TileMapViewPort.cs" />
     <Compile Include="TileSet\LuaTileSet.cs" />
     <Compile Include="TileSet\TileSet.cs" />

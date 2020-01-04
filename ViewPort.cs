@@ -41,7 +41,7 @@ namespace PeachFox
             }
         }
 
-        protected float ScrollStep = 0.01f;
+        protected float ScrollStep = 0.005f;
         protected float TranslateRatio = 1f;
         protected float TranslateX = 0f, TranslateY = 0f;
         private float TranslateStartX = 0f, TranslateStartY = 0f;
@@ -97,6 +97,8 @@ namespace PeachFox
         }
         private void MouseWheel(object sender, MouseEventArgs e)
         {
+            if (!EnableMouseMovement)
+                return;
             float step = e.Delta * ScrollStep;
             float pre = ZoomFactor;
             ZoomFactor += step;
