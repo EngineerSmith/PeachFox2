@@ -15,12 +15,17 @@ namespace PeachFox
             this.groupBoxLayers = new System.Windows.Forms.GroupBox();
             this.listBoxLayers = new System.Windows.Forms.ListBox();
             this.groupBoxLayerButtons = new System.Windows.Forms.GroupBox();
+            this.buttonLayerEdit = new System.Windows.Forms.Button();
             this.buttonLayerNew = new System.Windows.Forms.Button();
             this.groupBoxTiles = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanelTiles = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxTilesButton = new System.Windows.Forms.GroupBox();
             this.buttonRemoveTile = new System.Windows.Forms.Button();
             this.buttonNewTile = new System.Windows.Forms.Button();
+            this.groupBoxTools = new System.Windows.Forms.GroupBox();
+            this.buttonToolEraser = new System.Windows.Forms.Button();
+            this.buttonToolPaint = new System.Windows.Forms.Button();
+            this.buttonToolMove = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTilemapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,7 +41,6 @@ namespace PeachFox
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.buttonLayerEdit = new System.Windows.Forms.Button();
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
@@ -45,6 +49,7 @@ namespace PeachFox
             this.groupBoxLayerButtons.SuspendLayout();
             this.groupBoxTiles.SuspendLayout();
             this.groupBoxTilesButton.SuspendLayout();
+            this.groupBoxTools.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,6 +91,7 @@ namespace PeachFox
             this.flowLayoutPanel.Controls.Add(this.groupBoxLayerButtons);
             this.flowLayoutPanel.Controls.Add(this.groupBoxTiles);
             this.flowLayoutPanel.Controls.Add(this.groupBoxTilesButton);
+            this.flowLayoutPanel.Controls.Add(this.groupBoxTools);
             this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
@@ -122,6 +128,15 @@ namespace PeachFox
             this.groupBoxLayerButtons.Size = new System.Drawing.Size(228, 40);
             this.groupBoxLayerButtons.TabIndex = 3;
             this.groupBoxLayerButtons.TabStop = false;
+            // 
+            // buttonLayerEdit
+            // 
+            this.buttonLayerEdit.Location = new System.Drawing.Point(80, 11);
+            this.buttonLayerEdit.Name = "buttonLayerEdit";
+            this.buttonLayerEdit.Size = new System.Drawing.Size(65, 23);
+            this.buttonLayerEdit.TabIndex = 1;
+            this.buttonLayerEdit.Text = "Edit Layer";
+            this.buttonLayerEdit.UseVisualStyleBackColor = true;
             // 
             // buttonLayerNew
             // 
@@ -184,6 +199,46 @@ namespace PeachFox
             this.buttonNewTile.TabIndex = 0;
             this.buttonNewTile.Text = "New Tile";
             this.buttonNewTile.UseVisualStyleBackColor = true;
+            // 
+            // groupBoxTools
+            // 
+            this.groupBoxTools.Controls.Add(this.buttonToolEraser);
+            this.groupBoxTools.Controls.Add(this.buttonToolPaint);
+            this.groupBoxTools.Controls.Add(this.buttonToolMove);
+            this.groupBoxTools.Location = new System.Drawing.Point(3, 353);
+            this.groupBoxTools.Name = "groupBoxTools";
+            this.groupBoxTools.Size = new System.Drawing.Size(228, 60);
+            this.groupBoxTools.TabIndex = 4;
+            this.groupBoxTools.TabStop = false;
+            this.groupBoxTools.Text = "Tools";
+            // 
+            // buttonToolEraser
+            // 
+            this.buttonToolEraser.Enabled = false;
+            this.buttonToolEraser.Image = global::PeachFox.Properties.Resources.eraser;
+            this.buttonToolEraser.Location = new System.Drawing.Point(86, 19);
+            this.buttonToolEraser.Name = "buttonToolEraser";
+            this.buttonToolEraser.Size = new System.Drawing.Size(34, 34);
+            this.buttonToolEraser.TabIndex = 2;
+            this.buttonToolEraser.UseVisualStyleBackColor = true;
+            // 
+            // buttonToolPaint
+            // 
+            this.buttonToolPaint.Image = global::PeachFox.Properties.Resources.paint;
+            this.buttonToolPaint.Location = new System.Drawing.Point(46, 19);
+            this.buttonToolPaint.Name = "buttonToolPaint";
+            this.buttonToolPaint.Size = new System.Drawing.Size(34, 34);
+            this.buttonToolPaint.TabIndex = 1;
+            this.buttonToolPaint.UseVisualStyleBackColor = true;
+            // 
+            // buttonToolMove
+            // 
+            this.buttonToolMove.Image = global::PeachFox.Properties.Resources.move;
+            this.buttonToolMove.Location = new System.Drawing.Point(6, 19);
+            this.buttonToolMove.Name = "buttonToolMove";
+            this.buttonToolMove.Size = new System.Drawing.Size(34, 34);
+            this.buttonToolMove.TabIndex = 0;
+            this.buttonToolMove.UseVisualStyleBackColor = true;
             // 
             // menuStrip
             // 
@@ -288,15 +343,6 @@ namespace PeachFox
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
             // 
-            // buttonLayerEdit
-            // 
-            this.buttonLayerEdit.Location = new System.Drawing.Point(80, 11);
-            this.buttonLayerEdit.Name = "buttonLayerEdit";
-            this.buttonLayerEdit.Size = new System.Drawing.Size(65, 23);
-            this.buttonLayerEdit.TabIndex = 1;
-            this.buttonLayerEdit.Text = "Edit Layer";
-            this.buttonLayerEdit.UseVisualStyleBackColor = true;
-            // 
             // TileMapEditorForm
             // 
             this.ClientSize = new System.Drawing.Size(877, 468);
@@ -314,6 +360,7 @@ namespace PeachFox
             this.groupBoxLayerButtons.ResumeLayout(false);
             this.groupBoxTiles.ResumeLayout(false);
             this.groupBoxTilesButton.ResumeLayout(false);
+            this.groupBoxTools.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -356,4 +403,8 @@ namespace PeachFox
         private System.Windows.Forms.Button buttonLayerNew;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.Button buttonLayerEdit;
+        private System.Windows.Forms.GroupBox groupBoxTools;
+        private System.Windows.Forms.Button buttonToolMove;
+        private System.Windows.Forms.Button buttonToolEraser;
+        private System.Windows.Forms.Button buttonToolPaint;
     }}

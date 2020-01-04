@@ -49,6 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="TileEditor\ButtonRemove.cs" />
     <Compile Include="TileEditor\ExportSettings.cs" />
     <Compile Include="TileEditor\QuadList.cs" />
@@ -97,6 +102,10 @@
     <Compile Include="ViewPort.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="TileEditor\TileEditor.resx">
       <DependentUpon>TileEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -112,6 +121,15 @@
     <EmbeddedResource Include="TileSet\TileSetSelection.resx">
       <DependentUpon>TileSetSelection.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\move.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\paint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\eraser.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
