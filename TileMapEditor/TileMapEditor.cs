@@ -93,6 +93,12 @@ namespace PeachFox
             {
                 Program.NewLayerEditorForm(LayerCallback);
             };
+
+            buttonLayerEdit.Click += (sender, e) =>
+            {
+                if (listBoxLayers.SelectedItem != null)
+                    Program.NewLayerEditorForm(LayerCallback, ((LayerAttributes)listBoxLayers.SelectedItem).layer);
+            };
         }
 
         public void NewTileSet(TileSet.TileSetData tileSetData)
@@ -211,8 +217,8 @@ namespace PeachFox
                 _tilemap.Layers.Add(layer);
                 _layerList.Add(layer);
             }
-            else { }
-                //TODO
+            else 
+                _layerList.UpdateSelected();
         }
     }
 }

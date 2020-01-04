@@ -36,6 +36,7 @@ namespace PeachFox
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.buttonLayerEdit = new System.Windows.Forms.Button();
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
@@ -113,6 +114,7 @@ namespace PeachFox
             // 
             // groupBoxLayerButtons
             // 
+            this.groupBoxLayerButtons.Controls.Add(this.buttonLayerEdit);
             this.groupBoxLayerButtons.Controls.Add(this.buttonLayerNew);
             this.groupBoxLayerButtons.Location = new System.Drawing.Point(3, 100);
             this.groupBoxLayerButtons.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
@@ -286,6 +288,15 @@ namespace PeachFox
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
             // 
+            // buttonLayerEdit
+            // 
+            this.buttonLayerEdit.Location = new System.Drawing.Point(80, 11);
+            this.buttonLayerEdit.Name = "buttonLayerEdit";
+            this.buttonLayerEdit.Size = new System.Drawing.Size(65, 23);
+            this.buttonLayerEdit.TabIndex = 1;
+            this.buttonLayerEdit.Text = "Edit Layer";
+            this.buttonLayerEdit.UseVisualStyleBackColor = true;
+            // 
             // TileMapEditorForm
             // 
             this.ClientSize = new System.Drawing.Size(877, 468);
@@ -344,4 +355,5 @@ namespace PeachFox
         private System.Windows.Forms.GroupBox groupBoxLayerButtons;
         private System.Windows.Forms.Button buttonLayerNew;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.Button buttonLayerEdit;
     }}

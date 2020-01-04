@@ -19,10 +19,11 @@ namespace PeachFox
                 {
                     if (r.Cells[0].Value == null)
                         continue;
+                    string key = r.Cells[0].Value as string;
                     if (r.Cells[1].Value != null && r.Cells[1].Value.ToString() != "")
-                        _layer.SetValue(r.Cells[0].Value.ToString(), r.Cells[1].Value.ToString());
+                        _layer.SetValue(key, r.Cells[1].Value as string);
                     else
-                        _layer.SetValue(r.Cells[0].Value?.ToString(), null);
+                        _layer.SetValue(key, null);
                 }
                 callback?.Invoke(_layer);
                 Close();
@@ -50,7 +51,7 @@ namespace PeachFox
             };
 
             foreach( var kvp in _layer.GetValues())
-                dataGridViewTags.Rows.Add(kvp.Key, kvp.Value);
+                dataGridViewTags.Rows.Add(kvp.Key.GetString(), kvp.Value.GetString());
 
             dataGridViewTags.CellValueChanged += (sender, e) =>
             {

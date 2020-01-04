@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace PeachFox.TileMapEditor
 {
@@ -25,7 +26,6 @@ namespace PeachFox.TileMapEditor
         {
             Layers = layers;
             _toolTip = tip;
-            Flash();
         }
 
         public void Flash()
@@ -48,11 +48,27 @@ namespace PeachFox.TileMapEditor
             timer.Start();
         }
 
+        private System.Random rnd = new System.Random((int)(System.DateTime.Now.Ticks/2));
+
         public void Add(Layer layer)
         {
             string name = layer.GetValue("name")?.Value.GetString();
-            name = name == null || name == "" ? $"Layer {Layers.Items.Count +1}" : name;
+            name = name == null || name == "" ? $"Layer {rnd.Next(0, 89999) + 10000}" : name;
             Layers.Items.Add(new LayerAttributes(name, layer));
+        }
+
+        public void UpdateSelected()
+        {
+            LayerAttributes att = (LayerAttributes)Layers.SelectedItem;
+            if (att != null)
+            {
+                string name = att.layer.GetValue("name")?.Value.GetString();
+                if ((name == null || name == "") && att.name.Length == 11 && att.name.Substring(0, 6) == "Layer ")//TODO Replace with Regex
+                    return;
+                name = name == null || name == "" ? $"Layer {rnd.Next(0,89999) + 10000}" : name;
+                att.name = name;
+                Layers.Items[Layers.SelectedIndex] = Layers.SelectedItem;
+            }
         }
 
         private void ToolTip(object sender, MouseEventArgs e)
@@ -62,7 +78,7 @@ namespace PeachFox.TileMapEditor
             {
                 string str = "";
                 foreach (var kvp in ((LayerAttributes)Layers.Items[index]).layer.GetValues())
-                    str += $"{kvp.Key} = {kvp.Value}\n";
+                    str += $"\"{kvp.Key.GetString()}\" = \"{kvp.Value.GetString()}\"\n";
                 if (_toolTip.GetToolTip(Layers) != str)
                     _toolTip.SetToolTip(Layers, str);
             }
@@ -72,7 +88,7 @@ namespace PeachFox.TileMapEditor
 
     }
 
-    internal struct LayerAttributes
+    public class LayerAttributes
     {
         public string name;
         public Layer layer;
