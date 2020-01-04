@@ -17,7 +17,8 @@ namespace PeachFox
 
         private ListBoxLayers _layerList;
 
-        private Button _selectedButton = null;
+        private SelectableButtons _tileButtons = new SelectableButtons();
+        private SelectableButtons _toolButtons = new SelectableButtons();
 
         public TileMapEditorForm()
         {
@@ -82,7 +83,7 @@ namespace PeachFox
                 Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
             };
 
-            flowLayoutPanelTiles.Click += (sender, e) => { SetSelectedButton(null); };
+            flowLayoutPanelTiles.Click += (sender, e) => { _tileButtons.SetSelectedButton(null); };
 
             _layerList = new ListBoxLayers(listBoxLayers, toolTip);
 
@@ -98,6 +99,16 @@ namespace PeachFox
             {
                 if (listBoxLayers.SelectedItem != null)
                     Program.NewLayerEditorForm(LayerCallback, ((LayerAttributes)listBoxLayers.SelectedItem).layer);
+            };
+
+            _toolButtons.Add(buttonToolMove);
+            _toolButtons.Add(buttonToolPaint);
+            _toolButtons.Add(buttonToolEraser);
+            _toolButtons.SetSelectedButton(buttonToolMove);
+
+            _toolButtons.Callback = () =>
+            {
+                _tileMapViewPort.EnableMouseMovement = _toolButtons.SelectedButton == buttonToolMove;
             };
         }
 
@@ -122,7 +133,7 @@ namespace PeachFox
             Button bu = flowLayoutPanelTiles.Controls.OfType<Button>().SingleOrDefault((b) => b.Tag as Tile == tile);
             if (bu != null)
             {
-                SetSelectedButton(bu);
+                _tileButtons.SetSelectedButton(bu);
                 return;
             }
 
@@ -132,7 +143,7 @@ namespace PeachFox
             {
                 _tilemap.Tiles.Add(tile);
                 Button button = AddNewTileButton(tile, thumbnail);
-                SetSelectedButton(button);
+                _tileButtons.SetSelectedButton(button);
             }
         }
 
@@ -142,16 +153,10 @@ namespace PeachFox
             {
                 Size = new Size(44, 44),
                 Image = thumbnail,
-                FlatStyle = FlatStyle.Flat,
                 Tag = tile
             };
-            button.FlatAppearance.BorderSize = 2;
-            button.FlatAppearance.BorderColor = Color.LightGray;
 
-            button.MouseEnter += (sender, e) => { if (button != _selectedButton) button.FlatAppearance.BorderColor = Color.FromArgb(110, 130, 190); };
-            button.MouseLeave += (sender, e) => { if (button != _selectedButton) button.FlatAppearance.BorderColor = Color.LightGray; };
-
-            button.Click += (sender, e) => { SetSelectedButton((Button)sender); };
+            _tileButtons.Add(button);
 
             button.Paint += (sender, e) =>
             {
@@ -172,15 +177,6 @@ namespace PeachFox
             flowLayoutPanelTiles.Controls.Add(button);
 
             return button;
-        }
-
-        private void SetSelectedButton(Button button)
-        {
-            if (_selectedButton != null)
-                _selectedButton.FlatAppearance.BorderColor = Color.LightGray;
-            _selectedButton = button;
-            if (_selectedButton != null)
-                button.FlatAppearance.BorderColor = Color.MediumBlue;
         }
 
         private void SetTileSelectionMenuItem()
