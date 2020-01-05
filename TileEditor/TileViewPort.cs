@@ -108,6 +108,11 @@ namespace PeachFox.TileEditor
             return export;
         }        
         
+        public Image GetImage() //TODO clean up hack
+        {
+            return GetThumbnail(Quads[2], Quads[3]);
+        }
+
         protected override void Resize(object sender, System.EventArgs e)
         {
             if (Image.Width > Image.Height)

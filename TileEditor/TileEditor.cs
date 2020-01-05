@@ -107,7 +107,7 @@ namespace PeachFox
         {
             var quads = _quadList.ExportQuads();
             Tile tile = new Tile(new Quad(quads), _tileSetData.ExportString, quads.Count > 4 ? (double?)numericTime.Value : null);
-            Program.TileMapEditor.NewTile(tile, _tileViewPort.GetThumbnail(40, 40));
+            Program.TileMapEditor.NewTile(tile, _tileViewPort.GetImage(), _tileViewPort.GetThumbnail(40, 40));
         }
 
         private void HideForm(object sender, FormClosingEventArgs e)

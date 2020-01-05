@@ -8,7 +8,7 @@ namespace PeachFox.TileMapEditor
     {
         public Tilemap Tilemap;
 
-        public List<Image> Images;
+        public Dictionary<int, Image> Images = new Dictionary<int, Image>();
 
         private float ScaleRatio = 1f;
 
@@ -16,12 +16,22 @@ namespace PeachFox.TileMapEditor
         public Color CellColor = Color.FromArgb(150, Color.DarkGray);
 
         private Cell _hovered;
+        public Cell GetCell { get => _hovered; }
 
         public TileMapViewPort(PictureBox pictureBox)
         {
             PictureBox = pictureBox;
             PictureBox.MouseMove += MouseMove;
+            PictureBox.MouseClick += MouseClick;
             CenterViewPort();
+        }
+
+        private void MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Program.TileMapEditor.AddTile();
+            }
         }
 
         private void MouseMove(object sender, MouseEventArgs e)

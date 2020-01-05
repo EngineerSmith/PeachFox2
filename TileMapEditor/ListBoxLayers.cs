@@ -9,6 +9,8 @@ namespace PeachFox.TileMapEditor
         private ListBoxDragDrop _listBoxDragDrop = new ListBoxDragDrop();
         private ToolTip _toolTip;
         private ListBox _layers;
+        private Timer _timer;
+
         public ListBox Layers
         {
             get => _layers;
@@ -30,22 +32,27 @@ namespace PeachFox.TileMapEditor
 
         public void Flash()
         {
+            if (_timer != null)
+                return;
             int tickCount = 0;
-            Timer timer = new Timer()
+            _timer = new Timer()
             {
                 Interval = 310,
                 Enabled = false,
             };
-            timer.Tick += (sender, e) =>
+            _timer.Tick += (sender, e) =>
             {
                 if (Layers.BackColor == System.Drawing.Color.LightBlue)
                     Layers.BackColor = System.Drawing.Color.White;
                 else
                     Layers.BackColor = System.Drawing.Color.LightBlue;
                 if (++tickCount >= 4)
-                    timer.Stop();
+                {
+                    _timer.Stop();
+                    _timer = null;
+                }
             };
-            timer.Start();
+            _timer.Start();
         }
 
         private System.Random rnd = new System.Random((int)(System.DateTime.Now.Ticks/2));

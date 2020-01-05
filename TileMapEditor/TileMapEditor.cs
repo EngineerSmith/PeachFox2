@@ -24,7 +24,10 @@ namespace PeachFox
         {
             InitializeComponent();
 
-            _tileMapViewPort = new TileMapViewPort(viewPort);
+            _tileMapViewPort = new TileMapViewPort(viewPort)
+            {
+                Tilemap = _tilemap
+            };
 
             addNewTileSetToolStripMenuItem.Click += (sender, e) =>
             {
@@ -128,7 +131,7 @@ namespace PeachFox
             }
         }
 
-        public void NewTile(Tile tile, Image thumbnail, int previousIndex = -1)
+        public void NewTile(Tile tile, Image full, Image thumbnail, int previousIndex = -1)
         {
             Button bu = flowLayoutPanelTiles.Controls.OfType<Button>().SingleOrDefault((b) => b.Tag as Tile == tile);
             if (bu != null)
@@ -142,8 +145,10 @@ namespace PeachFox
             else
             {
                 _tilemap.Tiles.Add(tile);
+                _tileMapViewPort.Images.Add(_tilemap.Tiles.Count-1, full);
                 Button button = AddNewTileButton(tile, thumbnail);
                 _tileButtons.SetSelectedButton(button);
+
             }
         }
 
@@ -177,6 +182,33 @@ namespace PeachFox
             flowLayoutPanelTiles.Controls.Add(button);
 
             return button;
+        }
+
+        public void AddTile()
+        {
+            LayerAttributes att = (LayerAttributes)listBoxLayers.SelectedItem;
+            if (att == null)
+            {
+                _layerList.Flash();
+                return;
+            }
+            Button button = _tileButtons.SelectedButton;
+            if (button == null && button.Tag != null)
+            {
+                //TODO add user feedback
+                return;
+            }
+            Tile tag = (Tile)button.Tag;
+            int index = _tilemap.Tiles.FindIndex(tile => tile == tag);
+            if (index == -1)
+            {
+                MessageBox.Show("Could not find selected Tile");
+                return;
+            }
+            LayerTile layerTile = new LayerTile(index, _tileMapViewPort.GetCell.X, _tileMapViewPort.GetCell.Y);
+            var list = att.layer.Tiles; //TODO
+            list.Add(layerTile);
+            att.layer.Tiles = list;
         }
 
         private void SetTileSelectionMenuItem()
