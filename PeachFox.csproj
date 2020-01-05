@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="TileMapEditor\ListBoxDragDrop.cs" />
     <Compile Include="TileMapEditor\ListBoxLayers.cs" />
+    <Compile Include="TileMapEditor\FlashableLayout.cs" />
     <Compile Include="TileMapEditor\TileMapEditor.cs">
       <SubType>Form</SubType>
     </Compile>

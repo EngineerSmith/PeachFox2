@@ -17,6 +17,8 @@ namespace PeachFox
 
         private ListBoxLayers _layerList;
 
+        private FlashableLayout _layoutTiles;
+
         private SelectableButtons _tileButtons = new SelectableButtons();
         private SelectableButtons _toolButtons = new SelectableButtons();
 
@@ -88,6 +90,8 @@ namespace PeachFox
 
             flowLayoutPanelTiles.Click += (sender, e) => { _tileButtons.SetSelectedButton(null); };
 
+            _layoutTiles = new FlashableLayout(flowLayoutPanelTiles);
+
             _layerList = new ListBoxLayers(listBoxLayers, toolTip);
 
             foreach(var layer in _tilemap.Layers) //TODO on load/New of tilemap
@@ -150,7 +154,6 @@ namespace PeachFox
                 _tileMapViewPort.Images.Add(_tilemap.Tiles.Count-1, full);
                 Button button = AddNewTileButton(tile, thumbnail);
                 _tileButtons.SetSelectedButton(button);
-
             }
         }
 
@@ -211,9 +214,9 @@ namespace PeachFox
                 return;
             }
             Button button = _tileButtons.SelectedButton;
-            if (button == null || button.Tag != null)
+            if (button == null || button.Tag == null)
             {
-                //TODO add user feedback
+                _layoutTiles.Flash();
                 return;
             }
             Tile tag = (Tile)button.Tag;
