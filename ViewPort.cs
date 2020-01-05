@@ -46,7 +46,7 @@ namespace PeachFox
         protected float TranslateX = 0f, TranslateY = 0f;
         private float TranslateStartX = 0f, TranslateStartY = 0f;
 
-        public bool EnableMouseMovement = true;
+        public bool EnableMouseTranslation = true;
 
         private bool DebugZoom = false;
         private float _debugTranslateX = 0f, _debugTranslateY = 0f, _debugZoomFactor = 1f;
@@ -76,14 +76,14 @@ namespace PeachFox
 
         private void MouseDown(object sender, MouseEventArgs e)
         {
-            if (!EnableMouseMovement)
+            if (!EnableMouseTranslation)
                 return;
             TranslateStartX = e.X;
             TranslateStartY = e.Y;
         }
         private void MouseUp(object sender, MouseEventArgs e)
         {
-            if (!EnableMouseMovement)
+            if (!EnableMouseTranslation)
                 return;
             TranslateX += (e.X - TranslateStartX) * (TranslateRatio / ZoomFactor);
             TranslateY += (e.Y - TranslateStartY) * (TranslateRatio / ZoomFactor);
@@ -97,7 +97,7 @@ namespace PeachFox
         }
         private void MouseWheel(object sender, MouseEventArgs e)
         {
-            if (!EnableMouseMovement)
+            if (!EnableMouseTranslation)
                 return;
             float step = e.Delta * ScrollStep;
             float pre = ZoomFactor;

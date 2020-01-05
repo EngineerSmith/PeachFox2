@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="LsonLib">
       <HintPath>vendor\LsonLib\Builds\Release\LsonLib.dll</HintPath>
@@ -69,6 +72,7 @@
     <Compile Include="TileEditor\TileViewPort.cs" />
     <Compile Include="LuaTilemap.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TileMapEditor\Cell.cs" />
     <Compile Include="TileMapEditor\LayerEditor.cs">
       <SubType>Form</SubType>
     </Compile>

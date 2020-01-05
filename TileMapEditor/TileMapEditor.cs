@@ -108,7 +108,7 @@ namespace PeachFox
 
             _toolButtons.Callback = () =>
             {
-                _tileMapViewPort.EnableMouseMovement = _toolButtons.SelectedButton == buttonToolMove;
+                _tileMapViewPort.EnableMouseTranslation = _toolButtons.SelectedButton == buttonToolMove;
             };
         }
 

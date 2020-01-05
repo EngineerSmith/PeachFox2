@@ -15,11 +15,29 @@ namespace PeachFox.TileMapEditor
         public int CellSize = 16;
         public Color CellColor = Color.FromArgb(150, Color.DarkGray);
 
+        private Cell _hovered;
 
         public TileMapViewPort(PictureBox pictureBox)
         {
             PictureBox = pictureBox;
+            PictureBox.MouseMove += MouseMove;
             CenterViewPort();
+        }
+
+        private void MouseMove(object sender, MouseEventArgs e)
+        {
+            if (EnableMouseTranslation)
+                return;
+            int mx = (int)(TranslateX - (e.X / ZoomFactor));
+            int my = (int)(TranslateY - (e.Y / ZoomFactor));
+            int Y = my - (my % CellSize) + (my > 0 ? CellSize : 0);
+            int X = mx - (mx % CellSize) + (mx > 0 ? CellSize : 0);
+            Cell current = new Cell{X=-X, Y=-Y};
+            if (_hovered != current)
+            {
+                _hovered = current;
+                Redraw();
+            }
         }
 
         protected override void Draw(object sender, PaintEventArgs e)
@@ -45,14 +63,15 @@ namespace PeachFox.TileMapEditor
             for (x = ix; x < PictureBox.Width - TranslateX + CellSize*2; x+=CellSize)
                 g.DrawLine(p, x - penDistanceOffset, iy-penDistanceOffset, x - penDistanceOffset, iy+PictureBox.Height + CellSize*2);
 
-            g.DrawRectangle(Pens.Red, -penDistanceOffset, -penDistanceOffset, CellSize, CellSize);
-
             if (Tilemap != null)
             {
                 foreach (Layer layer in Tilemap.Layers)
                     foreach (LayerTile tile in layer.Tiles)
                         g.DrawImage(Images[(int)tile.TileIndex], (int)tile.X, (int)tile.Y);
             }
+
+            if(!EnableMouseTranslation)
+                g.DrawRectangle(Pens.Red, _hovered.X- penDistanceOffset, _hovered.Y- penDistanceOffset, CellSize, CellSize);
 
             p.Color = Color.Red;
             g.DrawLine(p, -penDistanceOffset, iy - penDistanceOffset, -penDistanceOffset, iy + PictureBox.Height + CellSize * 2);

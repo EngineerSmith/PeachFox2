@@ -29,7 +29,7 @@ namespace PeachFox.TileMapEditor
 
         public void SetSelectedButton(Button button)
         {
-            if (!_buttons.Contains(button))
+            if (button != null && !_buttons.Contains(button))
                 throw new System.Exception("Button not part of SelectableButtons");
 
             if (SelectedButton != null)
