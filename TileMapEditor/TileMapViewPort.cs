@@ -16,6 +16,7 @@ namespace PeachFox.TileMapEditor
         public Color CellColor = Color.FromArgb(150, Color.DarkGray);
 
         private Cell _hovered;
+        private Cell _pre;
         public Cell GetCell { get => _hovered; }
 
         public TileMapViewPort(PictureBox pictureBox)
@@ -33,6 +34,12 @@ namespace PeachFox.TileMapEditor
 
         private void MouseMove(object sender, MouseEventArgs e)
         {
+            if (_hovered != _pre)
+            {
+                _pre = _hovered;
+                Program.TileMapEditor.MouseInput(e);
+            }
+
             if (EnableMouseTranslation)
                 return;
             int mx = (int)(TranslateX - (e.X / ZoomFactor));
