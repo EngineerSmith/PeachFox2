@@ -89,7 +89,6 @@ namespace PeachFox
             _tileSetData = tileSet;
             Bitmap image = new Bitmap(tileSet.Path);
             _tileViewPort.Image = image;
-            CellSize = tileSet.CellSize;
             List<string> quadsStr = null;
             if (quads != null && quads.Count % 4 == 0)
             {
@@ -100,6 +99,7 @@ namespace PeachFox
             _quadList.Clear(quadsStr);
             _quadSettings.ImageWidth = image.Width;
             _quadSettings.ImageHeight = image.Height;
+            CellSize = tileSet.CellSize;
             _exportSettings.Update();
         }
 

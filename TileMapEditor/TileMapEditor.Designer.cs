@@ -214,7 +214,6 @@ namespace PeachFox
             // 
             // buttonToolEraser
             // 
-            this.buttonToolEraser.Enabled = false;
             this.buttonToolEraser.Image = global::PeachFox.Properties.Resources.eraser;
             this.buttonToolEraser.Location = new System.Drawing.Point(86, 19);
             this.buttonToolEraser.Name = "buttonToolEraser";

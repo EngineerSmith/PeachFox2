@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using LsonLib;
+using System.Linq;
 
 /// Produces a file, of the following format
 /// 
@@ -241,21 +242,26 @@ namespace PeachFox
 
     public class Layer
     {
-        public List<LayerTile> Tiles
-		{
-            get
-            {
-                List<LayerTile> tiles = new List<LayerTile>();
-                for (int i = 1; _root.ContainsKey(i); i++)
-                    tiles.Add((LayerTile)_root[i]);
-                return tiles;
-            }
-            set 
-            {
-                for (int i = 0; i < value.Count; i++)
-                        _root[i+1] = (LsonDict)value[i];
-            }
-	    }
+        private List<LayerTile> _tiles = new List<LayerTile>();
+        public List<LayerTile> Tiles { get => _tiles; }
+
+        public void Set(LayerTile tile)
+        {
+            if (tile == null)
+                throw new System.Exception("Tile cannot be null");
+            LayerTile t = _tiles.SingleOrDefault(e => e.X == tile.X && e.Y == tile.Y);
+            if(t != null)
+                t.TileIndex = tile.TileIndex;
+            else
+                _tiles.Add(tile);
+        }
+
+        public void Remove(int x, int y)
+        {
+            LayerTile t = _tiles.SingleOrDefault(e => e.X == x && e.Y == y);
+            if (t != null)
+                _tiles.Remove(t);
+        }
 
         private readonly LsonDict _root;
 
@@ -263,13 +269,11 @@ namespace PeachFox
         {
             _root = new LsonDict();
         }
-        public Layer(bool? temp)
-        {
-            _root = new LsonDict();
-        }
         public Layer(LsonDict root)
         {
             _root = root;
+            for (int i = 1; _root.ContainsKey(i); i++)
+                _tiles.Add((LayerTile)_root[i]);
         }
 
         public void SetValue(string key, LsonValue value)
@@ -296,6 +300,8 @@ namespace PeachFox
 
         public static explicit operator LsonDict(Layer value)
         {
+            for (int i = 0; i < value._tiles.Count; i++)
+                value._root[i + 1] = (LsonDict)value._tiles[i];
             return value._root;
         }
         public static explicit operator Layer(LsonDict value)

@@ -28,10 +28,7 @@ namespace PeachFox.TileMapEditor
 
         private void MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                Program.TileMapEditor.AddTile();
-            }
+             Program.TileMapEditor.MouseInput(e);
         }
 
         private void MouseMove(object sender, MouseEventArgs e)
@@ -69,15 +66,15 @@ namespace PeachFox.TileMapEditor
             Pen p = new Pen(CellColor, 1 / ZoomFactor);
             float penDistanceOffset = 0.5f; // Width * ZoomFactor / 2. // (Width * ZoomFactor) will always be 1
             for (y = iy; y < PictureBox.Height - TranslateY + CellSize*2; y+=CellSize)
-                g.DrawLine(p, ix-penDistanceOffset, y - penDistanceOffset, ix+PictureBox.Width + CellSize*2, y - penDistanceOffset);
+                g.DrawLine(p, ix - penDistanceOffset, y - penDistanceOffset, ix+PictureBox.Width + CellSize*2, y - penDistanceOffset);
             for (x = ix; x < PictureBox.Width - TranslateX + CellSize*2; x+=CellSize)
-                g.DrawLine(p, x - penDistanceOffset, iy-penDistanceOffset, x - penDistanceOffset, iy+PictureBox.Height + CellSize*2);
+                g.DrawLine(p, x - penDistanceOffset, iy - penDistanceOffset, x - penDistanceOffset, iy+PictureBox.Height + CellSize*2);
 
             if (Tilemap != null)
             {
                 foreach (Layer layer in Tilemap.Layers)
                     foreach (LayerTile tile in layer.Tiles)
-                        g.DrawImage(Images[(int)tile.TileIndex], (int)tile.X, (int)tile.Y);
+                        g.DrawImage(Images[(int)tile.TileIndex], (float)tile.X - penDistanceOffset - 0.001f, (float)tile.Y - penDistanceOffset - 0.001f, CellSize + penDistanceOffset + 0.002f, CellSize + penDistanceOffset + 0.002f);
             }
 
             if(!EnableMouseTranslation)

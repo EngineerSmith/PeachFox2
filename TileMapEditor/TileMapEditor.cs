@@ -111,7 +111,9 @@ namespace PeachFox
 
             _toolButtons.Callback = () =>
             {
-                _tileMapViewPort.EnableMouseTranslation = _toolButtons.SelectedButton == buttonToolMove;
+                _tileMapViewPort.EnableMouseTranslation = 
+                            _toolButtons.SelectedButton == buttonToolMove || 
+                            _toolButtons.SelectedButton == buttonToolEraser;
             };
         }
 
@@ -184,7 +186,23 @@ namespace PeachFox
             return button;
         }
 
-        public void AddTile()
+        public void MouseInput(MouseEventArgs e)
+        { 
+            if (e.Button == MouseButtons.Left)
+            {
+                if(_toolButtons.SelectedButton == buttonToolPaint)
+                {
+                    AddTile();
+                    _tileMapViewPort.Redraw();
+                }
+                else if (_toolButtons.SelectedButton == buttonToolEraser)
+                {
+                    RemoveTile();
+                }
+            }
+        }
+
+        private void AddTile()
         {
             LayerAttributes att = (LayerAttributes)listBoxLayers.SelectedItem;
             if (att == null)
@@ -193,7 +211,7 @@ namespace PeachFox
                 return;
             }
             Button button = _tileButtons.SelectedButton;
-            if (button == null && button.Tag != null)
+            if (button == null || button.Tag != null)
             {
                 //TODO add user feedback
                 return;
@@ -205,10 +223,21 @@ namespace PeachFox
                 MessageBox.Show("Could not find selected Tile");
                 return;
             }
+
             LayerTile layerTile = new LayerTile(index, _tileMapViewPort.GetCell.X, _tileMapViewPort.GetCell.Y);
-            var list = att.layer.Tiles; //TODO
-            list.Add(layerTile);
-            att.layer.Tiles = list;
+            att.layer.Set(layerTile);
+        }
+
+        private void RemoveTile()
+        {
+            LayerAttributes att = (LayerAttributes)listBoxLayers.SelectedItem;
+            if (att == null)
+            {
+                _layerList.Flash();
+                return;
+            }
+
+            att.layer.Remove(_tileMapViewPort.GetCell.X, _tileMapViewPort.GetCell.Y);
         }
 
         private void SetTileSelectionMenuItem()

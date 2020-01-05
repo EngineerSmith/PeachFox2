@@ -4,12 +4,11 @@ using System.Linq;
 
 namespace PeachFox.TileMapEditor
 {
-    class ListBoxLayers
+    class ListBoxLayers : Flashable
     {
         private ListBoxDragDrop _listBoxDragDrop = new ListBoxDragDrop();
         private ToolTip _toolTip;
         private ListBox _layers;
-        private Timer _timer;
 
         public ListBox Layers
         {
@@ -25,34 +24,10 @@ namespace PeachFox.TileMapEditor
         }
 
         public ListBoxLayers(ListBox layers, ToolTip tip)
+            : base(layers)
         {
             Layers = layers;
             _toolTip = tip;
-        }
-
-        public void Flash()
-        {
-            if (_timer != null)
-                return;
-            int tickCount = 0;
-            _timer = new Timer()
-            {
-                Interval = 310,
-                Enabled = false,
-            };
-            _timer.Tick += (sender, e) =>
-            {
-                if (Layers.BackColor == System.Drawing.Color.LightBlue)
-                    Layers.BackColor = System.Drawing.Color.White;
-                else
-                    Layers.BackColor = System.Drawing.Color.LightBlue;
-                if (++tickCount >= 4)
-                {
-                    _timer.Stop();
-                    _timer = null;
-                }
-            };
-            _timer.Start();
         }
 
         private System.Random rnd = new System.Random((int)(System.DateTime.Now.Ticks/2));
