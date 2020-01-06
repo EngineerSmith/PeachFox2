@@ -83,7 +83,7 @@ namespace PeachFox.TileMapEditor
                     foreach (LayerTile tile in layer.Tiles)
                     {
                         Image i = Images[(int)tile.TileIndex];
-                        g.DrawImage(i, (float)tile.X - penDistanceOffset - 0.002f, (float)tile.Y - penDistanceOffset - 0.002f, i.Width + penDistanceOffset + 0.004f, i.Height + penDistanceOffset + 0.004f);
+                        g.DrawImage(i, (float)tile.X - penDistanceOffset - 0.005f, (float)tile.Y - penDistanceOffset - 0.005f, i.Width + penDistanceOffset + 0.01f, i.Height + penDistanceOffset + 0.01f);
                     }
             }
 

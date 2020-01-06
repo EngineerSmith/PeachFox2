@@ -39,7 +39,7 @@ namespace PeachFox.TileMapEditor
         public void Add(Layer layer)
         {
             string name = layer.GetValue("name")?.Value.GetString();
-            name = name == null || name == "" ? $"Layer {rnd.Next(0, 89999) + 10000}" : name;
+            name = name == null || name == "" ? $"Layer {rnd.Next(0, 899999) + 100000}" : name;
             int index = Layers.Items.Add(new LayerAttributes(name, layer));
             Layers.SetSelected(index, true);
         }
@@ -50,9 +50,9 @@ namespace PeachFox.TileMapEditor
             if (att != null)
             {
                 string name = att.layer.GetValue("name")?.Value.GetString();
-                if ((name == null || name == "") && att.name.Length == 11 && att.name.Substring(0, 6) == "Layer ")//TODO Replace with Regex
+                if ((name == null || name == "") && att.name.Length == 12 && att.name.Substring(0, 6) == "Layer ")//TODO Replace with Regex
                     return;
-                name = name == null || name == "" ? $"Layer {rnd.Next(0,89999) + 10000}" : name;
+                name = name == null || name == "" ? $"Layer {rnd.Next(0,899999) + 10000}" : name;
                 att.name = name;
                 Layers.Items[Layers.SelectedIndex] = Layers.SelectedItem;
             }

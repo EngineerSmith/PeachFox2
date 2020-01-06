@@ -181,7 +181,7 @@ namespace PeachFox
 
         public void RedrawViewPort()
         {
-            _tilemap.Redraw();
+            _tileMapViewPort.Redraw();
         }
 
         private Button AddNewTileButton(Tile tile, Image thumbnail)

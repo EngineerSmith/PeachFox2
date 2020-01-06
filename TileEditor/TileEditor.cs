@@ -91,9 +91,9 @@ namespace PeachFox
             Bitmap image = new Bitmap(tileSet.Path);
             _tileViewPort.Image = image;
             List<string> quadsStr = null;
+            previousIndex = index;
             if (tile != null && tile.Quad.Values.Count % 4 == 0)
             {
-                previousIndex = index;
                 List<int> quads = tile.Quad.Values;
                 quadsStr = new List<string>(quads.Count / 4);
                 for (int i = 0; i < quads.Count; i += 4)
