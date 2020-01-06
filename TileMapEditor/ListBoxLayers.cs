@@ -36,7 +36,8 @@ namespace PeachFox.TileMapEditor
         {
             string name = layer.GetValue("name")?.Value.GetString();
             name = name == null || name == "" ? $"Layer {rnd.Next(0, 89999) + 10000}" : name;
-            Layers.Items.Add(new LayerAttributes(name, layer));
+            int index = Layers.Items.Add(new LayerAttributes(name, layer));
+            Layers.SetSelected(index, true);
         }
 
         public void UpdateSelected()

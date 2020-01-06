@@ -89,8 +89,8 @@ namespace PeachFox
             // 
             // flowLayoutPanel
             // 
-            this.flowLayoutPanel.Controls.Add(this.groupBoxLayers);
             this.flowLayoutPanel.Controls.Add(this.groupBoxLayerButtons);
+            this.flowLayoutPanel.Controls.Add(this.groupBoxLayers);
             this.flowLayoutPanel.Controls.Add(this.groupBoxTiles);
             this.flowLayoutPanel.Controls.Add(this.groupBoxTilesButton);
             this.flowLayoutPanel.Controls.Add(this.groupBoxTools);
@@ -103,7 +103,7 @@ namespace PeachFox
             // groupBoxLayers
             // 
             this.groupBoxLayers.Controls.Add(this.listBoxLayers);
-            this.groupBoxLayers.Location = new System.Drawing.Point(3, 0);
+            this.groupBoxLayers.Location = new System.Drawing.Point(3, 40);
             this.groupBoxLayers.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.groupBoxLayers.Name = "groupBoxLayers";
             this.groupBoxLayers.Size = new System.Drawing.Size(228, 100);
@@ -124,7 +124,7 @@ namespace PeachFox
             // 
             this.groupBoxLayerButtons.Controls.Add(this.buttonLayerEdit);
             this.groupBoxLayerButtons.Controls.Add(this.buttonLayerNew);
-            this.groupBoxLayerButtons.Location = new System.Drawing.Point(3, 100);
+            this.groupBoxLayerButtons.Location = new System.Drawing.Point(3, 0);
             this.groupBoxLayerButtons.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.groupBoxLayerButtons.Name = "groupBoxLayerButtons";
             this.groupBoxLayerButtons.Size = new System.Drawing.Size(228, 40);
@@ -135,7 +135,7 @@ namespace PeachFox
             // 
             this.buttonLayerEdit.Location = new System.Drawing.Point(80, 11);
             this.buttonLayerEdit.Name = "buttonLayerEdit";
-            this.buttonLayerEdit.Size = new System.Drawing.Size(65, 23);
+            this.buttonLayerEdit.Size = new System.Drawing.Size(63, 23);
             this.buttonLayerEdit.TabIndex = 1;
             this.buttonLayerEdit.Text = "Edit Layer";
             this.buttonLayerEdit.UseVisualStyleBackColor = true;
@@ -198,7 +198,7 @@ namespace PeachFox
             // 
             this.buttonNewTile.Location = new System.Drawing.Point(6, 11);
             this.buttonNewTile.Name = "buttonNewTile";
-            this.buttonNewTile.Size = new System.Drawing.Size(61, 23);
+            this.buttonNewTile.Size = new System.Drawing.Size(59, 23);
             this.buttonNewTile.TabIndex = 0;
             this.buttonNewTile.Text = "New Tile";
             this.buttonNewTile.UseVisualStyleBackColor = true;
@@ -355,9 +355,9 @@ namespace PeachFox
             // 
             // buttonEditTile
             // 
-            this.buttonEditTile.Location = new System.Drawing.Point(76, 11);
+            this.buttonEditTile.Location = new System.Drawing.Point(71, 11);
             this.buttonEditTile.Name = "buttonEditTile";
-            this.buttonEditTile.Size = new System.Drawing.Size(62, 23);
+            this.buttonEditTile.Size = new System.Drawing.Size(53, 23);
             this.buttonEditTile.TabIndex = 2;
             this.buttonEditTile.Text = "Edit Tile";
             this.buttonEditTile.UseVisualStyleBackColor = true;
