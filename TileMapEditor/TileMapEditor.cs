@@ -116,6 +116,7 @@ namespace PeachFox
             _toolButtons.Callback = () =>
             {
                 _tileMapViewPort.EnableMouseTranslation = _toolButtons.SelectedButton == buttonToolMove;
+                _tileMapViewPort.Redraw();
             };
         }
 
@@ -187,7 +188,7 @@ namespace PeachFox
             return button;
         }
 
-        public void MouseInput(MouseEventArgs e)
+        public bool MouseInput(MouseEventArgs e)
         { 
             if (e.Button == MouseButtons.Left)
             {
@@ -199,8 +200,27 @@ namespace PeachFox
                 else if (_toolButtons.SelectedButton == buttonToolEraser)
                 {
                     RemoveTile();
+                    _tileMapViewPort.Redraw();
                 }
+                return true;
             }
+            return false;
+        }
+
+        public Tile GetSelectedTile()
+        {
+            Button button = _tileButtons.SelectedButton;
+            if (button == null || button.Tag == null)
+                return null;
+            return (Tile)button.Tag;
+        }
+
+        public int GetSelectedTileIndex()
+        {
+            Button button = _tileButtons.SelectedButton;
+            if (button == null || button.Tag == null)
+                return -1;
+            return _tilemap.Tiles.FindIndex(tile => tile == (Tile)button.Tag);
         }
 
         private void AddTile()

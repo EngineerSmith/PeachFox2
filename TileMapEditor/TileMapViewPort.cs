@@ -36,8 +36,8 @@ namespace PeachFox.TileMapEditor
         {
             if (_hovered != _pre)
             {
-                _pre = _hovered;
-                Program.TileMapEditor.MouseInput(e);
+                if(Program.TileMapEditor.MouseInput(e))
+                    _pre = _hovered;
             }
 
             if (EnableMouseTranslation)
@@ -81,11 +81,18 @@ namespace PeachFox.TileMapEditor
             {
                 foreach (Layer layer in Tilemap.Layers)
                     foreach (LayerTile tile in layer.Tiles)
-                        g.DrawImage(Images[(int)tile.TileIndex], (float)tile.X - penDistanceOffset - 0.001f, (float)tile.Y - penDistanceOffset - 0.001f, CellSize + penDistanceOffset + 0.002f, CellSize + penDistanceOffset + 0.002f);
+                    {
+                        Image i = Images[(int)tile.TileIndex];
+                        g.DrawImage(i, (float)tile.X - penDistanceOffset - 0.002f, (float)tile.Y - penDistanceOffset - 0.002f, i.Width + penDistanceOffset + 0.004f, i.Height + penDistanceOffset + 0.004f);
+                    }
             }
 
+            int tImage;
             if(!EnableMouseTranslation)
-                g.DrawRectangle(Pens.Red, _hovered.X- penDistanceOffset, _hovered.Y- penDistanceOffset, CellSize, CellSize);
+                if((tImage = Program.TileMapEditor.GetSelectedTileIndex()) != -1)
+                    g.DrawRectangle(Pens.Red, _hovered.X - penDistanceOffset, _hovered.Y - penDistanceOffset, Images[tImage].Width, Images[tImage].Height);
+                else
+                    g.DrawRectangle(Pens.Red, _hovered.X- penDistanceOffset, _hovered.Y- penDistanceOffset, CellSize, CellSize);
 
             p.Color = Color.Red;
             g.DrawLine(p, -penDistanceOffset, iy - penDistanceOffset, -penDistanceOffset, iy + PictureBox.Height + CellSize * 2);
