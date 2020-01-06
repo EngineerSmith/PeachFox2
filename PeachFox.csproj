@@ -138,5 +138,8 @@
   <ItemGroup>
     <EmbeddedResource Include="resources\eraser.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\tag.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

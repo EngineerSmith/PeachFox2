@@ -123,6 +123,7 @@ namespace PeachFox
             _toolButtons.Add(buttonToolMove);
             _toolButtons.Add(buttonToolPaint);
             _toolButtons.Add(buttonToolEraser);
+            _toolButtons.Add(buttonToolTag);
             _toolButtons.SetSelectedButton(buttonToolMove);
 
             _toolButtons.Callback = () =>
