@@ -319,7 +319,7 @@ namespace PeachFox
         private Dictionary<string, LsonValue> _tables;
 
         public List<Tile> Tiles { get; private set; }
-        public List<Layer> Layers { get; private set; }
+        public List<Layer> Layers { get; set; }
 
 
         public Tilemap(string luatable = null)

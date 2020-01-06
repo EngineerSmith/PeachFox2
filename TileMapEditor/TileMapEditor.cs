@@ -104,10 +104,10 @@ namespace PeachFox
 
             _layoutTiles = new FlashableLayout(flowLayoutPanelTiles);
 
-            _layerList = new ListBoxLayers(listBoxLayers, toolTip);
+            _layerList = new ListBoxLayers(listBoxLayers, toolTip, _tilemap);
 
-            foreach(var layer in _tilemap.Layers) //TODO on load/New of tilemap
-                _layerList.Add(layer);
+            for (int i = _tilemap.Layers.Count-1; i >= 0 ; i--) //TODO on load/New of tilemap
+                _layerList.Add(_tilemap.Layers[i]);
 
             buttonLayerNew.Click += (sender, e) =>
             {
@@ -177,6 +177,11 @@ namespace PeachFox
                 Button button = AddNewTileButton(tile, thumbnail);
                 _tileButtons.SetSelectedButton(button);
             }
+        }
+
+        public void RedrawViewPort()
+        {
+            _tilemap.Redraw();
         }
 
         private Button AddNewTileButton(Tile tile, Image thumbnail)

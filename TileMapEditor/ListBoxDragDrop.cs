@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-public delegate void OnOrderChange(object sender, object item);
+public delegate void OnOrderChange(object item);
 
 namespace PeachFox.TileMapEditor
 {
@@ -50,7 +50,7 @@ namespace PeachFox.TileMapEditor
             object data = Box.SelectedItem;
             Box.Items.Remove(data);
             Box.Items.Insert(index, data);
-            Callback?.Invoke(Box, data);
+            Callback?.Invoke(data);
         }
     }
 }

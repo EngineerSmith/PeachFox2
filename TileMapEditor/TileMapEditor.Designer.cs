@@ -82,7 +82,9 @@ namespace PeachFox
             this.groupBoxRight.Controls.Add(this.flowLayoutPanel);
             this.groupBoxRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.groupBoxRight.Location = new System.Drawing.Point(637, 24);
+            this.groupBoxRight.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.groupBoxRight.Name = "groupBoxRight";
+            this.groupBoxRight.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.groupBoxRight.Size = new System.Drawing.Size(240, 444);
             this.groupBoxRight.TabIndex = 1;
             this.groupBoxRight.TabStop = false;
@@ -95,9 +97,10 @@ namespace PeachFox
             this.flowLayoutPanel.Controls.Add(this.groupBoxTilesButton);
             this.flowLayoutPanel.Controls.Add(this.groupBoxTools);
             this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel.Location = new System.Drawing.Point(3, 13);
+            this.flowLayoutPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(234, 425);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(234, 428);
             this.flowLayoutPanel.TabIndex = 0;
             // 
             // groupBoxLayers
@@ -116,6 +119,7 @@ namespace PeachFox
             this.listBoxLayers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxLayers.FormattingEnabled = true;
             this.listBoxLayers.Location = new System.Drawing.Point(3, 16);
+            this.listBoxLayers.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.listBoxLayers.Name = "listBoxLayers";
             this.listBoxLayers.Size = new System.Drawing.Size(222, 81);
             this.listBoxLayers.TabIndex = 0;
@@ -127,6 +131,7 @@ namespace PeachFox
             this.groupBoxLayerButtons.Location = new System.Drawing.Point(3, 0);
             this.groupBoxLayerButtons.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.groupBoxLayerButtons.Name = "groupBoxLayerButtons";
+            this.groupBoxLayerButtons.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.groupBoxLayerButtons.Size = new System.Drawing.Size(228, 40);
             this.groupBoxLayerButtons.TabIndex = 3;
             this.groupBoxLayerButtons.TabStop = false;

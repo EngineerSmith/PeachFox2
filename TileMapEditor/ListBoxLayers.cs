@@ -9,6 +9,7 @@ namespace PeachFox.TileMapEditor
         private ListBoxDragDrop _listBoxDragDrop = new ListBoxDragDrop();
         private ToolTip _toolTip;
         private ListBox _layers;
+        private Tilemap _tilemap;
 
         public ListBox Layers
         {
@@ -23,11 +24,14 @@ namespace PeachFox.TileMapEditor
             }
         }
 
-        public ListBoxLayers(ListBox layers, ToolTip tip)
+        public ListBoxLayers(ListBox layers, ToolTip tip, Tilemap tilemap)
             : base(layers)
         {
             Layers = layers;
             _toolTip = tip;
+            _tilemap = tilemap;
+
+            _listBoxDragDrop.Callback = (item) => { UpdateOrder(); };
         }
 
         private System.Random rnd = new System.Random((int)(System.DateTime.Now.Ticks/2));
@@ -52,6 +56,16 @@ namespace PeachFox.TileMapEditor
                 att.name = name;
                 Layers.Items[Layers.SelectedIndex] = Layers.SelectedItem;
             }
+        }
+
+        private void UpdateOrder()
+        {
+            List<Layer> layers = new List<Layer>(Layers.Items.Count);
+            for (int i = Layers.Items.Count-1; i >= 0; i--)
+                layers.Add(((LayerAttributes)Layers.Items[i]).layer);
+
+            _tilemap.Layers = layers;
+            Program.TileMapEditor.RedrawViewPort();
         }
 
         private void ToolTip(object sender, MouseEventArgs e)
