@@ -139,7 +139,9 @@ namespace PeachFox
                 if (tileSetData.PreviousExportString != null && tileSetData.PreviousExportString != tileSetData.ExportString)
                 {
                     _tilesets.Remove(tileSetData.PreviousExportString);
-                    //TODO Update all tiles with new TileSet string
+                    foreach (Tile tile in _tilemap.Tiles)
+                        if (tile.Image == tileSetData.PreviousExportString)
+                            tile.Image = tileSetData.ExportString;
                 }
 
                 _tilesets[tileSetData.ExportString] = tileSetData;
