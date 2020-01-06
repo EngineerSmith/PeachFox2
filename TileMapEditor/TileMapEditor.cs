@@ -88,6 +88,18 @@ namespace PeachFox
                 Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
             };
 
+            buttonEditTile.Click += (sender, e) =>
+            {
+                int index = GetSelectedTileIndex();
+                if (index == -1)
+                {
+                    _layoutTiles.Flash();
+                    return;
+                }
+
+                Program.TileEditor.NewTilesetImage(_tilesets[_tilemap.Tiles[index].Image], GetSelectedTile(), index);
+            };
+
             flowLayoutPanelTiles.Click += (sender, e) => { _tileButtons.SetSelectedButton(null); };
 
             _layoutTiles = new FlashableLayout(flowLayoutPanelTiles);
@@ -146,7 +158,16 @@ namespace PeachFox
             }
 
             if (previousIndex != -1 && previousIndex < _tilemap.Tiles.Count && previousIndex > -1)
+            {
+                Tile t = _tilemap.Tiles[previousIndex];
                 _tilemap.Tiles[previousIndex] = tile;
+                Button button = _tileButtons.FindButtonWithTag(t);
+                button.Tag = tile;
+                button.Image = thumbnail;
+                _tileMapViewPort.Images[previousIndex] = full;
+                _tileButtons.SetSelectedButton(button);
+                _tileMapViewPort.Redraw();
+            }
             else
             {
                 _tilemap.Tiles.Add(tile);

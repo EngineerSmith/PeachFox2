@@ -42,6 +42,7 @@ namespace PeachFox
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.saveTilemapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonEditTile = new System.Windows.Forms.Button();
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
@@ -173,6 +174,7 @@ namespace PeachFox
             // 
             // groupBoxTilesButton
             // 
+            this.groupBoxTilesButton.Controls.Add(this.buttonEditTile);
             this.groupBoxTilesButton.Controls.Add(this.buttonRemoveTile);
             this.groupBoxTilesButton.Controls.Add(this.buttonNewTile);
             this.groupBoxTilesButton.Location = new System.Drawing.Point(3, 310);
@@ -351,6 +353,15 @@ namespace PeachFox
             this.saveTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveTilemapToolStripMenuItem.Text = "Save Tilemap";
             // 
+            // buttonEditTile
+            // 
+            this.buttonEditTile.Location = new System.Drawing.Point(76, 11);
+            this.buttonEditTile.Name = "buttonEditTile";
+            this.buttonEditTile.Size = new System.Drawing.Size(62, 23);
+            this.buttonEditTile.TabIndex = 2;
+            this.buttonEditTile.Text = "Edit Tile";
+            this.buttonEditTile.UseVisualStyleBackColor = true;
+            // 
             // TileMapEditorForm
             // 
             this.ClientSize = new System.Drawing.Size(877, 468);
@@ -416,4 +427,5 @@ namespace PeachFox
         private System.Windows.Forms.Button buttonToolEraser;
         private System.Windows.Forms.Button buttonToolPaint;
         private System.Windows.Forms.ToolStripMenuItem saveTilemapToolStripMenuItem;
+        private System.Windows.Forms.Button buttonEditTile;
     }}

@@ -16,6 +16,7 @@ namespace PeachFox
         private ButtonRemove _buttonRemove;
 
         private TileSet.TileSetData _tileSetData = null;
+        private int previousIndex = -1;
 
         public int CellSize
         {
@@ -82,7 +83,7 @@ namespace PeachFox
             };
         }
 
-        public void NewTilesetImage(TileSet.TileSetData tileSet, List<int> quads = null)
+        public void NewTilesetImage(TileSet.TileSetData tileSet, Tile tile = null, int index = -1)
         {
             Show();
             Activate();
@@ -90,11 +91,15 @@ namespace PeachFox
             Bitmap image = new Bitmap(tileSet.Path);
             _tileViewPort.Image = image;
             List<string> quadsStr = null;
-            if (quads != null && quads.Count % 4 == 0)
+            if (tile != null && tile.Quad.Values.Count % 4 == 0)
             {
+                previousIndex = index;
+                List<int> quads = tile.Quad.Values;
                 quadsStr = new List<string>(quads.Count / 4);
                 for (int i = 0; i < quads.Count; i += 4)
                     quadsStr.Add(_quadSettings.GenerateString(quads[i], quads[i+1], quads[i+2], quads[i+3]));
+                if(quads.Count > 4)
+                    numericTime.Value = (decimal)tile.Time;
             }
             _quadList.Clear(quadsStr);
             _quadSettings.ImageWidth = image.Width;
@@ -107,7 +112,7 @@ namespace PeachFox
         {
             var quads = _quadList.ExportQuads();
             Tile tile = new Tile(new Quad(quads), _tileSetData.ExportString, quads.Count > 4 ? (double?)numericTime.Value : null);
-            Program.TileMapEditor.NewTile(tile, _tileViewPort.GetImage(), _tileViewPort.GetThumbnail(40, 40));
+            Program.TileMapEditor.NewTile(tile, _tileViewPort.GetImage(), _tileViewPort.GetThumbnail(40, 40), previousIndex);
         }
 
         private void HideForm(object sender, FormClosingEventArgs e)

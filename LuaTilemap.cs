@@ -151,6 +151,10 @@ namespace PeachFox
         }
         public static bool operator ==(Tile right, Tile left)
         {
+            if (object.ReferenceEquals(null, right)) 
+                return object.ReferenceEquals(null, left);
+            if (object.ReferenceEquals(null, left))
+                return false;
             return (right.Image == left.Image) && (right.Time == left.Time) && (right.Quad == left.Quad);
         }
 

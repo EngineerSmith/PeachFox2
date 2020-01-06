@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 public delegate void SelectedButtonChanged();
 
@@ -39,6 +40,11 @@ namespace PeachFox.TileMapEditor
                 button.FlatAppearance.BorderColor = Color.MediumBlue;
 
             Callback?.Invoke();
+        }
+
+        public Button FindButtonWithTag(object tag)
+        {
+            return _buttons.SingleOrDefault(b => b.Tag == tag);
         }
     }
 }
