@@ -9,8 +9,8 @@ namespace PeachFox
         /// <summary>        /// Required method for Designer support - do not modify        /// the contents of this method with the code editor.        /// </summary>        private void InitializeComponent()        {
             this.components = new System.ComponentModel.Container();
             this.groupBoxViewPort = new System.Windows.Forms.GroupBox();
+            this.viewPort = new System.Windows.Forms.PictureBox();
             this.groupBoxRight = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxLayerButtons = new System.Windows.Forms.GroupBox();
             this.buttonLayerEdit = new System.Windows.Forms.Button();
             this.buttonLayerNew = new System.Windows.Forms.Button();
@@ -23,6 +23,10 @@ namespace PeachFox
             this.buttonRemoveTile = new System.Windows.Forms.Button();
             this.buttonNewTile = new System.Windows.Forms.Button();
             this.groupBoxTools = new System.Windows.Forms.GroupBox();
+            this.buttonToolTag = new System.Windows.Forms.Button();
+            this.buttonToolEraser = new System.Windows.Forms.Button();
+            this.buttonToolPaint = new System.Windows.Forms.Button();
+            this.buttonToolMove = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTilemapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,21 +43,17 @@ namespace PeachFox
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.buttonToolTag = new System.Windows.Forms.Button();
-            this.buttonToolEraser = new System.Windows.Forms.Button();
-            this.buttonToolPaint = new System.Windows.Forms.Button();
-            this.buttonToolMove = new System.Windows.Forms.Button();
-            this.viewPort = new System.Windows.Forms.PictureBox();
+            this.panel = new System.Windows.Forms.Panel();
             this.groupBoxViewPort.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
-            this.flowLayoutPanel.SuspendLayout();
             this.groupBoxLayerButtons.SuspendLayout();
             this.groupBoxLayers.SuspendLayout();
             this.groupBoxTiles.SuspendLayout();
             this.groupBoxTilesButton.SuspendLayout();
             this.groupBoxTools.SuspendLayout();
             this.menuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
+            this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxViewPort
@@ -64,46 +64,45 @@ namespace PeachFox
             this.groupBoxViewPort.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.groupBoxViewPort.Name = "groupBoxViewPort";
             this.groupBoxViewPort.Padding = new System.Windows.Forms.Padding(3, 3, 243, 3);
-            this.groupBoxViewPort.Size = new System.Drawing.Size(877, 444);
+            this.groupBoxViewPort.Size = new System.Drawing.Size(877, 482);
             this.groupBoxViewPort.TabIndex = 0;
             this.groupBoxViewPort.TabStop = false;
             this.groupBoxViewPort.Text = "View Port";
             // 
+            // viewPort
+            // 
+            this.viewPort.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewPort.Location = new System.Drawing.Point(3, 16);
+            this.viewPort.Name = "viewPort";
+            this.viewPort.Size = new System.Drawing.Size(631, 463);
+            this.viewPort.TabIndex = 0;
+            this.viewPort.TabStop = false;
+            // 
             // groupBoxRight
             // 
-            this.groupBoxRight.Controls.Add(this.flowLayoutPanel);
+            this.groupBoxRight.Controls.Add(this.panel);
+            this.groupBoxRight.Controls.Add(this.groupBoxLayerButtons);
+            this.groupBoxRight.Controls.Add(this.groupBoxTilesButton);
+            this.groupBoxRight.Controls.Add(this.groupBoxTools);
             this.groupBoxRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.groupBoxRight.Location = new System.Drawing.Point(637, 24);
             this.groupBoxRight.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.groupBoxRight.Name = "groupBoxRight";
             this.groupBoxRight.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.groupBoxRight.Size = new System.Drawing.Size(240, 444);
+            this.groupBoxRight.Size = new System.Drawing.Size(240, 482);
             this.groupBoxRight.TabIndex = 1;
             this.groupBoxRight.TabStop = false;
-            // 
-            // flowLayoutPanel
-            // 
-            this.flowLayoutPanel.Controls.Add(this.groupBoxLayerButtons);
-            this.flowLayoutPanel.Controls.Add(this.groupBoxLayers);
-            this.flowLayoutPanel.Controls.Add(this.groupBoxTiles);
-            this.flowLayoutPanel.Controls.Add(this.groupBoxTilesButton);
-            this.flowLayoutPanel.Controls.Add(this.groupBoxTools);
-            this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel.Location = new System.Drawing.Point(3, 13);
-            this.flowLayoutPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(234, 428);
-            this.flowLayoutPanel.TabIndex = 0;
             // 
             // groupBoxLayerButtons
             // 
             this.groupBoxLayerButtons.Controls.Add(this.buttonLayerEdit);
             this.groupBoxLayerButtons.Controls.Add(this.buttonLayerNew);
-            this.groupBoxLayerButtons.Location = new System.Drawing.Point(3, 0);
+            this.groupBoxLayerButtons.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxLayerButtons.Location = new System.Drawing.Point(3, 13);
             this.groupBoxLayerButtons.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.groupBoxLayerButtons.Name = "groupBoxLayerButtons";
             this.groupBoxLayerButtons.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.groupBoxLayerButtons.Size = new System.Drawing.Size(228, 40);
+            this.groupBoxLayerButtons.Size = new System.Drawing.Size(234, 40);
             this.groupBoxLayerButtons.TabIndex = 3;
             this.groupBoxLayerButtons.TabStop = false;
             // 
@@ -128,10 +127,11 @@ namespace PeachFox
             // groupBoxLayers
             // 
             this.groupBoxLayers.Controls.Add(this.listBoxLayers);
-            this.groupBoxLayers.Location = new System.Drawing.Point(3, 40);
+            this.groupBoxLayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxLayers.Location = new System.Drawing.Point(0, 0);
             this.groupBoxLayers.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.groupBoxLayers.Name = "groupBoxLayers";
-            this.groupBoxLayers.Size = new System.Drawing.Size(228, 100);
+            this.groupBoxLayers.Size = new System.Drawing.Size(234, 136);
             this.groupBoxLayers.TabIndex = 2;
             this.groupBoxLayers.TabStop = false;
             this.groupBoxLayers.Text = "Layers";
@@ -143,17 +143,18 @@ namespace PeachFox
             this.listBoxLayers.Location = new System.Drawing.Point(3, 16);
             this.listBoxLayers.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.listBoxLayers.Name = "listBoxLayers";
-            this.listBoxLayers.Size = new System.Drawing.Size(222, 81);
+            this.listBoxLayers.Size = new System.Drawing.Size(228, 117);
             this.listBoxLayers.TabIndex = 0;
             // 
             // groupBoxTiles
             // 
             this.groupBoxTiles.Controls.Add(this.flowLayoutPanelTiles);
-            this.groupBoxTiles.Location = new System.Drawing.Point(3, 140);
+            this.groupBoxTiles.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBoxTiles.Location = new System.Drawing.Point(0, 136);
             this.groupBoxTiles.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.groupBoxTiles.Name = "groupBoxTiles";
             this.groupBoxTiles.Padding = new System.Windows.Forms.Padding(3, 3, 3, 1);
-            this.groupBoxTiles.Size = new System.Drawing.Size(228, 170);
+            this.groupBoxTiles.Size = new System.Drawing.Size(234, 190);
             this.groupBoxTiles.TabIndex = 0;
             this.groupBoxTiles.TabStop = false;
             this.groupBoxTiles.Text = "Tiles";
@@ -166,7 +167,7 @@ namespace PeachFox
             this.flowLayoutPanelTiles.MaximumSize = new System.Drawing.Size(0, 150);
             this.flowLayoutPanelTiles.MinimumSize = new System.Drawing.Size(0, 150);
             this.flowLayoutPanelTiles.Name = "flowLayoutPanelTiles";
-            this.flowLayoutPanelTiles.Size = new System.Drawing.Size(222, 150);
+            this.flowLayoutPanelTiles.Size = new System.Drawing.Size(228, 150);
             this.flowLayoutPanelTiles.TabIndex = 0;
             // 
             // groupBoxTilesButton
@@ -174,10 +175,11 @@ namespace PeachFox
             this.groupBoxTilesButton.Controls.Add(this.buttonEditTile);
             this.groupBoxTilesButton.Controls.Add(this.buttonRemoveTile);
             this.groupBoxTilesButton.Controls.Add(this.buttonNewTile);
-            this.groupBoxTilesButton.Location = new System.Drawing.Point(3, 310);
+            this.groupBoxTilesButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBoxTilesButton.Location = new System.Drawing.Point(3, 379);
             this.groupBoxTilesButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.groupBoxTilesButton.Name = "groupBoxTilesButton";
-            this.groupBoxTilesButton.Size = new System.Drawing.Size(228, 40);
+            this.groupBoxTilesButton.Size = new System.Drawing.Size(234, 40);
             this.groupBoxTilesButton.TabIndex = 1;
             this.groupBoxTilesButton.TabStop = false;
             // 
@@ -215,12 +217,50 @@ namespace PeachFox
             this.groupBoxTools.Controls.Add(this.buttonToolEraser);
             this.groupBoxTools.Controls.Add(this.buttonToolPaint);
             this.groupBoxTools.Controls.Add(this.buttonToolMove);
-            this.groupBoxTools.Location = new System.Drawing.Point(3, 353);
+            this.groupBoxTools.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBoxTools.Location = new System.Drawing.Point(3, 419);
             this.groupBoxTools.Name = "groupBoxTools";
-            this.groupBoxTools.Size = new System.Drawing.Size(228, 60);
+            this.groupBoxTools.Size = new System.Drawing.Size(234, 60);
             this.groupBoxTools.TabIndex = 4;
             this.groupBoxTools.TabStop = false;
             this.groupBoxTools.Text = "Tools";
+            // 
+            // buttonToolTag
+            // 
+            this.buttonToolTag.Enabled = false;
+            this.buttonToolTag.Image = global::PeachFox.Properties.Resources.tag;
+            this.buttonToolTag.Location = new System.Drawing.Point(126, 19);
+            this.buttonToolTag.Name = "buttonToolTag";
+            this.buttonToolTag.Size = new System.Drawing.Size(34, 34);
+            this.buttonToolTag.TabIndex = 3;
+            this.buttonToolTag.UseVisualStyleBackColor = true;
+            // 
+            // buttonToolEraser
+            // 
+            this.buttonToolEraser.Image = global::PeachFox.Properties.Resources.eraser;
+            this.buttonToolEraser.Location = new System.Drawing.Point(86, 19);
+            this.buttonToolEraser.Name = "buttonToolEraser";
+            this.buttonToolEraser.Size = new System.Drawing.Size(34, 34);
+            this.buttonToolEraser.TabIndex = 2;
+            this.buttonToolEraser.UseVisualStyleBackColor = true;
+            // 
+            // buttonToolPaint
+            // 
+            this.buttonToolPaint.Image = global::PeachFox.Properties.Resources.paint;
+            this.buttonToolPaint.Location = new System.Drawing.Point(46, 19);
+            this.buttonToolPaint.Name = "buttonToolPaint";
+            this.buttonToolPaint.Size = new System.Drawing.Size(34, 34);
+            this.buttonToolPaint.TabIndex = 1;
+            this.buttonToolPaint.UseVisualStyleBackColor = true;
+            // 
+            // buttonToolMove
+            // 
+            this.buttonToolMove.Image = global::PeachFox.Properties.Resources.move;
+            this.buttonToolMove.Location = new System.Drawing.Point(6, 19);
+            this.buttonToolMove.Name = "buttonToolMove";
+            this.buttonToolMove.Size = new System.Drawing.Size(34, 34);
+            this.buttonToolMove.TabIndex = 0;
+            this.buttonToolMove.UseVisualStyleBackColor = true;
             // 
             // menuStrip
             // 
@@ -333,55 +373,19 @@ namespace PeachFox
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
             // 
-            // buttonToolTag
+            // panel
             // 
-            this.buttonToolTag.Enabled = false;
-            this.buttonToolTag.Image = global::PeachFox.Properties.Resources.tag;
-            this.buttonToolTag.Location = new System.Drawing.Point(126, 19);
-            this.buttonToolTag.Name = "buttonToolTag";
-            this.buttonToolTag.Size = new System.Drawing.Size(34, 34);
-            this.buttonToolTag.TabIndex = 3;
-            this.buttonToolTag.UseVisualStyleBackColor = true;
-            // 
-            // buttonToolEraser
-            // 
-            this.buttonToolEraser.Image = global::PeachFox.Properties.Resources.eraser;
-            this.buttonToolEraser.Location = new System.Drawing.Point(86, 19);
-            this.buttonToolEraser.Name = "buttonToolEraser";
-            this.buttonToolEraser.Size = new System.Drawing.Size(34, 34);
-            this.buttonToolEraser.TabIndex = 2;
-            this.buttonToolEraser.UseVisualStyleBackColor = true;
-            // 
-            // buttonToolPaint
-            // 
-            this.buttonToolPaint.Image = global::PeachFox.Properties.Resources.paint;
-            this.buttonToolPaint.Location = new System.Drawing.Point(46, 19);
-            this.buttonToolPaint.Name = "buttonToolPaint";
-            this.buttonToolPaint.Size = new System.Drawing.Size(34, 34);
-            this.buttonToolPaint.TabIndex = 1;
-            this.buttonToolPaint.UseVisualStyleBackColor = true;
-            // 
-            // buttonToolMove
-            // 
-            this.buttonToolMove.Image = global::PeachFox.Properties.Resources.move;
-            this.buttonToolMove.Location = new System.Drawing.Point(6, 19);
-            this.buttonToolMove.Name = "buttonToolMove";
-            this.buttonToolMove.Size = new System.Drawing.Size(34, 34);
-            this.buttonToolMove.TabIndex = 0;
-            this.buttonToolMove.UseVisualStyleBackColor = true;
-            // 
-            // viewPort
-            // 
-            this.viewPort.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.viewPort.Location = new System.Drawing.Point(3, 16);
-            this.viewPort.Name = "viewPort";
-            this.viewPort.Size = new System.Drawing.Size(631, 425);
-            this.viewPort.TabIndex = 0;
-            this.viewPort.TabStop = false;
+            this.panel.Controls.Add(this.groupBoxLayers);
+            this.panel.Controls.Add(this.groupBoxTiles);
+            this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel.Location = new System.Drawing.Point(3, 53);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(234, 326);
+            this.panel.TabIndex = 5;
             // 
             // TileMapEditorForm
             // 
-            this.ClientSize = new System.Drawing.Size(877, 468);
+            this.ClientSize = new System.Drawing.Size(877, 506);
             this.Controls.Add(this.groupBoxRight);
             this.Controls.Add(this.groupBoxViewPort);
             this.Controls.Add(this.menuStrip);
@@ -389,8 +393,8 @@ namespace PeachFox
             this.ShowIcon = false;
             this.Text = "Tile Map Editor";
             this.groupBoxViewPort.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.viewPort)).EndInit();
             this.groupBoxRight.ResumeLayout(false);
-            this.flowLayoutPanel.ResumeLayout(false);
             this.groupBoxLayerButtons.ResumeLayout(false);
             this.groupBoxLayers.ResumeLayout(false);
             this.groupBoxTiles.ResumeLayout(false);
@@ -398,7 +402,7 @@ namespace PeachFox
             this.groupBoxTools.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.viewPort)).EndInit();
+            this.panel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -417,7 +421,6 @@ namespace PeachFox
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newTilemapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openTilemapToolStripMenuItem;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private System.Windows.Forms.GroupBox groupBoxTiles;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelTiles;
         private System.Windows.Forms.GroupBox groupBoxTilesButton;
@@ -446,4 +449,5 @@ namespace PeachFox
         private System.Windows.Forms.ToolStripMenuItem saveTilemapToolStripMenuItem;
         private System.Windows.Forms.Button buttonEditTile;
         private System.Windows.Forms.Button buttonToolTag;
+        private System.Windows.Forms.Panel panel;
     }}
