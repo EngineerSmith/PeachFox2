@@ -44,6 +44,7 @@ namespace PeachFox
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.panel = new System.Windows.Forms.Panel();
+            this.panelLayers = new System.Windows.Forms.Panel();
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
@@ -126,6 +127,7 @@ namespace PeachFox
             // 
             // groupBoxLayers
             // 
+            this.groupBoxLayers.Controls.Add(this.panelLayers);
             this.groupBoxLayers.Controls.Add(this.listBoxLayers);
             this.groupBoxLayers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxLayers.Location = new System.Drawing.Point(0, 0);
@@ -138,12 +140,12 @@ namespace PeachFox
             // 
             // listBoxLayers
             // 
-            this.listBoxLayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxLayers.Dock = System.Windows.Forms.DockStyle.Top;
             this.listBoxLayers.FormattingEnabled = true;
             this.listBoxLayers.Location = new System.Drawing.Point(3, 16);
             this.listBoxLayers.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.listBoxLayers.Name = "listBoxLayers";
-            this.listBoxLayers.Size = new System.Drawing.Size(228, 117);
+            this.listBoxLayers.Size = new System.Drawing.Size(228, 95);
             this.listBoxLayers.TabIndex = 0;
             // 
             // groupBoxTiles
@@ -383,6 +385,15 @@ namespace PeachFox
             this.panel.Size = new System.Drawing.Size(234, 326);
             this.panel.TabIndex = 5;
             // 
+            // panelLayers
+            // 
+            this.panelLayers.AutoScroll = true;
+            this.panelLayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelLayers.Location = new System.Drawing.Point(3, 111);
+            this.panelLayers.Name = "panelLayers";
+            this.panelLayers.Size = new System.Drawing.Size(228, 22);
+            this.panelLayers.TabIndex = 1;
+            // 
             // TileMapEditorForm
             // 
             this.ClientSize = new System.Drawing.Size(877, 506);
@@ -450,4 +461,5 @@ namespace PeachFox
         private System.Windows.Forms.Button buttonEditTile;
         private System.Windows.Forms.Button buttonToolTag;
         private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.Panel panelLayers;
     }}

@@ -74,12 +74,14 @@
     <Compile Include="LuaTilemap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="TileMapEditor\Cell.cs" />
+    <Compile Include="TileMapEditor\LayerAttributes.cs" />
     <Compile Include="TileMapEditor\LayerEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TileMapEditor\LayerEditor.Designer.cs">
       <DependentUpon>LayerEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="TileMapEditor\LayerListItem.cs" />
     <Compile Include="TileMapEditor\ListBoxDragDrop.cs" />
     <Compile Include="TileMapEditor\ListBoxLayers.cs" />
     <Compile Include="TileMapEditor\FlashableLayout.cs" />
