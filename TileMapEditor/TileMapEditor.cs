@@ -15,7 +15,7 @@ namespace PeachFox
 
         private Tilemap _tilemap = new Tilemap();
 
-        private ListBoxLayers _layerList;
+        private LayerList _layerList;
 
         private FlashableLayout _layoutTiles;
 
@@ -104,10 +104,10 @@ namespace PeachFox
 
             _layoutTiles = new FlashableLayout(flowLayoutPanelTiles);
 
-            _layerList = new ListBoxLayers(listBoxLayers, toolTip, _tilemap);
+            _layerList = new LayerList(panelLayers, _tilemap);
 
             for (int i = _tilemap.Layers.Count-1; i >= 0 ; i--) //TODO on load/New of tilemap
-                _layerList.Add(_tilemap.Layers[i]);
+                _layerList.Add(_tilemap.Layers[i], toolTip);
 
             buttonLayerNew.Click += (sender, e) =>
             {
@@ -116,8 +116,8 @@ namespace PeachFox
 
             buttonLayerEdit.Click += (sender, e) =>
             {
-                if (listBoxLayers.SelectedItem != null)
-                    Program.NewLayerEditorForm(LayerCallback, ((LayerAttributes)listBoxLayers.SelectedItem).layer);
+                if (_layerList.SelectedItem != null)
+                    Program.NewLayerEditorForm(LayerCallback, _layerList.SelectedItem.Attributes.layer);
             };
 
             _toolButtons.Add(buttonToolMove);
@@ -254,7 +254,7 @@ namespace PeachFox
 
         private void AddTile()
         {
-            LayerAttributes att = (LayerAttributes)listBoxLayers.SelectedItem;
+            LayerAttributes att = _layerList.SelectedItem.Attributes;
             if (att == null)
             {
                 _layerList.Flash();
@@ -280,7 +280,7 @@ namespace PeachFox
 
         private void RemoveTile()
         {
-            LayerAttributes att = (LayerAttributes)listBoxLayers.SelectedItem;
+            LayerAttributes att = _layerList.SelectedItem.Attributes;
             if (att == null)
             {
                 _layerList.Flash();
@@ -322,10 +322,10 @@ namespace PeachFox
             if (_tilemap.Layers.Contains(layer) == false)
             {
                 _tilemap.Layers.Add(layer);
-                _layerList.Add(layer);
+                _layerList.Add(layer, toolTip);
             }
-            else 
-                _layerList.UpdateSelected();
+            else
+                _layerList.SelectedItem?.UpdateName();
         }
     }
 }

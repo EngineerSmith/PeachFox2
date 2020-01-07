@@ -11,6 +11,11 @@
             this.layer = layer;
         }
 
+        public LayerAttributes(Layer layer)
+        {
+            this.layer = layer;
+        }
+
         public override string ToString()
         {
             return name;

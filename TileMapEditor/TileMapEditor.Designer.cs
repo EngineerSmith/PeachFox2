@@ -11,13 +11,14 @@ namespace PeachFox
             this.groupBoxViewPort = new System.Windows.Forms.GroupBox();
             this.viewPort = new System.Windows.Forms.PictureBox();
             this.groupBoxRight = new System.Windows.Forms.GroupBox();
+            this.panel = new System.Windows.Forms.Panel();
+            this.groupBoxLayers = new System.Windows.Forms.GroupBox();
+            this.panelLayers = new System.Windows.Forms.Panel();
+            this.groupBoxTiles = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanelTiles = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxLayerButtons = new System.Windows.Forms.GroupBox();
             this.buttonLayerEdit = new System.Windows.Forms.Button();
             this.buttonLayerNew = new System.Windows.Forms.Button();
-            this.groupBoxLayers = new System.Windows.Forms.GroupBox();
-            this.listBoxLayers = new System.Windows.Forms.ListBox();
-            this.groupBoxTiles = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanelTiles = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxTilesButton = new System.Windows.Forms.GroupBox();
             this.buttonEditTile = new System.Windows.Forms.Button();
             this.buttonRemoveTile = new System.Windows.Forms.Button();
@@ -43,18 +44,16 @@ namespace PeachFox
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.panel = new System.Windows.Forms.Panel();
-            this.panelLayers = new System.Windows.Forms.Panel();
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
-            this.groupBoxLayerButtons.SuspendLayout();
+            this.panel.SuspendLayout();
             this.groupBoxLayers.SuspendLayout();
             this.groupBoxTiles.SuspendLayout();
+            this.groupBoxLayerButtons.SuspendLayout();
             this.groupBoxTilesButton.SuspendLayout();
             this.groupBoxTools.SuspendLayout();
             this.menuStrip.SuspendLayout();
-            this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxViewPort
@@ -94,6 +93,62 @@ namespace PeachFox
             this.groupBoxRight.TabIndex = 1;
             this.groupBoxRight.TabStop = false;
             // 
+            // panel
+            // 
+            this.panel.Controls.Add(this.groupBoxLayers);
+            this.panel.Controls.Add(this.groupBoxTiles);
+            this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel.Location = new System.Drawing.Point(3, 53);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(234, 326);
+            this.panel.TabIndex = 5;
+            // 
+            // groupBoxLayers
+            // 
+            this.groupBoxLayers.Controls.Add(this.panelLayers);
+            this.groupBoxLayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxLayers.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxLayers.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.groupBoxLayers.Name = "groupBoxLayers";
+            this.groupBoxLayers.Size = new System.Drawing.Size(234, 136);
+            this.groupBoxLayers.TabIndex = 2;
+            this.groupBoxLayers.TabStop = false;
+            this.groupBoxLayers.Text = "Layers";
+            // 
+            // panelLayers
+            // 
+            this.panelLayers.AutoScroll = true;
+            this.panelLayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelLayers.Location = new System.Drawing.Point(3, 16);
+            this.panelLayers.Name = "panelLayers";
+            this.panelLayers.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.panelLayers.Size = new System.Drawing.Size(228, 117);
+            this.panelLayers.TabIndex = 1;
+            // 
+            // groupBoxTiles
+            // 
+            this.groupBoxTiles.Controls.Add(this.flowLayoutPanelTiles);
+            this.groupBoxTiles.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBoxTiles.Location = new System.Drawing.Point(0, 136);
+            this.groupBoxTiles.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.groupBoxTiles.Name = "groupBoxTiles";
+            this.groupBoxTiles.Padding = new System.Windows.Forms.Padding(3, 3, 3, 1);
+            this.groupBoxTiles.Size = new System.Drawing.Size(234, 190);
+            this.groupBoxTiles.TabIndex = 0;
+            this.groupBoxTiles.TabStop = false;
+            this.groupBoxTiles.Text = "Tiles";
+            // 
+            // flowLayoutPanelTiles
+            // 
+            this.flowLayoutPanelTiles.AutoScroll = true;
+            this.flowLayoutPanelTiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelTiles.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanelTiles.MaximumSize = new System.Drawing.Size(0, 150);
+            this.flowLayoutPanelTiles.MinimumSize = new System.Drawing.Size(0, 150);
+            this.flowLayoutPanelTiles.Name = "flowLayoutPanelTiles";
+            this.flowLayoutPanelTiles.Size = new System.Drawing.Size(228, 150);
+            this.flowLayoutPanelTiles.TabIndex = 0;
+            // 
             // groupBoxLayerButtons
             // 
             this.groupBoxLayerButtons.Controls.Add(this.buttonLayerEdit);
@@ -124,53 +179,6 @@ namespace PeachFox
             this.buttonLayerNew.TabIndex = 0;
             this.buttonLayerNew.Text = "New Layer";
             this.buttonLayerNew.UseVisualStyleBackColor = true;
-            // 
-            // groupBoxLayers
-            // 
-            this.groupBoxLayers.Controls.Add(this.panelLayers);
-            this.groupBoxLayers.Controls.Add(this.listBoxLayers);
-            this.groupBoxLayers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxLayers.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxLayers.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.groupBoxLayers.Name = "groupBoxLayers";
-            this.groupBoxLayers.Size = new System.Drawing.Size(234, 136);
-            this.groupBoxLayers.TabIndex = 2;
-            this.groupBoxLayers.TabStop = false;
-            this.groupBoxLayers.Text = "Layers";
-            // 
-            // listBoxLayers
-            // 
-            this.listBoxLayers.Dock = System.Windows.Forms.DockStyle.Top;
-            this.listBoxLayers.FormattingEnabled = true;
-            this.listBoxLayers.Location = new System.Drawing.Point(3, 16);
-            this.listBoxLayers.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.listBoxLayers.Name = "listBoxLayers";
-            this.listBoxLayers.Size = new System.Drawing.Size(228, 95);
-            this.listBoxLayers.TabIndex = 0;
-            // 
-            // groupBoxTiles
-            // 
-            this.groupBoxTiles.Controls.Add(this.flowLayoutPanelTiles);
-            this.groupBoxTiles.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBoxTiles.Location = new System.Drawing.Point(0, 136);
-            this.groupBoxTiles.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.groupBoxTiles.Name = "groupBoxTiles";
-            this.groupBoxTiles.Padding = new System.Windows.Forms.Padding(3, 3, 3, 1);
-            this.groupBoxTiles.Size = new System.Drawing.Size(234, 190);
-            this.groupBoxTiles.TabIndex = 0;
-            this.groupBoxTiles.TabStop = false;
-            this.groupBoxTiles.Text = "Tiles";
-            // 
-            // flowLayoutPanelTiles
-            // 
-            this.flowLayoutPanelTiles.AutoScroll = true;
-            this.flowLayoutPanelTiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelTiles.Location = new System.Drawing.Point(3, 16);
-            this.flowLayoutPanelTiles.MaximumSize = new System.Drawing.Size(0, 150);
-            this.flowLayoutPanelTiles.MinimumSize = new System.Drawing.Size(0, 150);
-            this.flowLayoutPanelTiles.Name = "flowLayoutPanelTiles";
-            this.flowLayoutPanelTiles.Size = new System.Drawing.Size(228, 150);
-            this.flowLayoutPanelTiles.TabIndex = 0;
             // 
             // groupBoxTilesButton
             // 
@@ -375,25 +383,6 @@ namespace PeachFox
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
             // 
-            // panel
-            // 
-            this.panel.Controls.Add(this.groupBoxLayers);
-            this.panel.Controls.Add(this.groupBoxTiles);
-            this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel.Location = new System.Drawing.Point(3, 53);
-            this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(234, 326);
-            this.panel.TabIndex = 5;
-            // 
-            // panelLayers
-            // 
-            this.panelLayers.AutoScroll = true;
-            this.panelLayers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelLayers.Location = new System.Drawing.Point(3, 111);
-            this.panelLayers.Name = "panelLayers";
-            this.panelLayers.Size = new System.Drawing.Size(228, 22);
-            this.panelLayers.TabIndex = 1;
-            // 
             // TileMapEditorForm
             // 
             this.ClientSize = new System.Drawing.Size(877, 506);
@@ -406,14 +395,14 @@ namespace PeachFox
             this.groupBoxViewPort.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).EndInit();
             this.groupBoxRight.ResumeLayout(false);
-            this.groupBoxLayerButtons.ResumeLayout(false);
+            this.panel.ResumeLayout(false);
             this.groupBoxLayers.ResumeLayout(false);
             this.groupBoxTiles.ResumeLayout(false);
+            this.groupBoxLayerButtons.ResumeLayout(false);
             this.groupBoxTilesButton.ResumeLayout(false);
             this.groupBoxTools.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.panel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -448,7 +437,6 @@ namespace PeachFox
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.GroupBox groupBoxLayers;
-        private System.Windows.Forms.ListBox listBoxLayers;
         private System.Windows.Forms.GroupBox groupBoxLayerButtons;
         private System.Windows.Forms.Button buttonLayerNew;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
