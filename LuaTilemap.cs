@@ -305,7 +305,7 @@ namespace PeachFox
         public static explicit operator LsonDict(Layer value)
         {
             for (int i = 0; i < value._tiles.Count; i++)
-                value._root[i + 1] = (LsonDict)value._tiles[i];
+                value._root[i+1] = (LsonDict)value._tiles[i];
             return value._root;
         }
         public static explicit operator Layer(LsonDict value)
@@ -371,15 +371,17 @@ namespace PeachFox
         {
             LsonDict dict = new LsonDict();
                 for (int i = 0; i<value.Count; i++)
-                    dict.Add(i, (LsonDict) value[i]);
+                    dict.Add(i+1, (LsonDict) value[i]);
             return dict;
         }
 
         private static LsonDict ToLsonDict(List<Layer> value)
         {
             LsonDict dict = new LsonDict();
-            for (int i = 0; i < value.Count; i++)
-                dict.Add(i, (LsonDict)value[i]);
+            List<Layer> layers = new List<Layer>(value);
+            layers.Reverse();
+            for (int i = 0; i < layers.Count; i++)
+                dict.Add(i+1, (LsonDict)layers[i]);
             return dict;
         }
     }

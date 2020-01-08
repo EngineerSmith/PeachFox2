@@ -13,6 +13,7 @@ namespace PeachFox
             this.groupBoxRight = new System.Windows.Forms.GroupBox();
             this.panel = new System.Windows.Forms.Panel();
             this.groupBoxLayers = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanelLayers = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxTiles = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanelTiles = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxLayerButtons = new System.Windows.Forms.GroupBox();
@@ -43,7 +44,6 @@ namespace PeachFox
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.flowLayoutPanelLayers = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
@@ -114,6 +114,17 @@ namespace PeachFox
             this.groupBoxLayers.TabIndex = 2;
             this.groupBoxLayers.TabStop = false;
             this.groupBoxLayers.Text = "Layers";
+            // 
+            // flowLayoutPanelLayers
+            // 
+            this.flowLayoutPanelLayers.AutoScroll = true;
+            this.flowLayoutPanelLayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelLayers.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanelLayers.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanelLayers.Name = "flowLayoutPanelLayers";
+            this.flowLayoutPanelLayers.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.flowLayoutPanelLayers.Size = new System.Drawing.Size(228, 117);
+            this.flowLayoutPanelLayers.TabIndex = 2;
             // 
             // groupBoxTiles
             // 
@@ -292,7 +303,7 @@ namespace PeachFox
             this.newTilemapToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.newTilemapToolStripMenuItem.Enabled = false;
             this.newTilemapToolStripMenuItem.Name = "newTilemapToolStripMenuItem";
-            this.newTilemapToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.newTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newTilemapToolStripMenuItem.Text = "New Tilemap";
             // 
             // openTilemapToolStripMenuItem
@@ -300,33 +311,32 @@ namespace PeachFox
             this.openTilemapToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.openTilemapToolStripMenuItem.Enabled = false;
             this.openTilemapToolStripMenuItem.Name = "openTilemapToolStripMenuItem";
-            this.openTilemapToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.openTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openTilemapToolStripMenuItem.Text = "Open Tilemap";
             // 
             // saveTilemapToolStripMenuItem
             // 
-            this.saveTilemapToolStripMenuItem.Enabled = false;
             this.saveTilemapToolStripMenuItem.Name = "saveTilemapToolStripMenuItem";
-            this.saveTilemapToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.saveTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveTilemapToolStripMenuItem.Text = "Save Tilemap";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // saveTileSetsToolStripMenuItem
             // 
             this.saveTileSetsToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.saveTileSetsToolStripMenuItem.Name = "saveTileSetsToolStripMenuItem";
-            this.saveTileSetsToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.saveTileSetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveTileSetsToolStripMenuItem.Text = "Save Tile Sets";
             // 
             // loadTileSetsToolStripMenuItem
             // 
             this.loadTileSetsToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.loadTileSetsToolStripMenuItem.Name = "loadTileSetsToolStripMenuItem";
-            this.loadTileSetsToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.loadTileSetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadTileSetsToolStripMenuItem.Text = "Load Tile Sets";
             // 
             // tileSetToolStripMenuItem
@@ -360,29 +370,10 @@ namespace PeachFox
             this.toolStripComboBox.Name = "toolStripComboBox";
             this.toolStripComboBox.Size = new System.Drawing.Size(121, 23);
             // 
-            // openFileDialog
-            // 
-            this.openFileDialog.FileName = "TileSets.tileset";
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.FileName = "tileset.tileset";
-            // 
             // contextMenuStrip
             // 
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
-            // 
-            // flowLayoutPanelLayers
-            // 
-            this.flowLayoutPanelLayers.AutoScroll = true;
-            this.flowLayoutPanelLayers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelLayers.Location = new System.Drawing.Point(3, 16);
-            this.flowLayoutPanelLayers.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanelLayers.Name = "flowLayoutPanelLayers";
-            this.flowLayoutPanelLayers.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.flowLayoutPanelLayers.Size = new System.Drawing.Size(228, 117);
-            this.flowLayoutPanelLayers.TabIndex = 2;
             // 
             // TileMapEditorForm
             // 

@@ -49,10 +49,9 @@ namespace PeachFox
                 Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), false, SelectCallback);
             };
 
-            openFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
-
             loadTileSetsToolStripMenuItem.Click += (sender, e) =>
             {
+                openFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
                 DialogResult result = openFileDialog.ShowDialog();
                 if (result == DialogResult.OK || result == DialogResult.Yes)
                 {
@@ -65,16 +64,28 @@ namespace PeachFox
                 }
             };
 
-            saveFileDialog.Filter = openFileDialog.Filter;
 
             saveTileSetsToolStripMenuItem.Click += (sender, e) =>
             {
+                saveFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
                 DialogResult result = saveFileDialog.ShowDialog();
                 if (result == DialogResult.OK || result == DialogResult.Yes)
                 {
-                    TileSet.LuaTileSetLoad save = new TileSet.LuaTileSetLoad();
-                    save.TileSetData = new List<TileSet.TileSetData>(_tilesets.Values);
+                    TileSet.LuaTileSetLoad save = new TileSet.LuaTileSetLoad
+                    {
+                        TileSetData = new List<TileSet.TileSetData>(_tilesets.Values)
+                    };
                     System.IO.File.WriteAllText(saveFileDialog.FileName, save.ToString());
+                }
+            };
+
+            saveTilemapToolStripMenuItem.Click += (sender, e) =>
+            {
+                saveFileDialog.Filter = "(*.lua)|*.lua|All files (*.*)|*.*";
+                DialogResult result = saveFileDialog.ShowDialog();
+                if (result == DialogResult.OK || result == DialogResult.Yes)
+                {
+                    System.IO.File.WriteAllText(saveFileDialog.FileName, _tilemap.ToString());
                 }
             };
 
