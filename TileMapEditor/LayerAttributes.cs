@@ -4,6 +4,8 @@
     {
         public string name;
         public Layer layer;
+        public System.Drawing.Image image;
+        public bool drawToViewPort = true;
 
         public LayerAttributes(string name, Layer layer)
         {

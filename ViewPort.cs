@@ -69,7 +69,7 @@ namespace PeachFox
             Redraw();
         }
 
-        public void Redraw()
+        public virtual void Redraw()
         {
             PictureBox.Refresh();
         }

@@ -26,10 +26,7 @@ namespace PeachFox
         {
             InitializeComponent();
 
-            _tileMapViewPort = new TileMapViewPort(viewPort)
-            {
-                Tilemap = _tilemap
-            };
+            _tileMapViewPort = new TileMapViewPort(viewPort);
 
             addNewTileSetToolStripMenuItem.Click += (sender, e) =>
             {
@@ -183,6 +180,11 @@ namespace PeachFox
         public void RedrawViewPort()
         {
             _tileMapViewPort.Redraw();
+        }
+
+        public void UpdateLayers()
+        {
+            _tileMapViewPort.Layers = _layerList.Items;
         }
 
         private Button AddNewTileButton(Tile tile, Image thumbnail)

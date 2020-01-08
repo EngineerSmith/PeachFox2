@@ -6,7 +6,7 @@ namespace PeachFox.TileMapEditor
 {
     public class TileMapViewPort : ViewPort
     {
-        public Tilemap Tilemap;
+        public List<LayerListItem> Layers;
 
         public Dictionary<int, Image> Images = new Dictionary<int, Image>();
 
@@ -25,6 +25,14 @@ namespace PeachFox.TileMapEditor
             PictureBox.MouseMove += MouseMove;
             PictureBox.MouseClick += MouseClick;
             CenterViewPort();
+        }
+
+        public override void Redraw()
+        {
+            if (Layers != null)
+                foreach (LayerListItem layer in Layers)
+                    layer.Draw(Images, PictureBox.Width, PictureBox.Height, TranslateX, TranslateY, ScaleRatio * ZoomFactor);
+            base.Redraw();
         }
 
         private void MouseClick(object sender, MouseEventArgs e)
@@ -77,14 +85,17 @@ namespace PeachFox.TileMapEditor
             for (x = ix; x < PictureBox.Width - TranslateX + CellSize*2; x+=CellSize)
                 g.DrawLine(p, x - penDistanceOffset, iy - penDistanceOffset, x - penDistanceOffset, iy+PictureBox.Height + CellSize*2);
 
-            if (Tilemap != null)
+            if (Layers != null)
             {
-                foreach (Layer layer in Tilemap.Layers)
-                    foreach (LayerTile tile in layer.Tiles)
-                    {
-                        Image i = Images[(int)tile.TileIndex];
-                        g.DrawImage(i, (float)tile.X - penDistanceOffset - 0.005f, (float)tile.Y - penDistanceOffset - 0.005f, i.Width + penDistanceOffset + 0.01f, i.Height + penDistanceOffset + 0.01f);
-                    }
+                g.ResetTransform();
+                for (int i = Layers.Count - 1; i >= 0; i--)
+                {
+                    LayerListItem layer = Layers[i];
+                    if (layer.Attributes.drawToViewPort && layer.Attributes.image != null)
+                        g.DrawImage(layer.Attributes.image, 0,0);
+                }
+                g.ScaleTransform(ScaleRatio * ZoomFactor, ScaleRatio * ZoomFactor);
+                g.TranslateTransform(TranslateX, TranslateY);
             }
 
             int tImage;

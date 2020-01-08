@@ -40,6 +40,7 @@ namespace PeachFox.TileMapEditor
             item.GroupBox.Click += LayerListItemClick;
             item.GroupBox.MouseDown += MouseDown;
             SetSelected(item);
+            Program.TileMapEditor.UpdateLayers();
         }
 
         public void SetSelected(LayerListItem item)
@@ -60,6 +61,7 @@ namespace PeachFox.TileMapEditor
                 layers.Add(Items[i].Attributes.layer);
 
             Tilemap.Layers = layers;
+            Program.TileMapEditor.UpdateLayers();
             Program.TileMapEditor.RedrawViewPort();
         }
 

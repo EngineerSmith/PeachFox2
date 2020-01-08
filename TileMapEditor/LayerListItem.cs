@@ -1,9 +1,11 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Collections.Generic;
 
 namespace PeachFox.TileMapEditor
 {
-    class LayerListItem
+    public class LayerListItem
     {
         private static readonly System.Random RND = new System.Random((int)(System.DateTime.Now.Ticks / 2));
 
@@ -43,9 +45,10 @@ namespace PeachFox.TileMapEditor
             {
                 Size = new Size(100, 54),
                 Location = new Point(5, 10),
-                BackColor = Color.Green,
                 Enabled = false,
             };
+
+            PictureBox.Paint += PaintPreview;
 
             Checkbox = new CheckBox
             {
@@ -55,6 +58,7 @@ namespace PeachFox.TileMapEditor
 
             Checkbox.MouseEnter += Enter;
             Checkbox.MouseLeave += Leave;
+            Checkbox.CheckedChanged += CheckedChanged;
 
             GroupBox.Controls.Add(PictureBox);
             GroupBox.Controls.Add(Checkbox);
@@ -86,6 +90,42 @@ namespace PeachFox.TileMapEditor
             Checkbox.Size = new Size(20+TextRenderer.MeasureText(Checkbox.Text, Control.DefaultFont).Width, Checkbox.Height);
         }
 
+        public void Draw(Dictionary<int, Image> images, int width, int height, float translateX, float translateY, float scale)
+        {
+            if (width == 0 || height == 0)
+            {
+                Attributes.image = null;
+                return;
+            }
+            Bitmap result = new Bitmap(width, height);
+            try
+            {
+                Graphics g = Graphics.FromImage(result);
+                g.SmoothingMode = SmoothingMode.HighSpeed;
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                g.ScaleTransform(scale, scale);
+                g.TranslateTransform(translateX, translateY);
+
+                foreach (LayerTile tile in Attributes.layer.Tiles)
+                {
+                    Image i = images[(int)tile.TileIndex];
+                    g.DrawImage(i, (float)tile.X - 0.5f - 0.005f, (float)tile.Y - 0.5f - 0.005f, i.Width + 0.5f + 0.01f, i.Height + 0.5f + 0.01f);
+                }
+                g.Dispose();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show($"Exception while creating Layer({Attributes.name}_: {ex.Message}");
+                result.Dispose();
+                Attributes.image = null;
+                return;
+            }
+            Attributes.image = result;
+            PictureBox.Refresh();
+        }
+
         private string GenerateName()
         {
             string name = Attributes.layer.GetValue("name")?.Value.GetString();
@@ -106,6 +146,12 @@ namespace PeachFox.TileMapEditor
                 GroupBox.BackColor = Color.White;
         }
 
+        private void CheckedChanged(object sender, System.EventArgs e)
+        {
+            Attributes.drawToViewPort = Checkbox.Checked;
+            Program.TileMapEditor.RedrawViewPort();
+        }
+
         private void Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -115,6 +161,17 @@ namespace PeachFox.TileMapEditor
             g.DrawLine(p, 0, 5, s.Width - 2, 5);
             g.DrawLine(p, s.Width - 2, 5, s.Width - 2, s.Height - 2);
             g.DrawLine(p, s.Width - 2, s.Height - 2, 0, s.Height - 2);
+        }
+
+        private void PaintPreview(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
+            g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+            
+            if (Attributes.image != null)
+                g.DrawImage(Attributes.image, 0,0, PictureBox.Width, PictureBox.Height);
         }
     }
 }
