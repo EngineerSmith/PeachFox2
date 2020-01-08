@@ -15,7 +15,6 @@ namespace PeachFox.TileMapEditor
             {
                 _panel = value;
                 Panel.AllowDrop = true;
-                Panel.MouseDown += MouseDown;
                 Panel.DragOver += DragOver;
                 Panel.DragDrop += DragDrop;
             }
@@ -39,6 +38,7 @@ namespace PeachFox.TileMapEditor
             Items.Add(item);
             Panel.Controls.Add(item.CreateFormItem(toolTip));
             item.GroupBox.Click += LayerListItemClick;
+            item.GroupBox.MouseDown += MouseDown;
             SetSelected(item);
         }
 
@@ -51,9 +51,14 @@ namespace PeachFox.TileMapEditor
 
         private void UpdateOrder()
         {
-            List<Layer> layers = new List<Layer>(Items.Count);
-            for (int i = Items.Count - 1; i >= 0; i--)
-                layers.Add(Items[i].Attributes.layer);
+            Items = new List<LayerListItem>(Panel.Controls.Count);
+            List<Layer> layers = new List<Layer>(Panel.Controls.Count);
+            foreach (Control control in Panel.Controls)
+            {
+                LayerListItem item = (LayerListItem)control.Tag;
+                Items.Add(item);
+                layers.Add(item.Attributes.layer);
+            }
 
             Tilemap.Layers = layers;
             Program.TileMapEditor.RedrawViewPort();
@@ -68,9 +73,10 @@ namespace PeachFox.TileMapEditor
 
         private void MouseDown(object sender, MouseEventArgs e)
         {
-            if (SelectedItem == null)
+            if (e.Button != MouseButtons.Right)
                 return;
-            Panel.DoDragDrop(SelectedItem, DragDropEffects.Move);
+            Panel.DoDragDrop(sender, DragDropEffects.Move);
+            Panel.Tag = SelectedItem;
         }
 
         private void DragOver(object sender, DragEventArgs e)
@@ -80,17 +86,21 @@ namespace PeachFox.TileMapEditor
 
         private void DragDrop(object sender, DragEventArgs e)
         {
+            LayerListItem item = (LayerListItem)Panel.Tag;
+            if (item == null)
+                return;
+            Panel.Tag = null;
             Point point = Panel.PointToClient(new Point(e.X, e.Y));
-            int index = point.Y / Items[0].GroupBox.Width;
+            point.Y -= Panel.AutoScrollPosition.Y;
+            int index = (int)((double)point.Y / (double)item.GroupBox.Height);
             if (index < 0)
                 index = Items.Count - 1;
             if (index > Items.Count)
                 index = Items.Count - 1;
-            int i = Items.FindIndex(x => x == SelectedItem);
+            int i = Items.FindIndex(x => x == item);
             if (i == index)
                 return;
-            Items.Remove(SelectedItem);
-            Items.Insert(index, SelectedItem);
+            Panel.Controls.SetChildIndex(item.GroupBox, index);
             UpdateOrder();
         }
     }

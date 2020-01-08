@@ -13,7 +13,6 @@ namespace PeachFox
             this.groupBoxRight = new System.Windows.Forms.GroupBox();
             this.panel = new System.Windows.Forms.Panel();
             this.groupBoxLayers = new System.Windows.Forms.GroupBox();
-            this.panelLayers = new System.Windows.Forms.Panel();
             this.groupBoxTiles = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanelTiles = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxLayerButtons = new System.Windows.Forms.GroupBox();
@@ -44,6 +43,7 @@ namespace PeachFox
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.flowLayoutPanelLayers = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
@@ -105,7 +105,7 @@ namespace PeachFox
             // 
             // groupBoxLayers
             // 
-            this.groupBoxLayers.Controls.Add(this.panelLayers);
+            this.groupBoxLayers.Controls.Add(this.flowLayoutPanelLayers);
             this.groupBoxLayers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxLayers.Location = new System.Drawing.Point(0, 0);
             this.groupBoxLayers.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
@@ -114,16 +114,6 @@ namespace PeachFox
             this.groupBoxLayers.TabIndex = 2;
             this.groupBoxLayers.TabStop = false;
             this.groupBoxLayers.Text = "Layers";
-            // 
-            // panelLayers
-            // 
-            this.panelLayers.AutoScroll = true;
-            this.panelLayers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelLayers.Location = new System.Drawing.Point(3, 16);
-            this.panelLayers.Name = "panelLayers";
-            this.panelLayers.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.panelLayers.Size = new System.Drawing.Size(228, 117);
-            this.panelLayers.TabIndex = 1;
             // 
             // groupBoxTiles
             // 
@@ -383,6 +373,17 @@ namespace PeachFox
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
             // 
+            // flowLayoutPanelLayers
+            // 
+            this.flowLayoutPanelLayers.AutoScroll = true;
+            this.flowLayoutPanelLayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelLayers.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanelLayers.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanelLayers.Name = "flowLayoutPanelLayers";
+            this.flowLayoutPanelLayers.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.flowLayoutPanelLayers.Size = new System.Drawing.Size(228, 117);
+            this.flowLayoutPanelLayers.TabIndex = 2;
+            // 
             // TileMapEditorForm
             // 
             this.ClientSize = new System.Drawing.Size(877, 506);
@@ -449,5 +450,5 @@ namespace PeachFox
         private System.Windows.Forms.Button buttonEditTile;
         private System.Windows.Forms.Button buttonToolTag;
         private System.Windows.Forms.Panel panel;
-        private System.Windows.Forms.Panel panelLayers;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelLayers;
     }}

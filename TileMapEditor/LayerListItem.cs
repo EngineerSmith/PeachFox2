@@ -31,10 +31,7 @@ namespace PeachFox.TileMapEditor
             GroupBox = new GroupBox()
             {
                 Tag = this,
-                Dock = DockStyle.Top,
-                Size = new Size(200, 70),
-                Margin = new Padding(3, 3, 3, 3),
-                Location = new Point(3, 3),
+                Size = new Size(205, 70),
             };
 
             GroupBox.MouseEnter += Enter;
@@ -52,7 +49,7 @@ namespace PeachFox.TileMapEditor
             Checkbox = new CheckBox
             {
                 Checked = true,
-                Location = new Point(110,20),
+                Location = new Point(110,18),
             };
 
             Checkbox.MouseEnter += Enter;
@@ -112,10 +109,11 @@ namespace PeachFox.TileMapEditor
         {
             Graphics g = e.Graphics;
             Pen p = new Pen(_boarder, 2);
-            g.DrawLine(p, 0, 5, 0, e.ClipRectangle.Height - 2);
-            g.DrawLine(p, 0, 5, e.ClipRectangle.Width - 2, 5);
-            g.DrawLine(p, e.ClipRectangle.Width - 2, 5, e.ClipRectangle.Width - 2, e.ClipRectangle.Height - 2);
-            g.DrawLine(p, e.ClipRectangle.Width - 2, e.ClipRectangle.Height - 2, 0, e.ClipRectangle.Height - 2);
+            Control s = (Control)sender;
+            g.DrawLine(p, 0, 5, 0, s.Height - 2);
+            g.DrawLine(p, 0, 5, s.Width - 2, 5);
+            g.DrawLine(p, s.Width - 2, 5, s.Width - 2, s.Height - 2);
+            g.DrawLine(p, s.Width - 2, s.Height - 2, 0, s.Height - 2);
         }
     }
 }

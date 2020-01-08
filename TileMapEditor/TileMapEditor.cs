@@ -104,7 +104,7 @@ namespace PeachFox
 
             _layoutTiles = new FlashableLayout(flowLayoutPanelTiles);
 
-            _layerList = new LayerList(panelLayers, _tilemap);
+            _layerList = new LayerList(flowLayoutPanelLayers, _tilemap);
 
             for (int i = _tilemap.Layers.Count-1; i >= 0 ; i--) //TODO on load/New of tilemap
                 _layerList.Add(_tilemap.Layers[i], toolTip);
