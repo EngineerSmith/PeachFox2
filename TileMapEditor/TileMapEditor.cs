@@ -254,7 +254,7 @@ namespace PeachFox
 
         private void AddTile()
         {
-            LayerAttributes att = _layerList.SelectedItem.Attributes;
+            LayerAttributes att = _layerList.SelectedItem?.Attributes;
             if (att == null)
             {
                 _layerList.Flash();

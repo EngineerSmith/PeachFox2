@@ -32,6 +32,7 @@ namespace PeachFox.TileMapEditor
             {
                 Tag = this,
                 Size = new Size(205, 70),
+                Padding = new Padding(0),
             };
 
             GroupBox.MouseEnter += Enter;

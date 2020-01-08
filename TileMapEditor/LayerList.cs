@@ -52,13 +52,12 @@ namespace PeachFox.TileMapEditor
         private void UpdateOrder()
         {
             Items = new List<LayerListItem>(Panel.Controls.Count);
-            List<Layer> layers = new List<Layer>(Panel.Controls.Count);
             foreach (Control control in Panel.Controls)
-            {
-                LayerListItem item = (LayerListItem)control.Tag;
-                Items.Add(item);
-                layers.Add(item.Attributes.layer);
-            }
+                Items.Add((LayerListItem)control.Tag);
+
+            List<Layer> layers = new List<Layer>(Items.Count);
+            for (int i = 0; i < Items.Count; i++)
+                layers.Add(Items[i].Attributes.layer);
 
             Tilemap.Layers = layers;
             Program.TileMapEditor.RedrawViewPort();
@@ -73,10 +72,11 @@ namespace PeachFox.TileMapEditor
 
         private void MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Right)
-                return;
-            Panel.DoDragDrop(sender, DragDropEffects.Move);
-            Panel.Tag = SelectedItem;
+            if ((e.Button == MouseButtons.Right) || (e.Button == MouseButtons.Left && sender == SelectedItem))
+            {
+                Panel.DoDragDrop(sender, DragDropEffects.Move);
+                Panel.Tag = ((Control)sender).Tag;
+            }
         }
 
         private void DragOver(object sender, DragEventArgs e)
@@ -92,13 +92,11 @@ namespace PeachFox.TileMapEditor
             Panel.Tag = null;
             Point point = Panel.PointToClient(new Point(e.X, e.Y));
             point.Y -= Panel.AutoScrollPosition.Y;
-            int index = (int)((double)point.Y / (double)item.GroupBox.Height);
-            if (index < 0)
-                index = Items.Count - 1;
-            if (index > Items.Count)
+            int index = (int)((double)point.Y / (double)(item.GroupBox.Height + 3));
+            if (index < 0 || index >= Items.Count)
                 index = Items.Count - 1;
             int i = Items.FindIndex(x => x == item);
-            if (i == index)
+            if (i == (index-Items.Count-1)*-1)
                 return;
             Panel.Controls.SetChildIndex(item.GroupBox, index);
             UpdateOrder();

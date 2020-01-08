@@ -12,7 +12,7 @@ namespace PeachFox
             _control = control;
         }
 
-        public void Flash()
+        public void Flash(int count = 2)
         {
             if (_timer != null)
                 return;
@@ -28,7 +28,7 @@ namespace PeachFox
                     _control.BackColor = System.Drawing.Color.White;
                 else
                     _control.BackColor = System.Drawing.Color.LightBlue;
-                if (++tickCount >= 4)
+                if (++tickCount >= count*2)
                 {
                     _timer.Stop();
                     _timer = null;
