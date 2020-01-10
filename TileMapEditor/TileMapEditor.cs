@@ -99,7 +99,7 @@ namespace PeachFox
 
             openTilemapToolStripMenuItem.Click += (sender, e) =>
             {
-                openFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
+                openFileDialog.Filter = "(*.lua)|*.lua|All files (*.*)|*.*";
                 DialogResult result = openFileDialog.ShowDialog();
                 if (result == DialogResult.OK || result == DialogResult.Yes)
                 {
