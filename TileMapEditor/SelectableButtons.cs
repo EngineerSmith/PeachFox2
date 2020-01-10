@@ -9,7 +9,7 @@ namespace PeachFox.TileMapEditor
 {
     class SelectableButtons
     {
-        private List<Button> _buttons = new List<Button>();
+        private readonly List<Button> _buttons = new List<Button>();
 
         public Button SelectedButton { get; private set; } = null;
 

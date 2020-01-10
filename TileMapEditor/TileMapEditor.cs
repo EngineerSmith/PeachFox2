@@ -49,6 +49,8 @@ namespace PeachFox
                 Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), false, SelectCallback);
             };
 
+            SetTileSelectionMenuItem();
+
             loadTileSetsToolStripMenuItem.Click += (sender, e) =>
             {
                 openFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
@@ -93,7 +95,10 @@ namespace PeachFox
                 NewTilemap(16); //TODO add form prompt
             };
 
-            SetTileSelectionMenuItem();
+            helpToolStripMenuItem.Click += (sender, e) =>
+            {
+                System.Diagnostics.Process.Start("https://github.com/EngineerSmith/PeachFox2/wiki");
+            };
 
             buttonNewTile.Click += (sender, e) =>
             {
