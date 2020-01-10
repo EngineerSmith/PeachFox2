@@ -43,6 +43,17 @@ namespace PeachFox.TileMapEditor
             Program.TileMapEditor.UpdateLayers();
         }
 
+        public void Clear()
+        {
+            SetSelected(null);
+            foreach(LayerListItem item in Items)
+            {
+                Panel.Controls.Remove(item.GroupBox);
+                item.GroupBox.Dispose();
+            }
+            Items.Clear();
+        }
+
         public void SetSelected(LayerListItem item)
         {
             SelectedItem?.Selected(false);

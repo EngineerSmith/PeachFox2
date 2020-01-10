@@ -11,7 +11,7 @@ namespace PeachFox.TileMapEditor
     {
         private List<Button> _buttons = new List<Button>();
 
-        public Button SelectedButton = null;
+        public Button SelectedButton { get; private set; } = null;
 
         public SelectedButtonChanged Callback = null;
 
@@ -45,6 +45,14 @@ namespace PeachFox.TileMapEditor
         public Button FindButtonWithTag(object tag)
         {
             return _buttons.SingleOrDefault(b => b.Tag == tag);
+        }
+
+        public void Clear()
+        {
+            SetSelectedButton(null);
+            foreach (Button button in _buttons)
+                button.Dispose();
+            _buttons.Clear();
         }
     }
 }

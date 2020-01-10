@@ -13,7 +13,7 @@ namespace PeachFox
         private TileMapViewPort _tileMapViewPort;
         private Dictionary<string, TileSet.TileSetData> _tilesets = new Dictionary<string, TileSet.TileSetData>();
 
-        private Tilemap _tilemap = new Tilemap();
+        private Tilemap _tilemap;
 
         private LayerList _layerList;
 
@@ -64,7 +64,6 @@ namespace PeachFox
                 }
             };
 
-
             saveTileSetsToolStripMenuItem.Click += (sender, e) =>
             {
                 saveFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
@@ -87,6 +86,11 @@ namespace PeachFox
                 {
                     System.IO.File.WriteAllText(saveFileDialog.FileName, _tilemap.ToString());
                 }
+            };
+
+            newTilemapToolStripMenuItem.Click += (sender, e) =>
+            {
+                NewTilemap(16); //TODO add form prompt
             };
 
             SetTileSelectionMenuItem();
@@ -114,8 +118,8 @@ namespace PeachFox
 
             _layerList = new LayerList(flowLayoutPanelLayers, _tilemap);
 
-            for (int i = _tilemap.Layers.Count-1; i >= 0 ; i--) //TODO on load/New of tilemap
-                _layerList.Add(_tilemap.Layers[i], toolTip);
+            //for (int i = _tilemap.Layers.Count-1; i >= 0 ; i--) //TODO on load/New of tilemap
+            //    _layerList.Add(_tilemap.Layers[i], toolTip);
 
             buttonLayerNew.Click += (sender, e) =>
             {
@@ -139,6 +143,19 @@ namespace PeachFox
                 _tileMapViewPort.EnableMouseTranslation = _toolButtons.SelectedButton == buttonToolMove;
                 _tileMapViewPort.Redraw();
             };
+
+            NewTilemap(16);
+        }
+
+        public void NewTilemap(int cellsize)
+        {
+            _tilemap = new Tilemap();
+            _tileMapViewPort.CellSize = cellsize;
+            _tileButtons.Clear();
+            _layerList.Clear();
+            UpdateLayers();
+
+            _tileMapViewPort.Redraw();
         }
 
         public void NewTileSet(TileSet.TileSetData tileSetData)
@@ -182,7 +199,7 @@ namespace PeachFox
             else
             {
                 _tilemap.Tiles.Add(tile);
-                _tileMapViewPort.Images.Add(_tilemap.Tiles.Count-1, full);
+                _tileMapViewPort.Images[previousIndex] = full;
                 Button button = AddNewTileButton(tile, thumbnail);
                 _tileButtons.SetSelectedButton(button);
             }

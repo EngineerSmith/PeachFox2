@@ -301,7 +301,6 @@ namespace PeachFox
             // newTilemapToolStripMenuItem
             // 
             this.newTilemapToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.newTilemapToolStripMenuItem.Enabled = false;
             this.newTilemapToolStripMenuItem.Name = "newTilemapToolStripMenuItem";
             this.newTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newTilemapToolStripMenuItem.Text = "New Tilemap";
