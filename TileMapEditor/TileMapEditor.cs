@@ -95,9 +95,16 @@ namespace PeachFox
                 NewTilemap(16); //TODO add form prompt
             };
 
-            helpToolStripMenuItem.Click += (sender, e) =>
+            helpToolStripMenuItem.Click += (sender, e) => System.Diagnostics.Process.Start("https://github.com/EngineerSmith/PeachFox2/wiki");
+
+            openTilemapToolStripMenuItem.Click += (sender, e) =>
             {
-                System.Diagnostics.Process.Start("https://github.com/EngineerSmith/PeachFox2/wiki");
+                openFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
+                DialogResult result = openFileDialog.ShowDialog();
+                if (result == DialogResult.OK || result == DialogResult.Yes)
+                {
+                    OpenTilemap(16, openFileDialog.FileName); //TODO add form prompt
+                }
             };
 
             buttonNewTile.Click += (sender, e) =>
@@ -163,6 +170,54 @@ namespace PeachFox
             _tileMapViewPort.Redraw();
         }
 
+        public void OpenTilemap(int cellsize, string path)
+        {
+            string file;
+            try
+            {
+                file = System.IO.File.ReadAllText(path);
+            } catch(Exception e)
+            {
+                MessageBox.Show($"Exception opening file({path}):\n{e.Message}", "Caught exception");
+                return;
+            }
+            _tilemap = new Tilemap(file);
+            _tileMapViewPort.CellSize = cellsize;
+            _tileButtons.Clear();
+
+            Dictionary<string, Image> images = new Dictionary<string, Image>();
+            for (int i = 0; i < _tilemap.Tiles.Count; i++)
+            {
+                Tile tile = _tilemap.Tiles[i];
+                List<int> quads = tile.Quad.Values;
+                if (quads.Count < 4)
+                    continue;
+                if (_tilesets.ContainsKey(tile.Image))
+                {
+                    if (images.ContainsKey(_tilesets[tile.Image].Path) == false)
+                        images[_tilesets[tile.Image].Path] = new Bitmap(_tilesets[tile.Image].Path);
+                    _tileMapViewPort.Images[i] = ViewPort.CropImage(images[_tilesets[tile.Image].Path], quads[0], quads[1], quads[2], quads[3], quads[2], quads[3]);
+
+                    AddNewTileButton(tile, ViewPort.CropImage(images[_tilesets[tile.Image].Path], quads[0], quads[1], quads[2], quads[3], 40, 40));
+                }
+                else
+                {
+                    MessageBox.Show($"No tile set {tile.Image}, import tileset then re-import tilemap", "Missing textures");
+                    NewTilemap(cellsize);
+                    return;
+                }
+            }
+
+            _layerList.Clear();
+
+            for(int i = 0; i < _tilemap.Layers.Count; i++)
+            {
+                _layerList.Add(_tilemap.Layers[i], toolTip);
+            }
+
+            _tileMapViewPort.Redraw();
+        }
+
         public void NewTileSet(TileSet.TileSetData tileSetData)
         {
             if (tileSetData != null)
@@ -204,7 +259,7 @@ namespace PeachFox
             else
             {
                 _tilemap.Tiles.Add(tile);
-                _tileMapViewPort.Images[previousIndex] = full;
+                _tileMapViewPort.Images[_tilemap.Tiles.IndexOf(tile)] = full;
                 Button button = AddNewTileButton(tile, thumbnail);
                 _tileButtons.SetSelectedButton(button);
             }

@@ -338,8 +338,8 @@ namespace PeachFox
             Tiles = new List<Tile>();
             var tiles = _tables["tiles"].GetDictSafe();
             if (tiles != null)
-                foreach (LsonDict tile in tiles.ToEnumerable())
-                    Tiles.Add((Tile)tile);
+                foreach (var tile in tiles)
+                    Tiles.Add((Tile)tile.Value);
             else
                 _tables["tiles"] = new LsonDict();
 
@@ -347,8 +347,8 @@ namespace PeachFox
             Layers = new List<Layer>();
             var layers = _tables["layers"].GetDictSafe();
             if (layers != null)
-                foreach (LsonDict layer in layers.ToEnumerable())
-                    Layers.Add((Layer)layer);
+                foreach (var layer in layers)
+                    Layers.Add((Layer)layer.Value);
             else
                 _tables["layers"] = new LsonDict();
         }

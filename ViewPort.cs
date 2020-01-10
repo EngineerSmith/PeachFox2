@@ -74,6 +74,32 @@ namespace PeachFox
             PictureBox.Refresh();
         }
 
+        public static Image CropImage(Image image, int x, int y, int width, int height, int toWidth, int toHeight)
+        {
+            Bitmap export = new Bitmap(toWidth, toHeight, image.PixelFormat);
+
+            try
+            {
+                export.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+                Graphics g = Graphics.FromImage(export);
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+
+                g.DrawImage(image, new Rectangle(0, 0, toWidth, toHeight), x, y, width, height, GraphicsUnit.Pixel);
+
+                g.Dispose();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show($"Exception while cropping image: {ex.Message}");
+                export.Dispose();
+                return null;
+            }
+            return export;
+        }
+
         private void MouseDown(object sender, MouseEventArgs e)
         {
             if (!EnableMouseTranslation)
@@ -109,7 +135,6 @@ namespace PeachFox
 
             Redraw();
         }
-
         private void DebugZoomMouseMove(object sender, MouseEventArgs e)
         {
             //120 used as that is the value of e.Delta when mouse wheel moves to zoom in
@@ -121,7 +146,6 @@ namespace PeachFox
             
             Redraw();
         }
-
         private void DebugZoomDraw(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -129,7 +153,6 @@ namespace PeachFox
         }
 
         protected abstract void Resize(object sender, System.EventArgs e);
-       
         protected abstract void Draw(object sender, PaintEventArgs e);
     }
 }

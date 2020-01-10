@@ -310,16 +310,15 @@ namespace PeachFox
             // openTilemapToolStripMenuItem
             // 
             this.openTilemapToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.openTilemapToolStripMenuItem.Enabled = false;
             this.openTilemapToolStripMenuItem.Name = "openTilemapToolStripMenuItem";
-            this.openTilemapToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.openTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openTilemapToolStripMenuItem.Text = "Open Tilemap";
             // 
             // saveTilemapToolStripMenuItem
             // 
             this.saveTilemapToolStripMenuItem.Name = "saveTilemapToolStripMenuItem";
-            this.saveTilemapToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.saveTilemapToolStripMenuItem.Text = "Save Tilemap";
+            this.saveTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveTilemapToolStripMenuItem.Text = "SaveAs Tilemap";
             // 
             // toolStripSeparator1
             // 
