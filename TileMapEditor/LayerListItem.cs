@@ -117,7 +117,7 @@ namespace PeachFox.TileMapEditor
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show($"Exception while creating Layer({Attributes.name}_: {ex.Message}");
+                MessageBox.Show($"Exception while creating Layer({Attributes.name}): {ex.Message}");
                 result.Dispose();
                 Attributes.image = null;
                 return;

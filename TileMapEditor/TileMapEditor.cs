@@ -128,7 +128,7 @@ namespace PeachFox
 
             _layoutTiles = new FlashableLayout(flowLayoutPanelTiles);
 
-            _layerList = new LayerList(flowLayoutPanelLayers, _tilemap);
+            _layerList = new LayerList(flowLayoutPanelLayers);
 
             //for (int i = _tilemap.Layers.Count-1; i >= 0 ; i--) //TODO on load/New of tilemap
             //    _layerList.Add(_tilemap.Layers[i], toolTip);
@@ -165,6 +165,7 @@ namespace PeachFox
             _tileMapViewPort.CellSize = cellsize;
             _tileButtons.Clear();
             _layerList.Clear();
+            _layerList.Tilemap = _tilemap;
             UpdateLayers();
 
             _tileMapViewPort.Redraw();
@@ -182,6 +183,7 @@ namespace PeachFox
                 return;
             }
             _tilemap = new Tilemap(file);
+            _layerList.Tilemap = _tilemap;
             _tileMapViewPort.CellSize = cellsize;
             _tileButtons.Clear();
 
@@ -259,7 +261,7 @@ namespace PeachFox
             else
             {
                 _tilemap.Tiles.Add(tile);
-                _tileMapViewPort.Images[_tilemap.Tiles.IndexOf(tile)] = full;
+                _tileMapViewPort.Images[_tilemap.Tiles.Count() - 1] = full;
                 Button button = AddNewTileButton(tile, thumbnail);
                 _tileButtons.SetSelectedButton(button);
             }

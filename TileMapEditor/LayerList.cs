@@ -20,16 +20,15 @@ namespace PeachFox.TileMapEditor
             }
         }
 
-        private readonly Tilemap Tilemap;
+        public Tilemap Tilemap;
 
         public List<LayerListItem> Items = new List<LayerListItem>();
         public LayerListItem SelectedItem { get; private set; }
 
-        public LayerList(Panel panel, Tilemap tilemap)
+        public LayerList(Panel panel)
             : base(panel)
         {
             Panel = panel;
-            Tilemap = tilemap;
         }
         
         public void Add(Layer layer, ToolTip toolTip)

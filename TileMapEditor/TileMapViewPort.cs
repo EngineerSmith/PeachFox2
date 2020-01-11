@@ -100,7 +100,7 @@ namespace PeachFox.TileMapEditor
 
             int tImage;
             if(!EnableMouseTranslation)
-                if((tImage = Program.TileMapEditor.GetSelectedTileIndex()) != -1)
+                if((tImage = Program.TileMapEditor.GetSelectedTileIndex()) != -1 && Images.ContainsKey(tImage))
                     g.DrawRectangle(Pens.Red, _hovered.X - penDistanceOffset, _hovered.Y - penDistanceOffset, Images[tImage].Width, Images[tImage].Height);
                 else
                     g.DrawRectangle(Pens.Red, _hovered.X- penDistanceOffset, _hovered.Y- penDistanceOffset, CellSize, CellSize);
