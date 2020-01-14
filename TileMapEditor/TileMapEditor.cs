@@ -25,6 +25,8 @@ namespace PeachFox
         public TileMapEditorForm()
         {
             InitializeComponent();
+            this.KeyPreview = true;
+            this.KeyDown += KeyShortcuts;
 
             _tileMapViewPort = new TileMapViewPort(viewPort);
 
@@ -80,15 +82,7 @@ namespace PeachFox
                 }
             };
 
-            saveTilemapToolStripMenuItem.Click += (sender, e) =>
-            {
-                saveFileDialog.Filter = "(*.lua)|*.lua|All files (*.*)|*.*";
-                DialogResult result = saveFileDialog.ShowDialog();
-                if (result == DialogResult.OK || result == DialogResult.Yes)
-                {
-                    System.IO.File.WriteAllText(saveFileDialog.FileName, _tilemap.ToString());
-                }
-            };
+            saveTilemapToolStripMenuItem.Click += SaveTilemap;
 
             newTilemapToolStripMenuItem.Click += (sender, e) =>
             {
@@ -156,6 +150,16 @@ namespace PeachFox
             NewTilemap(16);
         }
 
+        private void SaveTilemap(object sender, EventArgs e)
+        {
+            saveFileDialog.Filter = "(*.lua)|*.lua|All files (*.*)|*.*";
+            DialogResult result = saveFileDialog.ShowDialog();
+            if (result == DialogResult.OK || result == DialogResult.Yes)
+            {
+                System.IO.File.WriteAllText(saveFileDialog.FileName, _tilemap.ToString());
+            }
+        }
+
         public void NewTilemap(int cellsize)
         {
             _tilemap = new Tilemap();
@@ -174,7 +178,8 @@ namespace PeachFox
             try
             {
                 file = System.IO.File.ReadAllText(path);
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 MessageBox.Show($"Exception opening file({path}):\n{e.Message}", "Caught exception");
                 return;
@@ -209,7 +214,7 @@ namespace PeachFox
 
             _layerList.Clear();
 
-            for(int i = 0; i < _tilemap.Layers.Count; i++)
+            for (int i = 0; i < _tilemap.Layers.Count; i++)
             {
                 _layerList.Add(_tilemap.Layers[i], toolTip);
             }
@@ -307,10 +312,10 @@ namespace PeachFox
         }
 
         public bool MouseInput(MouseEventArgs e)
-        { 
+        {
             if (e.Button == MouseButtons.Left)
             {
-                if(_toolButtons.SelectedButton == buttonToolPaint)
+                if (_toolButtons.SelectedButton == buttonToolPaint)
                 {
                     AddTile();
                     _tileMapViewPort.Redraw();
@@ -363,7 +368,7 @@ namespace PeachFox
                 return;
             }
 
-            LayerTile layerTile = new LayerTile(index+1, _tileMapViewPort.GetCell.X, _tileMapViewPort.GetCell.Y);
+            LayerTile layerTile = new LayerTile(index + 1, _tileMapViewPort.GetCell.X, _tileMapViewPort.GetCell.Y);
             att.layer.Set(layerTile);
         }
 
@@ -415,6 +420,35 @@ namespace PeachFox
             }
             else
                 _layerList.SelectedItem?.UpdateName();
+        }
+
+        private void KeyShortcuts(object sender, KeyEventArgs e)
+        {
+            switch ((char)e.KeyValue)
+            {
+                case 'E':
+                    _toolButtons.SetSelectedButton(buttonToolEraser);
+                    e.Handled = true;
+                    break;
+                case 'P':
+                case 'B':
+                    _toolButtons.SetSelectedButton(buttonToolPaint);
+                    e.Handled = true;
+                    break;
+                case 'M':
+                    _toolButtons.SetSelectedButton(buttonToolMove);
+                    e.Handled = true;
+                    break;
+                case 'S':
+                    if (e.Control)
+                    {
+                        SaveTilemap(sender, e);
+                        e.Handled = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
