@@ -1,4 +1,5 @@
 local insert = table.insert
+local sort = table.sort
 
 local layer = {}
 layer.__index = layer
@@ -15,7 +16,7 @@ function layer.new(tbl, tiles)
 	self.min = {x=0,y=0}
 	
 	for _, v in ipairs(tbl) do
-		local tile = {x=v.x, y=v.y, tile=tiles[v.tile],layer=self}
+		local tile = {x=v.x, y=v.y, tile=tiles[v.tile]--[[,layer=self]]}
 		if tiles[v.tile].update then
 			insert(self.animated, tile)
 		else
@@ -32,12 +33,10 @@ function layer.new(tbl, tiles)
 	self.isAnimated = #self.animated ~= 0
 	
 	if #self.static > 1 then
-		sort(self.static, function(a, b) 
-				return a.tile.image < b.tile.image end)
+		sort(self.static, function(a, b) return tostring(a.tile.image) < tostring(b.tile.image) end)
 	end
 	if #self.animated > 1 then
-		sort(self.animated, function(a, b) 
-				return a.tile.image < b.tile.image end)
+		sort(self.animated, function(a, b) return tostring(a.tile.image) < tostring(b.tile.image) end)
 	end
 	
 	return self

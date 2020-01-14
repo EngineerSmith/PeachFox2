@@ -56,12 +56,12 @@ function tilemap:addCanvases(layers)
 	self.canvases = self.canvases or {}
 	local stack = {}
 	
-	for _, v in ipairs(layers) do
-		if v.isAnimated then
+	for _, layer in ipairs(layers) do
+		if layer.isAnimated and #stack ~= 0 then
 			insert(self.canvases, CANVAS.new(stack))
 			stack = {}
 		else
-			insert(stack, v)
+			insert(stack, layer)
 		end
 	end
 	if #stack ~= 0 then
