@@ -110,7 +110,7 @@ namespace PeachFox.TileMapEditor
 
                 foreach (LayerTile tile in Attributes.layer.Tiles)
                 {
-                    Image i = images[(int)tile.TileIndex];
+                    Image i = images[(int)tile.TileIndex-1];
                     g.DrawImage(i, (float)tile.X - 0.5f - 0.005f, (float)tile.Y - 0.5f - 0.005f, i.Width + 0.5f + 0.01f, i.Height + 0.5f + 0.01f);
                 }
                 g.Dispose();

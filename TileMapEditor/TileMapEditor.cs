@@ -130,9 +130,6 @@ namespace PeachFox
 
             _layerList = new LayerList(flowLayoutPanelLayers);
 
-            //for (int i = _tilemap.Layers.Count-1; i >= 0 ; i--) //TODO on load/New of tilemap
-            //    _layerList.Add(_tilemap.Layers[i], toolTip);
-
             buttonLayerNew.Click += (sender, e) =>
             {
                 Program.NewLayerEditorForm(LayerCallback);
@@ -366,7 +363,7 @@ namespace PeachFox
                 return;
             }
 
-            LayerTile layerTile = new LayerTile(index, _tileMapViewPort.GetCell.X, _tileMapViewPort.GetCell.Y);
+            LayerTile layerTile = new LayerTile(index+1, _tileMapViewPort.GetCell.X, _tileMapViewPort.GetCell.Y);
             att.layer.Set(layerTile);
         }
 

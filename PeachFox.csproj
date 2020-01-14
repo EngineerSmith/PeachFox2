@@ -142,5 +142,14 @@
   <ItemGroup>
     <EmbeddedResource Include="resources\tag.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Packages\PeachFoxLove2d\canvas.lua" />
+    <None Include="Packages\PeachFoxLove2d\init.lua" />
+    <None Include="Packages\PeachFoxLove2d\layer.lua" />
+    <None Include="Packages\PeachFoxLove2d\map.lua" />
+    <None Include="Packages\PeachFoxLove2d\PeachFox.lua" />
+    <None Include="Packages\PeachFoxLove2d\tile.lua" />
+    <None Include="Packages\PeachFoxLove2d\tilemap.lua" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
