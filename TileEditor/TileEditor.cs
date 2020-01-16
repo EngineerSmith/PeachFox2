@@ -322,7 +322,6 @@ namespace PeachFox
             else
             {
                 SetQuads(null);
-                numericTime.Value = 0;
                 buttonTILE.Image = null;
                 buttonTILE.Refresh();
             }
