@@ -98,7 +98,7 @@ namespace PeachFox
                 if (!_bitmaskMode && tabControl.SelectedTab == tabPageBitmask)
                 {
                     tabControl.SelectedTab = tabPageQuads;
-                    MessageBox.Show("Create bitmask tile through dropdown menus");
+                    MessageBox.Show("Do you want to convert your tile to bitmasked?"); //TODO ask if they want to convert Tile into Bitmasked tile
                 }
             };
 
