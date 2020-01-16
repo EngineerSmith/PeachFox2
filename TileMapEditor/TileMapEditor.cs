@@ -101,10 +101,10 @@ namespace PeachFox
                 }
             };
 
-            buttonNewTile.Click += (sender, e) =>
-            {
-                Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
-            };
+            createTileToolStripMenuItem.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
+            createBitmaskTileToolStripMenuItem.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewBitmaskTileSelectCallback);
+
+            buttonNewTile.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
 
             buttonEditTile.Click += (sender, e) =>
             {
@@ -115,7 +115,7 @@ namespace PeachFox
                     return;
                 }
 
-                Program.TileEditor.NewTilesetImage(_tilesets[_tilemap.Tiles[index].Image], GetSelectedTile(), index);
+                Program.TileEditor.NewTilesetImage(_tilesets[_tilemap.Tiles[index].Image], false, GetSelectedTileButtonObject(), index);
             };
 
             flowLayoutPanelTiles.Click += (sender, e) => { _tileButtons.SetSelectedButton(null); };
@@ -332,10 +332,15 @@ namespace PeachFox
 
         public Tile GetSelectedTile()
         {
+            return (Tile)GetSelectedTileButtonObject();
+        }
+
+        private object GetSelectedTileButtonObject()
+        {
             Button button = _tileButtons.SelectedButton;
             if (button == null || button.Tag == null)
                 return null;
-            return (Tile)button.Tag;
+            return button.Tag;
         }
 
         public int GetSelectedTileIndex()
@@ -394,7 +399,13 @@ namespace PeachFox
         private void NewTileSelectCallback(string selectedName)
         {
             if (selectedName != null)
-                Program.TileEditor.NewTilesetImage(_tilesets[selectedName]);
+                Program.TileEditor.NewTilesetImage(_tilesets[selectedName], false);
+        }
+
+        private void NewBitmaskTileSelectCallback(string selectedName)
+        {
+            if (selectedName != null)
+                Program.TileEditor.NewTilesetImage(_tilesets[selectedName], true);
         }
 
         private void SelectCallback(string selectedName)

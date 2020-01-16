@@ -40,11 +40,14 @@ namespace PeachFox
             this.addNewTileSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editExistingTileSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createBitmaskTileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createTileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
@@ -279,7 +282,8 @@ namespace PeachFox
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.tileSetToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.tilesToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(877, 24);
@@ -304,39 +308,39 @@ namespace PeachFox
             // 
             this.newTilemapToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.newTilemapToolStripMenuItem.Name = "newTilemapToolStripMenuItem";
-            this.newTilemapToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.newTilemapToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.newTilemapToolStripMenuItem.Text = "New Tilemap";
             // 
             // openTilemapToolStripMenuItem
             // 
             this.openTilemapToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.openTilemapToolStripMenuItem.Name = "openTilemapToolStripMenuItem";
-            this.openTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openTilemapToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.openTilemapToolStripMenuItem.Text = "Open Tilemap";
             // 
             // saveTilemapToolStripMenuItem
             // 
             this.saveTilemapToolStripMenuItem.Name = "saveTilemapToolStripMenuItem";
-            this.saveTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveTilemapToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.saveTilemapToolStripMenuItem.Text = "SaveAs Tilemap";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(153, 6);
             // 
             // saveTileSetsToolStripMenuItem
             // 
             this.saveTileSetsToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.saveTileSetsToolStripMenuItem.Name = "saveTileSetsToolStripMenuItem";
-            this.saveTileSetsToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.saveTileSetsToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.saveTileSetsToolStripMenuItem.Text = "Save Tile Sets";
             // 
             // loadTileSetsToolStripMenuItem
             // 
             this.loadTileSetsToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.loadTileSetsToolStripMenuItem.Name = "loadTileSetsToolStripMenuItem";
-            this.loadTileSetsToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.loadTileSetsToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.loadTileSetsToolStripMenuItem.Text = "Load Tile Sets";
             // 
             // tileSetToolStripMenuItem
@@ -353,7 +357,7 @@ namespace PeachFox
             // 
             this.addNewTileSetToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.addNewTileSetToolStripMenuItem.Name = "addNewTileSetToolStripMenuItem";
-            this.addNewTileSetToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.addNewTileSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addNewTileSetToolStripMenuItem.Text = "Add new Tile Set";
             // 
             // editExistingTileSetToolStripMenuItem
@@ -362,7 +366,7 @@ namespace PeachFox
             this.editExistingTileSetToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox});
             this.editExistingTileSetToolStripMenuItem.Name = "editExistingTileSetToolStripMenuItem";
-            this.editExistingTileSetToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.editExistingTileSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.editExistingTileSetToolStripMenuItem.Text = "Edit existing Tile Set";
             // 
             // toolStripComboBox
@@ -370,17 +374,38 @@ namespace PeachFox
             this.toolStripComboBox.Name = "toolStripComboBox";
             this.toolStripComboBox.Size = new System.Drawing.Size(121, 23);
             // 
-            // contextMenuStrip
-            // 
-            this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
-            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
+            // 
+            // tilesToolStripMenuItem
+            // 
+            this.tilesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createTileToolStripMenuItem,
+            this.createBitmaskTileToolStripMenuItem});
+            this.tilesToolStripMenuItem.Name = "tilesToolStripMenuItem";
+            this.tilesToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
+            this.tilesToolStripMenuItem.Text = "Tiles";
+            // 
+            // createBitmaskTileToolStripMenuItem
+            // 
+            this.createBitmaskTileToolStripMenuItem.Name = "createBitmaskTileToolStripMenuItem";
+            this.createBitmaskTileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createBitmaskTileToolStripMenuItem.Text = "Create Bitmask Tile";
+            // 
+            // createTileToolStripMenuItem
+            // 
+            this.createTileToolStripMenuItem.Name = "createTileToolStripMenuItem";
+            this.createTileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createTileToolStripMenuItem.Text = "Create Tile";
             // 
             // TileMapEditorForm
             // 
@@ -450,4 +475,7 @@ namespace PeachFox
         private System.Windows.Forms.Panel panel;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelLayers;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createTileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createBitmaskTileToolStripMenuItem;
     }}
