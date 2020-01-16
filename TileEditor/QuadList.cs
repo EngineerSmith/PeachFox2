@@ -74,6 +74,7 @@ namespace PeachFox.TileEditor
         public void UpdateViewPort()
         {
             TileViewPort.Quads = GetViewPortQuads();
+            TileViewPort.Redraw();
         }
 
         public void RemoveSelected()

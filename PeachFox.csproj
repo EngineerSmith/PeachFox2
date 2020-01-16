@@ -52,12 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RandomString.cs" />
     <Compile Include="Flash.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TileEditor\BitmaskTile.cs" />
     <Compile Include="TileEditor\ButtonRemove.cs" />
     <Compile Include="TileEditor\ExportSettings.cs" />
     <Compile Include="TileEditor\QuadList.cs" />

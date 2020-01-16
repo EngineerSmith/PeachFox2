@@ -19,7 +19,9 @@ namespace PeachFox
         private int previousIndex = -1;
 
         private bool _bitmaskMode = false;
+        private int _bitmaskSelected = -1;
         private List<Button> _bitmaskButtons;
+        private BitmaskTiles _bitmaskTiles = null;
 
         private enum BitmaskMode
         {
@@ -124,21 +126,18 @@ namespace PeachFox
             {
                 tabControl.SelectedTab = tabPageQuads;
                 Tile tile = (Tile)obj;
-                List<string> quadsStr = null;
-                if (tile != null && tile.Quad.Values.Count % 4 == 0)
-                {
-                    List<int> quads = tile.Quad.Values;
-                    quadsStr = new List<string>(quads.Count / 4);
-                    for (int i = 0; i < quads.Count; i += 4)
-                        quadsStr.Add(_quadSettings.GenerateString(quads[i], quads[i + 1], quads[i + 2], quads[i + 3]));
-                    if (quads.Count > 4)
-                        numericTime.Value = (decimal)tile.Time;
-                }
-                _quadList.Clear(quadsStr);
+                SetQuads(tile.Quad.Values);
+                if (tile.Quad.Values.Count > 4)
+                    numericTime.Value = (decimal)tile.Time;
             }
             else
             {
+                _bitmaskTiles = new BitmaskTiles()
+                {
+                    Mode = _bitmaskButtons.Count,
+                };
                 tabControl.SelectedTab = tabPageBitmask;
+                ChangeBitmaskTile(0);
             }
             _quadSettings.ImageWidth = image.Width;
             _quadSettings.ImageHeight = image.Height;
@@ -146,11 +145,58 @@ namespace PeachFox
             _exportSettings.Update();
         }
 
+        private void SetQuads(List<int> quads)
+        {
+            List<string> quadsStr = null;
+            if (quads != null && quads.Count % 4 == 0)
+            {
+                quadsStr = new List<string>(quads.Count / 4);
+                for (int i = 0; i < quads.Count; i += 4)
+                    quadsStr.Add(_quadSettings.GenerateString(quads[i], quads[i + 1], quads[i + 2], quads[i + 3]));
+            }
+            if (_bitmaskMode)
+            {
+                BitmaskTile tile = GetSelectedBitmaskTile();
+                List<int> exportQuads = _quadList.ExportQuads();
+                if (tile == null && exportQuads.Count > 0)
+                {
+                    tile = new BitmaskTile()
+                    {
+                        Bit = _bitmaskSelected,
+                        Image = _tileSetData.ExportString,
+                        Quads = exportQuads,
+                        Time = (float)numericTime.Value,
+                        Thumbnail = _tileViewPort.GetThumbnail(45, 45),
+                        TileImage = _tileViewPort.GetImage(),
+                    };
+                    _bitmaskTiles.Tiles.Add(tile);
+                }
+                else if (tile != null)
+                {
+                    tile.Quads = exportQuads;
+                    tile.Time = (float)numericTime.Value;
+                    tile.Thumbnail = _tileViewPort.GetThumbnail(45, 45);
+                    tile.TileImage = _tileViewPort.GetImage();
+                }
+                _quadList.Clear(quadsStr);
+            }
+            else
+                _quadList.Clear(quadsStr);
+        }
+
         public void Export()
         {
-            var quads = _quadList.ExportQuads();
-            Tile tile = new Tile(new Quad(quads), _tileSetData.ExportString, quads.Count > 4 ? (double?)numericTime.Value : null);
-            Program.TileMapEditor.NewTile(tile, _tileViewPort.GetImage(), _tileViewPort.GetThumbnail(40, 40), previousIndex);
+            if (!_bitmaskMode)
+            {
+                var quads = _quadList.ExportQuads();
+                Tile tile = new Tile(new Quad(quads), _tileSetData.ExportString, quads.Count > 4 ? (double?)numericTime.Value : null);
+                Program.TileMapEditor.NewTile(tile, _tileViewPort.GetImage(), _tileViewPort.GetThumbnail(40, 40), previousIndex);
+            }
+            else // TODO
+            {
+                _bitmaskTiles.Thumbnail = _tileViewPort.GetThumbnail(40, 40);
+                throw new NotImplementedException();
+            }
         }
 
         private void HideForm(object sender, FormClosingEventArgs e)
@@ -188,8 +234,8 @@ namespace PeachFox
             if (button != null)
             {
                 if (button.BackColor == Color.Gainsboro)
-                    button.BackColor = Color.LightYellow;
-                else if (button.BackColor == Color.LightYellow)
+                    button.BackColor = Color.SkyBlue;
+                else if (button.BackColor == Color.SkyBlue)
                     button.BackColor = Color.Gainsboro;
                 else
                     MessageBox.Show("Unknown bitmask button color");
@@ -232,7 +278,11 @@ namespace PeachFox
                     buttonMask32.Visible = true;
                     buttonMask128.Visible = true;
                     break;
+                default:
+                    throw new NotImplementedException();
             }
+            if (_bitmaskTiles != null)
+                _bitmaskTiles.Mode = _bitmaskButtons.Count;
             ChangeBitmaskTile();
         }
 
@@ -243,15 +293,55 @@ namespace PeachFox
             return button;
         }
 
-        private void ChangeBitmaskTile()
+        private void ChangeBitmaskTile(int bitmask = -1)
         {
-            int bitmask = 0;
-            foreach (Button button in _bitmaskButtons)
+            if (bitmask == -1)
             {
-                if (button.BackColor == Color.LightYellow)
-                    bitmask += (int)button.Tag;
+                bitmask = 0;
+                foreach (Button button in _bitmaskButtons)
+                {
+                    if (button.BackColor == Color.SkyBlue)
+                        bitmask += (int)button.Tag;
+                }
             }
             buttonTILE.Text = bitmask.ToString();
+            SelectBitmaskTile(bitmask);
+        }
+
+        private void SelectBitmaskTile(int bitmask)
+        {
+            BitmaskTile tile = FindBitmaskTile(bitmask);
+            if (tile != null)
+            {
+                SetQuads(tile.Quads);
+                if (tile.Quads.Count > 4)
+                    numericTime.Value = (decimal)tile.Time;
+                buttonTILE.Image = tile.Thumbnail;
+                buttonTILE.Refresh();
+            }
+            else
+            {
+                SetQuads(null);
+                numericTime.Value = 0;
+                buttonTILE.Image = null;
+                buttonTILE.Refresh();
+            }
+            _bitmaskSelected = bitmask;
+        }
+
+        private BitmaskTile FindBitmaskTile(int bitmask)
+        {
+            if (_bitmaskTiles == null)
+                return null;
+            foreach (var tile in _bitmaskTiles.Tiles)
+                if (tile.Bit == bitmask)
+                    return tile;
+            return null;
+        }
+
+        private BitmaskTile GetSelectedBitmaskTile()
+        {
+            return FindBitmaskTile(_bitmaskSelected);
         }
     }
 }

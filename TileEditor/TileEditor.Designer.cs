@@ -12,6 +12,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonRemove = new System.Windows.Forms.Button();
             this.tabPageBitmask = new System.Windows.Forms.TabPage();
+            this.checkBoxBitmaskMode = new System.Windows.Forms.CheckBox();
             this.buttonMask128 = new System.Windows.Forms.Button();
             this.buttonMask64 = new System.Windows.Forms.Button();
             this.buttonMask32 = new System.Windows.Forms.Button();
@@ -36,7 +37,6 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.labelTime = new System.Windows.Forms.Label();
             this.numericTime = new System.Windows.Forms.NumericUpDown();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBoxBitmaskMode = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxViewPort.SuspendLayout();
             this.groupBoxControls.SuspendLayout();
@@ -206,6 +206,16 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.tabPageBitmask.Text = "Bitmask";
             this.tabPageBitmask.UseVisualStyleBackColor = true;
             // 
+            // checkBoxBitmaskMode
+            // 
+            this.checkBoxBitmaskMode.AutoSize = true;
+            this.checkBoxBitmaskMode.Location = new System.Drawing.Point(162, 6);
+            this.checkBoxBitmaskMode.Name = "checkBoxBitmaskMode";
+            this.checkBoxBitmaskMode.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxBitmaskMode.TabIndex = 9;
+            this.toolTip.SetToolTip(this.checkBoxBitmaskMode, "Change bitmask mode");
+            this.checkBoxBitmaskMode.UseVisualStyleBackColor = true;
+            // 
             // buttonMask128
             // 
             this.buttonMask128.BackColor = System.Drawing.Color.Gainsboro;
@@ -269,13 +279,14 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             // buttonTILE
             // 
             this.buttonTILE.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.buttonTILE.Enabled = false;
             this.buttonTILE.FlatAppearance.BorderSize = 0;
             this.buttonTILE.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonTILE.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonTILE.Location = new System.Drawing.Point(55, 55);
             this.buttonTILE.Name = "buttonTILE";
             this.buttonTILE.Size = new System.Drawing.Size(45, 45);
             this.buttonTILE.TabIndex = 4;
+            this.buttonTILE.Text = "0";
             this.buttonTILE.UseVisualStyleBackColor = true;
             // 
             // buttonMask8
@@ -523,16 +534,6 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             // toolTip
             // 
             this.toolTip.AutomaticDelay = 200;
-            // 
-            // checkBoxBitmaskMode
-            // 
-            this.checkBoxBitmaskMode.AutoSize = true;
-            this.checkBoxBitmaskMode.Location = new System.Drawing.Point(162, 6);
-            this.checkBoxBitmaskMode.Name = "checkBoxBitmaskMode";
-            this.checkBoxBitmaskMode.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxBitmaskMode.TabIndex = 9;
-            this.toolTip.SetToolTip(this.checkBoxBitmaskMode, "Change bitmask mode");
-            this.checkBoxBitmaskMode.UseVisualStyleBackColor = true;
             // 
             // TileEditorForm
             // 
