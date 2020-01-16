@@ -125,10 +125,13 @@ namespace PeachFox
             if (bitmask == false)
             {
                 tabControl.SelectedTab = tabPageQuads;
-                Tile tile = (Tile)obj;
-                SetQuads(tile.Quad.Values);
-                if (tile.Quad.Values.Count > 4)
-                    numericTime.Value = (decimal)tile.Time;
+                if (obj != null)
+                {
+                    Tile tile = (Tile)obj;
+                    SetQuads(tile.Quad.Values);
+                    if (tile.Quad.Values.Count > 4)
+                        numericTime.Value = (decimal)tile.Time;
+                }
             }
             else
             {
