@@ -251,31 +251,31 @@ namespace PeachFox
                 case BitmaskMode.Four:
                     _bitmaskButtons = new List<Button>
                     {
-                        SetButtonTag(buttonMask2,1),
-                        SetButtonTag(buttonMask16,2),
-                        SetButtonTag(buttonMask64,4),
-                        SetButtonTag(buttonMask8,8),
+                        buttonMask1,
+                        buttonMask2,
+                        buttonMask4,
+                        buttonMask8,
                     };
-                    buttonMask1.Visible = false;
-                    buttonMask4.Visible = false;
+                    buttonMask16.Visible = false;
                     buttonMask32.Visible = false;
+                    buttonMask64.Visible = false;
                     buttonMask128.Visible = false;
                     break;
                 case BitmaskMode.Eight:
                     _bitmaskButtons = new List<Button>
                     {
                         buttonMask1,
-                        SetButtonTag(buttonMask2,2),
+                        buttonMask2,
                         buttonMask4,
-                        SetButtonTag(buttonMask8,8),
-                        SetButtonTag(buttonMask16,16),
+                        buttonMask8,
+                        buttonMask16,
                         buttonMask32,
-                        SetButtonTag(buttonMask64,64),
+                        buttonMask64,
                         buttonMask128,
                     };
-                    buttonMask1.Visible = true;
-                    buttonMask4.Visible = true;
+                    buttonMask16.Visible = true;
                     buttonMask32.Visible = true;
+                    buttonMask64.Visible = true;
                     buttonMask128.Visible = true;
                     break;
                 default:

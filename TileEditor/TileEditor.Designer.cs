@@ -222,7 +222,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.buttonMask128.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.buttonMask128.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.buttonMask128.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMask128.Location = new System.Drawing.Point(104, 106);
+            this.buttonMask128.Location = new System.Drawing.Point(4, 105);
             this.buttonMask128.Name = "buttonMask128";
             this.buttonMask128.Size = new System.Drawing.Size(45, 45);
             this.buttonMask128.TabIndex = 8;
@@ -237,7 +237,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.buttonMask64.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.buttonMask64.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.buttonMask64.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMask64.Location = new System.Drawing.Point(55, 106);
+            this.buttonMask64.Location = new System.Drawing.Point(103, 105);
             this.buttonMask64.Name = "buttonMask64";
             this.buttonMask64.Size = new System.Drawing.Size(45, 45);
             this.buttonMask64.TabIndex = 7;
@@ -252,7 +252,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.buttonMask32.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.buttonMask32.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.buttonMask32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMask32.Location = new System.Drawing.Point(4, 106);
+            this.buttonMask32.Location = new System.Drawing.Point(103, 5);
             this.buttonMask32.Name = "buttonMask32";
             this.buttonMask32.Size = new System.Drawing.Size(45, 45);
             this.buttonMask32.TabIndex = 6;
@@ -267,7 +267,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.buttonMask16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.buttonMask16.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.buttonMask16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMask16.Location = new System.Drawing.Point(104, 55);
+            this.buttonMask16.Location = new System.Drawing.Point(4, 4);
             this.buttonMask16.Name = "buttonMask16";
             this.buttonMask16.Size = new System.Drawing.Size(45, 45);
             this.buttonMask16.TabIndex = 5;
@@ -310,7 +310,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.buttonMask4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.buttonMask4.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.buttonMask4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMask4.Location = new System.Drawing.Point(104, 4);
+            this.buttonMask4.Location = new System.Drawing.Point(53, 105);
             this.buttonMask4.Name = "buttonMask4";
             this.buttonMask4.Size = new System.Drawing.Size(45, 45);
             this.buttonMask4.TabIndex = 2;
@@ -325,7 +325,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.buttonMask2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.buttonMask2.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.buttonMask2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMask2.Location = new System.Drawing.Point(55, 4);
+            this.buttonMask2.Location = new System.Drawing.Point(103, 55);
             this.buttonMask2.Name = "buttonMask2";
             this.buttonMask2.Size = new System.Drawing.Size(45, 45);
             this.buttonMask2.TabIndex = 1;
@@ -340,7 +340,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.buttonMask1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.buttonMask1.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.buttonMask1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMask1.Location = new System.Drawing.Point(4, 4);
+            this.buttonMask1.Location = new System.Drawing.Point(54, 4);
             this.buttonMask1.Name = "buttonMask1";
             this.buttonMask1.Size = new System.Drawing.Size(45, 45);
             this.buttonMask1.TabIndex = 0;
