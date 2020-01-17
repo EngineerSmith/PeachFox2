@@ -97,8 +97,17 @@ namespace PeachFox
             {
                 if (!_bitmaskMode && tabControl.SelectedTab == tabPageBitmask)
                 {
-                    tabControl.SelectedTab = tabPageQuads;
-                    MessageBox.Show("Do you want to convert your tile to bitmasked?"); //TODO ask if they want to convert Tile into Bitmasked tile
+                    DialogResult result = MessageBox.Show("Do you want to convert your tile to bitmasked?", "Convert to Bitmask Tile", MessageBoxButtons.YesNo); //TODO ask if they want to convert Tile into Bitmasked tile
+                    if (result == DialogResult.Yes)
+                    {
+                        _bitmaskMode = true;
+                        _bitmaskTiles = new BitmaskTiles()
+                        {
+                            Mode = _bitmaskButtons.Count,
+                        };
+                    }
+                    else
+                        tabControl.SelectedTab = tabPageQuads;
                 }
             };
 
@@ -140,8 +149,8 @@ namespace PeachFox
                     Mode = _bitmaskButtons.Count,
                 };
                 tabControl.SelectedTab = tabPageBitmask;
-                ChangeBitmaskTile(0);
             }
+            ChangeBitmaskTile(0);
             _quadSettings.ImageWidth = image.Width;
             _quadSettings.ImageHeight = image.Height;
             CellSize = tileSet.CellSize;
