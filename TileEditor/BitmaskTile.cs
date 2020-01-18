@@ -25,5 +25,18 @@ namespace PeachFox.TileEditor
         {
             Id = id;
         }
+
+        public List<PeachFox.Tile> GetTiles()
+        {
+            List<PeachFox.Tile> tiles = new List<PeachFox.Tile>();
+            foreach (var tile in Tiles)
+            {
+                PeachFox.Tile t = new PeachFox.Tile(new Quad(tile.Quads), tile.Image, tile.Quads.Count > 4 ? (double?)tile.Time : null);
+                t.SetValue("BitmaskID", Id);
+                t.SetValue("BitmaskMode", Mode);
+                tiles.Add(t);
+            }
+            return tiles;
+        }
     }
 }

@@ -269,6 +269,11 @@ namespace PeachFox
             }
         }
 
+        public void NewBitmaskTile(TileEditor.BitmaskTiles tiles, int previousIndex = -1)
+        {
+            throw new NotImplementedException();
+        }
+
         public void RedrawViewPort()
         {
             _tileMapViewPort.Redraw();

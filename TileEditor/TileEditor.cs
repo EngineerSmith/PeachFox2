@@ -144,10 +144,15 @@ namespace PeachFox
             }
             else
             {
-                _bitmaskTiles = new BitmaskTiles()
+                if (obj == null)
                 {
-                    Mode = _bitmaskButtons.Count,
-                };
+                    _bitmaskTiles = new BitmaskTiles()
+                    {
+                        Mode = _bitmaskButtons.Count,
+                    };
+                }
+                else
+                    _bitmaskTiles = (BitmaskTiles)obj;
                 tabControl.SelectedTab = tabPageBitmask;
             }
             ChangeBitmaskTile(0);
@@ -167,33 +172,34 @@ namespace PeachFox
                     quadsStr.Add(_quadSettings.GenerateString(quads[i], quads[i + 1], quads[i + 2], quads[i + 3]));
             }
             if (_bitmaskMode)
+                UpdateBitmaskTile();
+            _quadList.Clear(quadsStr);
+        }
+
+        private void UpdateBitmaskTile()
+        {
+            BitmaskTile tile = GetSelectedBitmaskTile();
+            List<int> exportQuads = _quadList.ExportQuads();
+            if (tile == null && exportQuads.Count > 0)
             {
-                BitmaskTile tile = GetSelectedBitmaskTile();
-                List<int> exportQuads = _quadList.ExportQuads();
-                if (tile == null && exportQuads.Count > 0)
+                tile = new BitmaskTile()
                 {
-                    tile = new BitmaskTile()
-                    {
-                        Bit = _bitmaskSelected,
-                        Image = _tileSetData.ExportString,
-                        Quads = exportQuads,
-                        Time = (float)numericTime.Value,
-                        Thumbnail = _tileViewPort.GetThumbnail(45, 45),
-                        TileImage = _tileViewPort.GetImage(),
-                    };
-                    _bitmaskTiles.Tiles.Add(tile);
-                }
-                else if (tile != null)
-                {
-                    tile.Quads = exportQuads;
-                    tile.Time = (float)numericTime.Value;
-                    tile.Thumbnail = _tileViewPort.GetThumbnail(45, 45);
-                    tile.TileImage = _tileViewPort.GetImage();
-                }
-                _quadList.Clear(quadsStr);
+                    Bit = _bitmaskSelected,
+                    Image = _tileSetData.ExportString,
+                    Quads = exportQuads,
+                    Time = (float)numericTime.Value,
+                    Thumbnail = _tileViewPort.GetThumbnail(45, 45),
+                    TileImage = _tileViewPort.GetImage(),
+                };
+                _bitmaskTiles.Tiles.Add(tile);
             }
-            else
-                _quadList.Clear(quadsStr);
+            else if (tile != null)
+            {
+                tile.Quads = exportQuads;
+                tile.Time = (float)numericTime.Value;
+                tile.Thumbnail = _tileViewPort.GetThumbnail(45, 45);
+                tile.TileImage = _tileViewPort.GetImage();
+            }
         }
 
         public void Export()
@@ -204,10 +210,11 @@ namespace PeachFox
                 Tile tile = new Tile(new Quad(quads), _tileSetData.ExportString, quads.Count > 4 ? (double?)numericTime.Value : null);
                 Program.TileMapEditor.NewTile(tile, _tileViewPort.GetImage(), _tileViewPort.GetThumbnail(40, 40), previousIndex);
             }
-            else // TODO
+            else
             {
+                ChangeBitmaskTile(0);
                 _bitmaskTiles.Thumbnail = _tileViewPort.GetThumbnail(40, 40);
-                throw new NotImplementedException();
+                Program.TileMapEditor.NewBitmaskTile(_bitmaskTiles, previousIndex);
             }
         }
 
