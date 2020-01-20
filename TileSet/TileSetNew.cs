@@ -9,7 +9,7 @@ namespace PeachFox
     public partial class TileSetNewForm : Form
     {
         private int _width = 1, _height = 1;
-        public TileSetNewForm(NewTileSetCallback callback, TileSetData data = null)
+        public TileSetNewForm(NewTileSetCallback callback, int cellSize, TileSetData data = null)
         {
             InitializeComponent();
             EnableTileSetOptions(false);
@@ -27,7 +27,10 @@ namespace PeachFox
                 numericCellSize.Value = data.CellSize;
             }
             else
+            {
                 data = new TileSetData();
+                numericCellSize.Value = cellSize;
+            }
 
             openFileDialog.Filter = "(*.png)|*.png|All files (*.*)|*.*";
 

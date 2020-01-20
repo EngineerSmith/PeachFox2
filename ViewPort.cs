@@ -19,7 +19,7 @@ namespace PeachFox
                 PictureBox.Resize += Resize;
                 PictureBox.Paint += Draw;
                 //Debug
-                if (DebugZoom) 
+                if (_debugZoom) 
                 {
                     PictureBox.MouseMove += DebugZoomMouseMove;
                     PictureBox.Paint += DebugZoomDraw;
@@ -48,7 +48,7 @@ namespace PeachFox
 
         public bool EnableMouseTranslation = true;
 
-        private bool DebugZoom = false;
+        private bool _debugZoom = false;
         private float _debugTranslateX = 0f, _debugTranslateY = 0f, _debugZoomFactor = 1f;
 
         public void Reset()
@@ -138,6 +138,7 @@ namespace PeachFox
         private void DebugZoomMouseMove(object sender, MouseEventArgs e)
         {
             //120 used as that is the value of e.Delta when mouse wheel moves to zoom in
+            // Magical debug number
             _debugZoomFactor = ZoomFactor + (120 * ScrollStep); 
 
             float width = (PictureBox.Width / _debugZoomFactor) /2, height = (PictureBox.Height / _debugZoomFactor) /2;

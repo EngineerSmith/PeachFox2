@@ -31,10 +31,8 @@ namespace PeachFox
 
     public class Tile
     {
-        //
         public List<Tag> Tags;
 
-        //
         public System.Drawing.Image Thumbnail;
     }
 
@@ -55,12 +53,10 @@ namespace PeachFox
 
     public class Layer
     {
-        //Layer details
         public string Name;
         public List<LayerTile> Tiles;
         public List<Tag> Tags;
 
-        //
         public System.Drawing.Image Image;
         public bool DrawToViewport = true;
 

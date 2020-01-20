@@ -11,6 +11,8 @@ namespace PeachFox
     public partial class TileMapEditorForm : Form
     {
         private TileMapViewPort _tileMapViewPort;
+        public int CellSize { get => _tileMapViewPort.CellSize; }
+
         private Dictionary<string, TileSet.TileSetData> _tilesets = new Dictionary<string, TileSet.TileSetData>();
 
         private Tilemap _tilemap;

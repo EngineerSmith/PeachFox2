@@ -54,7 +54,8 @@ namespace PeachFox.LuaTilemap
         {
             return value.Root;
         }
-        public static explicit operator LuaRoot(LsonDict value)
+
+        public static implicit operator LuaRoot(LsonDict value)
         {
             return new LuaRoot(value);
         }
@@ -83,11 +84,11 @@ namespace PeachFox.LuaTilemap
             LsonDict tiles = map["tiles"].GetDict();
             tilemap.Tiles = new List<Tile>(tiles.Count());
             for (int i = 0; i < tiles.Count(); i++)
-                tilemap.Tiles[i] = GetTile(new LuaRoot(tiles[i + 1].GetDict()));
+                tilemap.Tiles[i] = GetTile(tiles[i + 1].GetDict());
             LsonDict layers = map["layers"].GetDict();
             tilemap.Layers = new List<Layer>(layers.Count());
             for (int i = 0; i < layers.Count(); i++)
-                tilemap.Layers[i] = GetLayer(new LuaRoot(tiles[i + 1].GetDict()));
+                tilemap.Layers[i] = GetLayer(tiles[i + 1].GetDict());
             return tilemap;
         }
 
@@ -236,7 +237,7 @@ namespace PeachFox.LuaTilemap
             };
             layer.Tiles = new List<LayerTile>(root.Root.Count() - layer.Tags.Count());
             for (int i = 0; i < layer.Tiles.Count(); i++)
-                layer.Tiles[i] = GetLayerTile(new LuaRoot(root.Root[i + 1].GetDict()));
+                layer.Tiles[i] = GetLayerTile(root.Root[i + 1].GetDict());
             return layer;
         }
     }

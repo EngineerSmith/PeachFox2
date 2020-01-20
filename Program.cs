@@ -40,7 +40,7 @@ namespace PeachFox
         public static void NewTileSetNewForm(NewTileSetCallback callback, TileSet.TileSetData data = null)
         {
             _tileSetNewForm?.Close();
-            _tileSetNewForm = new TileSetNewForm(callback, data);
+            _tileSetNewForm = new TileSetNewForm(callback, TileMapEditor.CellSize, data);
             _tileSetNewForm.FormClosed += (sender, e) => { _tileSetNewForm = null; };
             _tileSetNewForm.Show();
             _tileSetNewForm.Activate();
