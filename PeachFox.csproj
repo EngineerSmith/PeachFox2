@@ -71,10 +71,10 @@
       <DependentUpon>TileEditor.cs</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="TileEditor\Tile.cs" />
     <Compile Include="TileEditor\TileViewPort.cs" />
     <Compile Include="LuaTilemap.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Tilemap.cs" />
     <Compile Include="TileMapEditor\Cell.cs" />
     <Compile Include="TileMapEditor\LayerAttributes.cs" />
     <Compile Include="TileMapEditor\LayerEditor.cs">

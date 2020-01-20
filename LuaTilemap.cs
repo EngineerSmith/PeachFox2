@@ -8,381 +8,236 @@ using System.Linq;
 ///local tiles =
 ///{
 ///     {quad={ 0, 0,16,16}, image="tileset.base"}, -- Basic tile
-///     {quad={ 0,16,16,16, 16,16,16,16}, time=0.1, image="tileset.base"} --Animated Tile
+///     {quad={ 0,16,16,16, 16,16,16,16}, time=0.1, image="tileset.base"}, --Animated Tile
 ///}
 ///
 ///local layers =
 ///{
 ///    {
-///        name="Foreground", -- SetValue("name", "Foreground")
-///        {tile=1, x= 0, y= 0, colliable=true}, -- SetValue("colliable", true)
-///        {tile=2, x=16, y=16, colliable=false}, -- SetValue("colliable", true)
+///        name="Foreground", -- name is a custom tag
+///        {tile=1, x= 0, y= 0, colliable=true}, --colliable is a custom tag
+///        {tile=2, x=16, y=16, colliable=false},
 ///    },
 ///    {
-///        name="Background" -- SetValue("name", "Background")
+///        name="Background",
 ///    }
 ///}
 ///
-///return {tiles=tiles, layers=layers}
+///return { tiles=tiles, layers=layers}
 
-namespace PeachFox
+namespace PeachFox.LuaTilemap
 {
-    public class Quad
+    class LuaRoot
     {
-        public List<int> Values
+        public readonly LsonDict Root;
+
+        public LuaRoot()
         {
-            get
+            Root = new LsonDict();
+        }
+        public LuaRoot(LsonDict root)
+        {
+            Root = root;
+        }
+
+        public void SetValue(LsonValue key, LsonValue value)
+        {
+            Root[key] = value;
+        }
+
+        public LsonValue GetValue(LsonValue key)
+        {
+            return Root[key];
+        }
+
+        public static explicit operator LsonDict(LuaRoot value)
+        {
+            return value.Root;
+        }
+        public static explicit operator LuaRoot(LsonDict value)
+        {
+            return new LuaRoot(value);
+        }
+    }
+
+    public static class LuaTilemap
+    {
+        public static string ToLua(Tilemap tilemap)
+        {
+            Dictionary<string, LsonValue> map = new Dictionary<string, LsonValue>();
+            LuaRoot tiles = new LuaRoot();
+            for (int i = 0; i < tilemap.Tiles.Count(); i++)
+                tiles.SetValue(i + 1, ConstructTile(tilemap.Tiles[i]).Root);
+            map["tiles"] = tiles.Root;
+            LuaRoot layers = new LuaRoot();
+            for (int i = 0; i < tilemap.Layers.Count(); i++)
+                layers.SetValue(i + 1, ConstuctLayer(tilemap.Layers[i]).Root);
+            map["layers"] = layers.Root;
+            return LsonVars.ToString(map);
+        }
+
+        public static Tilemap FromLua(string filePath)
+        {
+            Dictionary<string, LsonValue> map = LsonVars.Parse(System.IO.File.ReadAllText(filePath));
+            Tilemap tilemap = new Tilemap();
+            LsonDict tiles = map["tiles"].GetDict();
+            tilemap.Tiles = new List<Tile>(tiles.Count());
+            for (int i = 0; i < tiles.Count(); i++)
+                tilemap.Tiles[i] = GetTile(new LuaRoot(tiles[i + 1].GetDict()));
+            LsonDict layers = map["layers"].GetDict();
+            tilemap.Layers = new List<Layer>(layers.Count());
+            for (int i = 0; i < layers.Count(); i++)
+                tilemap.Layers[i] = GetLayer(new LuaRoot(tiles[i + 1].GetDict()));
+            return tilemap;
+        }
+
+        private static void AddTags(ref LuaRoot root, List<Tag> tags)
+        {
+            foreach(Tag tag in tags)
+                if (tag.Type == Tag.TagType.STRING)
+                    root.SetValue(tag.Name, tag.StringValue);
+                else if (tag.Type == Tag.TagType.NUMBER)
+                    root.SetValue(tag.Name, tag.NumberValue);
+        }
+
+        private static List<Tag> GetTags(LuaRoot root)
+        {
+            List<Tag> tags = new List<Tag>();
+            foreach (var kvp in root.Root)
             {
-                List<int> r = new List<int>();
-                for (int i = 1; _root.ContainsKey(i); i++)
-                    r.Add(_root[i].GetInt());
-                return r;
+                if (kvp.Key.GetStringSafe() == null)
+                    continue;
+                if (kvp.Value.GetDecimalSafe() != null)
+                    tags.Add(new Tag(kvp.Key.GetString(), kvp.Value.GetDecimal()));
+                else if (kvp.Value.GetStringSafe() != null)
+                    tags.Add(new Tag(kvp.Key.GetString(), kvp.Value.GetString()));
             }
-            set
-            {
-                for (int i = 0; i < value.Count; i++)
-                    _root[i+1] = value[i];
-            }
+            return tags;
         }
 
-        private readonly LsonDict _root;
-
-        public Quad()
+        private static bool SearchForTag(List<Tag> tags, string key)
         {
-            _root = new LsonDict();
-        }
-        public Quad(List<int> quad)
-        {
-            _root = new LsonDict();
-            Values = quad;
-        }
-        public Quad(LsonDict root)
-        {
-            _root = root;
+            return tags.SingleOrDefault(tag => tag.Name == key) != null;
         }
 
-        public static explicit operator LsonDict(Quad value)
+        private static void RemoveTag(ref List<Tag> tags, string key)
         {
-            return value._root;
-        }
-        public static explicit operator Quad(LsonDict value)
-        {
-            return new Quad(value);
+            int index = tags.FindIndex(tag => tag.Name == key);
+            if (index != -1)
+                tags.RemoveAt(index);
         }
 
-        public static bool operator ==(Quad right, Quad left)
-        {
-            List<int> a = right?.Values;
-            List<int> b = left?.Values;
-            if (a == null) return b == null;
-            if (b == null || a.Count != b.Count) return false;
-            for (int i = 0; i < a.Count; i++)
-                if (!(a[i] == b[i]))
-                    return false;
-            return true;
-        }
-
-        public static bool operator !=(Quad right, Quad left)
-        {
-            return !(right == left);
-        }
-        /// MSVS Auto-Generated
-        public override bool Equals(object obj)
-        {
-            return obj is Quad quad;
-        }
-        public override int GetHashCode()
-        {
-            var hashCode = -1006183635;
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<int>>.Default.GetHashCode(Values);
-            hashCode = hashCode * -1521134295 + EqualityComparer<LsonDict>.Default.GetHashCode(_root);
-            return hashCode;
-        }
-    }
-
-    public class Tile
-    {
-        public Quad Quad
-        {
-            get => (Quad)_root["quad"];
-            set => _root["quad"] = (LsonDict)value;
-        }
-        public double? Time
-        {
-            get => _root.ContainsKey("time") ? _root["time"].GetDoubleSafe() : null;
-            set => _root["time"] = value;
-        }
-        public string Image
-        {
-            get => _root["image"].GetStringSafe();
-            set => _root["image"] = value;
-        }
-
-        private readonly LsonDict _root;
-
-        public Tile()
-        {
-            _root = new LsonDict();
-        }
-        public Tile(Quad quad, string image, double? time = null)
-        {
-            _root = new LsonDict();
-            Quad = quad;
-            Image = image;
-            if (time != null) Time = time;
-        }
-        public Tile(LsonDict root)
-        {
-            _root = root;
-        }
-
-        public void SetValue(string key, LsonValue value)
-        {
-            _root[key] = value;
-        }
-
-        public static explicit operator LsonDict(Tile value)
-        {
-            return value._root;
-        }
-        public static explicit operator Tile(LsonDict value)
-        {
-            return new Tile(value);
-        }
-        public static bool operator ==(Tile right, Tile left)
-        {
-            if (object.ReferenceEquals(null, right)) 
-                return object.ReferenceEquals(null, left);
-            if (object.ReferenceEquals(null, left))
-                return false;
-            return (right.Image == left.Image) && (right.Time == left.Time) && (right.Quad == left.Quad);
-        }
-
-        public static bool operator !=(Tile right, Tile left)
-        {
-            return !(right == left);
-        }
-
-        ///MSVS Auto-Generated
-        public override bool Equals(object obj)
-        {
-            return obj is Tile tile;
-        }
-        public override int GetHashCode()
-        {
-            var hashCode = -2036332282;
-            hashCode = hashCode * -1521134295 + EqualityComparer<Quad>.Default.GetHashCode(Quad);
-            hashCode = hashCode * -1521134295 + Time.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Image);
-            hashCode = hashCode * -1521134295 + EqualityComparer<LsonDict>.Default.GetHashCode(_root);
-            return hashCode;
-        }
-    }
-
-    public class LayerTile
-    {
-        public int? TileIndex
-        {
-            get => _root["tile"].GetIntSafe();
-            set => _root["tile"] = value;
-        }
-        public int? X
-        {
-            get => _root["x"].GetIntSafe();
-            set => _root["x"] = value;
-        }
-        public int? Y
-        {
-            get => _root["y"].GetIntSafe();
-            set => _root["y"] = value;
-        }
-
-        private readonly LsonDict _root;
-
-        public LayerTile()
-        {
-            _root = new LsonDict();
-        }
-        public LayerTile(int tileIndex, int x, int y)
-        {
-            _root = new LsonDict();
-            TileIndex = tileIndex;
-            X = x;
-            Y = y;
-        }
-        public LayerTile(LsonDict root)
-        {
-            _root = root;
-        }
-
-        public void SetValue(string key, LsonValue value)
-        {
-            _root[key] = value;
-        }
-
-        public LsonSafeValue GetValue(string key)
-        {
-            return _root.ContainsKey(key) ? _root[key].Safe : null;
-        }
-
-        public Dictionary<LsonValue, LsonValue> GetValues()
-        {
-            Dictionary<LsonValue, LsonValue> values = new Dictionary<LsonValue, LsonValue>();
-            foreach (KeyValuePair<LsonValue, LsonValue> value in _root)
-                if (value.Key.GetIntSafe() == null)
-                    values[value.Key] = value.Value;
-            return values;
-        }
-
-        public static explicit operator LsonDict(LayerTile value)
-        {
-            return value._root;
-        }
-        public static explicit operator LayerTile(LsonDict value)
-        {
-            return new LayerTile(value);
-        }
-    }
-
-    public class Layer
-    {
-        private List<LayerTile> _tiles = new List<LayerTile>();
-        public List<LayerTile> Tiles { get => _tiles; }
-
-        public void Set(LayerTile tile)
+        private static LuaRoot ConstructTile(Tile tile)
         {
             if (tile == null)
-                throw new System.Exception("Tile cannot be null");
-            LayerTile t = _tiles.SingleOrDefault(e => e.X == tile.X && e.Y == tile.Y);
-            if(t != null)
-                t.TileIndex = tile.TileIndex;
+                return null;
+            if (tile is ClassicTile classicTile)
+                return ConstructClassicTile(classicTile);
             else
-                _tiles.Add(tile);
+            {
+                LuaRoot t = new LuaRoot();
+                AddTags(ref t, tile.Tags);
+                return t;
+            }
         }
 
-        public void Remove(int x, int y)
+        private static Tile GetTile(LuaRoot root)
         {
-            LayerTile t = _tiles.SingleOrDefault(e => e.X == x && e.Y == y);
-            if (t != null)
-                _tiles.Remove(t);
+            if (root == null)
+                return null;
+            Tile tile = new Tile {
+                Tags = GetTags(root)
+            };
+
+            if (SearchForTag(tile.Tags, "image") && SearchForTag(tile.Tags, "quad"))
+            {
+                tile = GetClassicTile(root);
+                RemoveTag(ref tile.Tags, "image");
+                RemoveTag(ref tile.Tags, "quad");
+                RemoveTag(ref tile.Tags, "time");
+            }
+
+            return tile;
         }
 
-        private readonly LsonDict _root;
-
-        public Layer()
+        private static LuaRoot ConstructClassicTile(ClassicTile tile)
         {
-            _root = new LsonDict();
-        }
-        public Layer(LsonDict root)
-        {
-            _root = root;
-            for (int i = 1; _root.ContainsKey(i); i++)
-                _tiles.Add((LayerTile)_root[i]);
-        }
-
-        public void SetValue(string key, LsonValue value)
-        {
-            if (value != null)
-                _root[key] = value;
-            else
-                _root.Remove(key);
+            if (tile == null)
+                return null;
+            LuaRoot t = new LuaRoot();
+            t.SetValue("image", tile.Image);
+            LuaRoot quad = new LuaRoot();
+            for (int i = 0; i < tile.Quads.Count; i++)
+                quad.SetValue(i + 1, tile.Quads[i]);
+            t.SetValue("quad", quad.Root);
+            if (tile.Quads.Count > 4)
+                t.SetValue("time", tile.Time);
+            AddTags(ref t, tile.Tags);
+            return t;
         }
 
-        public LsonSafeValue GetValue(string key)
+        private static ClassicTile GetClassicTile(LuaRoot root)
         {
-            return _root.ContainsKey(key) ? _root[key].Safe : null;
+            if (root == null)
+                return null;
+            ClassicTile tile = new ClassicTile();
+            tile.Image = root.GetValue("image").GetString();
+            LsonDict quads = root.GetValue("quad").GetDict();
+            tile.Quads = new List<int>(quads.Count());
+            for (int i = 0; i < quads.Count(); i++)
+                tile.Quads[i] = quads[i + 1].GetInt();
+            if (tile.Quads.Count() > 4)
+                tile.Time = (float)root.GetValue("time").GetDouble();
+            return tile;
         }
 
-        public Dictionary<LsonValue, LsonValue> GetValues()
+        private static LuaRoot ConstuctLayerTile(LayerTile tile)
         {
-            Dictionary<LsonValue, LsonValue> values = new Dictionary<LsonValue, LsonValue>();
-            foreach (KeyValuePair<LsonValue, LsonValue> value in _root)
-                if (value.Key.GetIntSafe() == null)
-                    values[value.Key] = value.Value;
-            return values;
+            if (tile == null)
+                return null;
+            LuaRoot t = new LuaRoot();
+            t.SetValue("tile", tile.Index + 1);
+            t.SetValue("x", tile.X);
+            t.SetValue("y", tile.Y);
+            AddTags(ref t, tile.Tags);
+            return t;
         }
 
-        public static explicit operator LsonDict(Layer value)
+        private static LayerTile GetLayerTile(LuaRoot root)
         {
-            for (int i = 0; i < value._tiles.Count; i++)
-                value._root[i+1] = (LsonDict)value._tiles[i];
-            return value._root;
-        }
-        public static explicit operator Layer(LsonDict value)
-        {
-            return new Layer(value);
-        }
-    }
-
-    public class Tilemap
-    {
-        private Dictionary<string, LsonValue> _tables;
-
-        public List<Tile> Tiles { get; private set; }
-        public List<Layer> Layers { get; set; }
-
-
-        public Tilemap(string luatable = null)
-        {
-            if (luatable == null)
-                NewTileMap();
-            else
-                OpenTileMap(luatable);
+            if (root == null)
+                return null;
+            return new LayerTile
+            {
+                Index = root.GetValue("tile").GetInt() - 1,
+                X = root.GetValue("x").GetInt(),
+                Y = root.GetValue("y").GetInt(),
+            };
         }
 
-        public void OpenTileMap(string luaTable)
+        private static LuaRoot ConstuctLayer(Layer layer)
         {
-            _tables = LsonVars.Parse(luaTable);
-
-            // Tiles
-            Tiles = new List<Tile>();
-            var tiles = _tables["tiles"].GetDictSafe();
-            if (tiles != null)
-                foreach (var tile in tiles)
-                    Tiles.Add((Tile)tile.Value);
-            else
-                _tables["tiles"] = new LsonDict();
-
-            // Layers
-            Layers = new List<Layer>();
-            var layers = _tables["layers"].GetDictSafe();
-            if (layers != null)
-                foreach (var layer in layers)
-                    Layers.Add((Layer)layer.Value);
-            else
-                _tables["layers"] = new LsonDict();
+            if (layer == null)
+                return null;
+            LuaRoot l = new LuaRoot();
+            AddTags(ref l, layer.Tags);
+            for (int i = 0; i < layer.Tiles.Count(); i++)
+                l.SetValue(i + 1, ConstuctLayerTile(layer.Tiles[i]).Root);
+            return l;
         }
 
-        public void NewTileMap()
+        private static Layer GetLayer(LuaRoot root)
         {
-            _tables = new Dictionary<string, LsonValue>();
-            Tiles = new List<Tile>();
-            Layers = new List<Layer>();
-        }
-
-        public override string ToString()
-        {
-            _tables["tiles"] = ToLsonDict(Tiles);
-            _tables["layers"] = ToLsonDict(Layers);
-            return LsonVars.ToString(_tables);
-        }
-
-        private static LsonDict ToLsonDict(List<Tile> value)
-        {
-            LsonDict dict = new LsonDict();
-                for (int i = 0; i<value.Count; i++)
-                    dict.Add(i+1, (LsonDict) value[i]);
-            return dict;
-        }
-
-        private static LsonDict ToLsonDict(List<Layer> value)
-        {
-            LsonDict dict = new LsonDict();
-            List<Layer> layers = new List<Layer>(value);
-            layers.Reverse();
-            for (int i = 0; i < layers.Count; i++)
-                dict.Add(i+1, (LsonDict)layers[i]);
-            return dict;
+            if (root == null)
+                return null;
+            Layer layer = new Layer()
+            {
+                Tags = GetTags(root),
+            };
+            layer.Tiles = new List<LayerTile>(root.Root.Count() - layer.Tags.Count());
+            for (int i = 0; i < layer.Tiles.Count(); i++)
+                layer.Tiles[i] = GetLayerTile(new LuaRoot(root.Root[i + 1].GetDict()));
+            return layer;
         }
     }
 }
