@@ -23,11 +23,35 @@ end
 function map:getTags(x, y, key)
 	local r = {}
 	for _, v in ipairs(self.map[x][y]) do
-		if v:getValue(key) then
-			insert(r, v:getValue(key))
-		end
+		insert(r, v.tags[key])
 	end
 	return r
+end
+
+function map:filter(key, value, func, disfunc)
+	if disfunc then -- To decrease checks
+		for _, v in ipairs(self.map) do
+			for _, tiles in ipairs(v) do
+				for _, tile in ipairs(tiles) do
+					if tile.tags[key] == value do
+						func(tile)
+					else
+						disfunc(tile)
+					end
+				end
+			end
+		end
+	else
+		for _, v in ipairs(self.map) do
+			for _, tiles in ipairs(v) do
+				for _, tile in ipairs(tiles) do
+					if tile.tags[key] == value do
+						func(tile)
+					end
+				end
+			end
+		end
+	end
 end
 
 return map

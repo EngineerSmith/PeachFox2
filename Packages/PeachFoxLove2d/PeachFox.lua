@@ -2,7 +2,6 @@ local PATH = (...):match("(.-)[^%.]+$")
 local TILEMAP = require(PATH.."tilemap") 
 
 local PeachFox = {}
-PeachFox.__index = PeachFox
 
 function PeachFox.import(path, tilesets)
 	local tbl = require(path)

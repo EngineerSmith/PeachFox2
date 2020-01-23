@@ -5,7 +5,6 @@ local CANVAS = require(PATH.."canvas")
 local MAP = require(PATH.."map")
 
 local insert = table.insert
-local sort = table.sort
 
 local tilemap = {}
 tilemap.__index = tilemap
@@ -24,8 +23,7 @@ function tilemap.new(tbl, tilesets)
 end
 
 local function makeTile(tile, images)
-	tile.image = images[tile.image]
-	return TILE.new(tile)
+	return TILE.new(tile, tile.image and images[tile.image] or nil)
 end
 
 function tilemap:addTiles(tbl, tilesets)
