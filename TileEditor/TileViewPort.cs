@@ -86,7 +86,7 @@ namespace PeachFox.TileEditor
             return CropImage(Image, Quads[0], Quads[1], Quads[2], Quads[3], width, height);
         }        
         
-        public Image GetImage()
+        public Image GetTileImage()
         {
             if (Quads.Count < 4 || Image == null)
                 return null;

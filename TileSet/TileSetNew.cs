@@ -49,16 +49,12 @@ namespace PeachFox
                     data.Path = openFileDialog.FileName;
                     if (previous == "" && textBoxExportString.Text == "")
                         textBoxExportString.Text = System.IO.Path.GetFileName(openFileDialog.FileName);
+
+                    UpdateEstimateCellCount();
                 }
             };
 
-            numericCellSize.ValueChanged += (sender, e) =>
-            {
-                decimal width = _width / numericCellSize.Value;
-                decimal height = _height / numericCellSize.Value;
-                changeLine(infoBox, 1, $"Est. cell count: Width {width}, Height {height}, Total {(width*height)}");
-
-            };
+            numericCellSize.ValueChanged += (sender, e) => UpdateEstimateCellCount();
 
             textBoxExportString.TextChanged += (sender, e) =>
             {
@@ -83,6 +79,13 @@ namespace PeachFox
                 callback?.Invoke(null);
                 this.Close();
             };
+        }
+
+        private void UpdateEstimateCellCount()
+        {
+            decimal width = _width / numericCellSize.Value;
+            decimal height = _height / numericCellSize.Value;
+            changeLine(infoBox, 1, $"Est. cell count: Width {width}, Height {height}, Total {(width * height)}");
         }
 
         private void EnableTileSetOptions(bool enable)

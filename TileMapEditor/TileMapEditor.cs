@@ -99,8 +99,28 @@ namespace PeachFox
                 DialogResult result = openFileDialog.ShowDialog();
                 if (result == DialogResult.OK || result == DialogResult.Yes)
                 {
-                    OpenTilemap(16, openFileDialog.FileName); //TODO add form prompt
+                    try
+                    {
+                        Tilemap map = LuaTilemap.LuaTilemap.FromLua(openFileDialog.FileName);
+                        OpenTilemap(16, map); //TODO add form prompt
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show($"Caught exception trying to open Lua tilemap:\n{ex.Message}");
+                    }
                 }
+            };
+
+            toolStripTextBoxCellSize.TextChanged += (sender, e) =>
+            {
+                if (int.TryParse(toolStripTextBoxCellSize.Text, out int result) && result > 0)
+                {
+                    toolStripTextBoxCellSize.BackColor = Color.White;
+                    SetCellSize(result);
+                    _tileMapViewPort.Redraw();
+                }
+                else
+                    toolStripTextBoxCellSize.BackColor = Color.OrangeRed;
             };
 
             createTileToolStripMenuItem.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
@@ -116,8 +136,11 @@ namespace PeachFox
                     _layoutTiles.Flash();
                     return;
                 }
-
-                Program.TileEditor.NewTilesetImage(_tilesets[_tilemap.Tiles[index].Image], false, GetSelectedTileButtonObject(), index);
+                Tile tile = _tilemap.Tiles[index];
+                if (tile is ClassicTile classicTile)
+                    Program.TileEditor.ShowTileEditor(_tilesets[classicTile.Image], false, classicTile, index);
+                else //TODO
+                { }
             };
 
             flowLayoutPanelTiles.Click += (sender, e) => { _tileButtons.SetSelectedButton(null); };
@@ -134,7 +157,7 @@ namespace PeachFox
             buttonLayerEdit.Click += (sender, e) =>
             {
                 if (_layerList.SelectedItem != null)
-                    Program.NewLayerEditorForm(LayerCallback, _layerList.SelectedItem.Attributes.layer);
+                    Program.NewLayerEditorForm(LayerCallback, _layerList.SelectedItem.Layer);
             };
 
             _toolButtons.Add(buttonToolMove);
@@ -158,14 +181,14 @@ namespace PeachFox
             DialogResult result = saveFileDialog.ShowDialog();
             if (result == DialogResult.OK || result == DialogResult.Yes)
             {
-                System.IO.File.WriteAllText(saveFileDialog.FileName, _tilemap.ToString());
+                System.IO.File.WriteAllText(saveFileDialog.FileName, LuaTilemap.LuaTilemap.ToLua(_tilemap));
             }
         }
 
         public void NewTilemap(int cellsize)
         {
             _tilemap = new Tilemap();
-            _tileMapViewPort.CellSize = cellsize;
+            SetCellSize(cellsize);
             _tileButtons.Clear();
             _layerList.Clear();
             _layerList.Tilemap = _tilemap;
@@ -174,44 +197,39 @@ namespace PeachFox
             _tileMapViewPort.Redraw();
         }
 
-        public void OpenTilemap(int cellsize, string path)
+        public void OpenTilemap(int cellsize, Tilemap tilemap)
         {
-            string file;
-            try
-            {
-                file = System.IO.File.ReadAllText(path);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show($"Exception opening file({path}):\n{e.Message}", "Caught exception");
-                return;
-            }
-            _tilemap = new Tilemap(file);
+            _tilemap = tilemap;
             _layerList.Tilemap = _tilemap;
-            _tileMapViewPort.CellSize = cellsize;
+            SetCellSize(cellsize);
             _tileButtons.Clear();
 
             Dictionary<string, Image> images = new Dictionary<string, Image>();
             for (int i = 0; i < _tilemap.Tiles.Count; i++)
             {
                 Tile tile = _tilemap.Tiles[i];
-                List<int> quads = tile.Quad.Values;
-                if (quads.Count < 4)
-                    continue;
-                if (_tilesets.ContainsKey(tile.Image))
+                if (tile is ClassicTile classicTile)
                 {
-                    if (images.ContainsKey(_tilesets[tile.Image].Path) == false)
-                        images[_tilesets[tile.Image].Path] = new Bitmap(_tilesets[tile.Image].Path);
-                    _tileMapViewPort.Images[i] = ViewPort.CropImage(images[_tilesets[tile.Image].Path], quads[0], quads[1], quads[2], quads[3], quads[2], quads[3]);
+                    List<int> quads = classicTile.Quads;
+                    if (quads.Count < 4)
+                        continue;
+                    if (_tilesets.ContainsKey(classicTile.Image))
+                    {
+                        if (images.ContainsKey(_tilesets[classicTile.Image].Path) == false)
+                            images[_tilesets[classicTile.Image].Path] = new Bitmap(_tilesets[classicTile.Image].Path);
+                        _tileMapViewPort.Images[i] = ViewPort.CropImage(images[_tilesets[classicTile.Image].Path], quads[0], quads[1], quads[2], quads[3], quads[2], quads[3]);
 
-                    AddNewTileButton(tile, ViewPort.CropImage(images[_tilesets[tile.Image].Path], quads[0], quads[1], quads[2], quads[3], 40, 40));
+                        AddNewTileButton(tile, ViewPort.CropImage(images[_tilesets[classicTile.Image].Path], quads[0], quads[1], quads[2], quads[3], 40, 40));
+                    }
+                    else
+                    {
+                        MessageBox.Show($"No tile set {classicTile.Image}, import tileset then re-import tilemap", "Missing textures");
+                        NewTilemap(cellsize);
+                        return;
+                    }
                 }
                 else
-                {
-                    MessageBox.Show($"No tile set {tile.Image}, import tileset then re-import tilemap", "Missing textures");
-                    NewTilemap(cellsize);
-                    return;
-                }
+                    AddNewTileButton(tile, null);
             }
 
             _layerList.Clear();
@@ -224,6 +242,12 @@ namespace PeachFox
             _tileMapViewPort.Redraw();
         }
 
+        private void SetCellSize(int cellsize)
+        {
+            _tileMapViewPort.CellSize = cellsize;
+            toolStripTextBoxCellSize.Text = cellsize.ToString();
+        }
+
         public void NewTileSet(TileSet.TileSetData tileSetData)
         {
             if (tileSetData != null)
@@ -231,9 +255,11 @@ namespace PeachFox
                 if (tileSetData.PreviousExportString != null && tileSetData.PreviousExportString != tileSetData.ExportString)
                 {
                     _tilesets.Remove(tileSetData.PreviousExportString);
-                    foreach (Tile tile in _tilemap.Tiles)
-                        if (tile.Image == tileSetData.PreviousExportString)
-                            tile.Image = tileSetData.ExportString;
+                    if (_tilemap.Tiles != null)
+                        foreach (Tile tile in _tilemap.Tiles)
+                            if (tile is ClassicTile classicTile)
+                                if (classicTile.Image == tileSetData.PreviousExportString)
+                                    classicTile.Image = tileSetData.ExportString;
                 }
 
                 _tilesets[tileSetData.ExportString] = tileSetData;
@@ -242,7 +268,7 @@ namespace PeachFox
             }
         }
 
-        public void NewTile(Tile tile, Image full, Image thumbnail, int previousIndex = -1)
+        public void NewTile(Tile tile, int previousIndex = -1)
         {
             Button bu = flowLayoutPanelTiles.Controls.OfType<Button>().SingleOrDefault((b) => b.Tag as Tile == tile);
             if (bu != null)
@@ -251,22 +277,22 @@ namespace PeachFox
                 return;
             }
 
-            if (previousIndex != -1 && previousIndex < _tilemap.Tiles.Count && previousIndex > -1)
+            if (previousIndex < _tilemap.Tiles.Count && previousIndex > -1)
             {
                 Tile t = _tilemap.Tiles[previousIndex];
                 _tilemap.Tiles[previousIndex] = tile;
                 Button button = _tileButtons.FindButtonWithTag(t);
                 button.Tag = tile;
-                button.Image = thumbnail;
-                _tileMapViewPort.Images[previousIndex] = full;
+                button.Image = tile.Thumbnail;
+                _tileMapViewPort.Images[previousIndex] = tile.TileImage;
                 _tileButtons.SetSelectedButton(button);
                 _tileMapViewPort.Redraw();
             }
             else
             {
                 _tilemap.Tiles.Add(tile);
-                _tileMapViewPort.Images[_tilemap.Tiles.Count() - 1] = full;
-                Button button = AddNewTileButton(tile, thumbnail);
+                _tileMapViewPort.Images[_tilemap.Tiles.Count() - 1] = tile.TileImage;
+                Button button = AddNewTileButton(tile, tile.Thumbnail);
                 _tileButtons.SetSelectedButton(button);
             }
         }
@@ -295,6 +321,13 @@ namespace PeachFox
                 Tag = tile
             };
 
+            if (thumbnail == null)
+            {
+                Tag name = tile.Tags.Find(tag => tag.Name == "name");
+                if (name != null)
+                    button.Text = name.StringValue;
+            }
+
             _tileButtons.Add(button);
 
             button.Paint += (sender, e) =>
@@ -306,13 +339,18 @@ namespace PeachFox
                 if (button.Image != null)
                     g.DrawImage(button.Image, 2, 2);
             };
-
-            string tip = $"{tile.Image}\n";
-            List<int> quads = tile.Quad.Values;
-            for (int i = 0; i < quads.Count; i += 4)
-                tip += $"{quads[i]},{quads[i + 1]},{quads[i + 2]},{quads[i + 3]}  ";
+            string tip = "";
+            if (tile is ClassicTile classicTile)
+            {
+                tip += $"{classicTile.Image}\n";
+                List<int> quads = classicTile.Quads;
+                for (int i = 0; i < quads.Count; i += 4)
+                    tip += $"{quads[i]},{quads[i + 1]},{quads[i + 2]},{quads[i + 3]}  ";
+            }
+            tip += "\nTags:\n";
+            foreach (Tag tag in tile.Tags)
+                tip += $"{tag}\n";
             toolTip.SetToolTip(button, tip);
-
             flowLayoutPanelTiles.Controls.Add(button);
 
             return button;
@@ -360,8 +398,8 @@ namespace PeachFox
 
         private void AddTile()
         {
-            LayerAttributes att = _layerList.SelectedItem?.Attributes;
-            if (att == null)
+            Layer layer = _layerList.SelectedItem?.Layer;
+            if (layer == null)
             {
                 _layerList.Flash();
                 return;
@@ -376,24 +414,41 @@ namespace PeachFox
             int index = _tilemap.Tiles.FindIndex(tile => tile == tag);
             if (index == -1)
             {
-                MessageBox.Show("Could not find selected Tile");
+                MessageBox.Show("Could not find selected Tile from selected Tile button");
                 return;
             }
 
-            LayerTile layerTile = new LayerTile(index + 1, _tileMapViewPort.GetCell.X, _tileMapViewPort.GetCell.Y);
-            att.layer.Set(layerTile);
+            int layertileindex = layer.Tiles.FindIndex(tile => tile.X == _tileMapViewPort.GetCell.X && tile.Y == _tileMapViewPort.GetCell.Y);
+            if (layertileindex == -1)
+            {
+                LayerTile layerTile = new LayerTile
+                {
+                    Index = index,
+                    X = _tileMapViewPort.GetCell.X,
+                    Y = _tileMapViewPort.GetCell.Y,
+                };
+                layer.Tiles.Add(layerTile);
+            }
+            else
+            {
+                LayerTile layerTile = layer.Tiles[layertileindex];
+                layerTile.Index = index;
+            }
         }
 
         private void RemoveTile()
         {
-            LayerAttributes att = _layerList.SelectedItem.Attributes;
-            if (att == null)
+            Layer layer = _layerList.SelectedItem.Layer;
+            if (layer == null)
             {
                 _layerList.Flash();
                 return;
             }
-
-            att.layer.Remove(_tileMapViewPort.GetCell.X, _tileMapViewPort.GetCell.Y);
+            if (layer.Tiles == null)
+                return;
+            int index = layer.Tiles.FindIndex(tile => tile.X == _tileMapViewPort.GetCell.X && tile.Y == _tileMapViewPort.GetCell.Y);
+            if (index != -1)
+                layer.Tiles.RemoveAt(index);
         }
 
         private void SetTileSelectionMenuItem()
@@ -406,13 +461,13 @@ namespace PeachFox
         private void NewTileSelectCallback(string selectedName)
         {
             if (selectedName != null)
-                Program.TileEditor.NewTilesetImage(_tilesets[selectedName], false);
+                Program.TileEditor.ShowTileEditor(_tilesets[selectedName], false);
         }
 
         private void NewBitmaskTileSelectCallback(string selectedName)
         {
             if (selectedName != null)
-                Program.TileEditor.NewTilesetImage(_tilesets[selectedName], true);
+                Program.TileEditor.ShowTileEditor(_tilesets[selectedName], true);
         }
 
         private void SelectCallback(string selectedName)

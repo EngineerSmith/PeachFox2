@@ -6,8 +6,8 @@ namespace PeachFox
     public class Tag
     {
         public string Name;
-        public string StringValue { get; } = null;
-        public decimal NumberValue { get; } = -1;
+        public string StringValue { get; private set; } = null;
+        public decimal NumberValue { get; private set; } = -1;
         public enum TagType { NULL, STRING, NUMBER };
         public TagType Type = TagType.NULL;
 
@@ -27,13 +27,36 @@ namespace PeachFox
             else
                 throw new System.InvalidCastException();
         }
+
+        public void SetString(string str)
+        {
+            Type = TagType.STRING;
+            StringValue = str;
+        }
+
+        public void SetNumber(decimal num)
+        {
+            Type = TagType.NUMBER;
+            NumberValue = num;
+        }
+
+        public override string ToString()
+        {
+            string str = $"\"{Name}\"=";
+            if (Type == TagType.STRING)
+                return str +$"\"{StringValue}\"";
+            else if (Type == TagType.NUMBER)
+                return str + $"{NumberValue}";
+            return null;
+        }
     }
 
     public class Tile
     {
-        public List<Tag> Tags;
+        public List<Tag> Tags = new List<Tag>();
 
         public System.Drawing.Image Thumbnail;
+        public System.Drawing.Image TileImage;
     }
 
     public class ClassicTile : Tile
@@ -43,19 +66,24 @@ namespace PeachFox
         public float Time;
     }
 
+    public class BitmaskTile : ClassicTile
+    {
+        public int Bit = -1;
+    }
+
     public class LayerTile
     {
         public int Index;
         public int X;
         public int Y;
-        public List<Tag> Tags;
+        public List<Tag> Tags = new List<Tag>();
     }
 
     public class Layer
     {
         public string Name;
-        public List<LayerTile> Tiles;
-        public List<Tag> Tags;
+        public List<LayerTile> Tiles = new List<LayerTile>();
+        public List<Tag> Tags = new List<Tag>();
 
         public System.Drawing.Image Image;
         public bool DrawToViewport = true;
@@ -68,7 +96,7 @@ namespace PeachFox
 
     public class Tilemap
     {
-        public List<Tile> Tiles;
-        public List<Layer> Layers;
+        public List<Tile> Tiles = new List<Tile>();
+        public List<Layer> Layers = new List<Layer>();
     }
 }

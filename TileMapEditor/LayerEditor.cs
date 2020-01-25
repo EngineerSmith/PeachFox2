@@ -11,7 +11,7 @@ namespace PeachFox
         public LayerEditorForm(LayerEditorCallback callback, Layer layer = null)
         {
             InitializeComponent();
-            _layer = layer != null ? layer : new Layer();
+            _layer = layer ?? new Layer();
 
             buttonImport.Click += (sender, e) =>
             {
@@ -21,9 +21,13 @@ namespace PeachFox
                         continue;
                     string key = r.Cells[0].Value as string;
                     if (r.Cells[1].Value != null && r.Cells[1].Value.ToString() != "")
-                        _layer.SetValue(key, r.Cells[1].Value as string);
+                        _layer.Tags.Add(new Tag(key, r.Cells[1].Value as string));
                     else
-                        _layer.SetValue(key, null);
+                    {
+                        int i = _layer.Tags.FindIndex(tag => tag.Name == key);
+                        if (i != -1)
+                            _layer.Tags.RemoveAt(i);
+                    }
                 }
                 callback?.Invoke(_layer);
                 Close();
@@ -34,15 +38,13 @@ namespace PeachFox
                 callback?.Invoke(null);
                 Close();
             };
-
-            LsonLib.LsonSafeValue v = _layer.GetValue("name");
-            textBoxName.Text = v != null ? v.Value.GetString() : "";
+            int index = _layer.Tags.FindIndex(tag => tag.Name == "name");
+            string name = null;
+            if (index != -1)
+                name = _layer.Tags[index].StringValue;
+            textBoxName.Text = name != null ? name : "";
             textBoxName.TextChanged += (sender, e) =>
             {
-                //if (textBoxName.Text != "")
-                //    _layer.SetValue("name", textBoxName.Text);
-                //else
-                //    _layer.SetValue("name", null);
                 DataGridViewRow row = dataGridViewTags.Rows.OfType<DataGridViewRow>().SingleOrDefault(r => r.Cells[0].Value?.ToString() == "name");
                 if (row != null)
                     row.Cells[1].Value = textBoxName.Text;
@@ -50,8 +52,9 @@ namespace PeachFox
                     dataGridViewTags.Rows.Add("name", textBoxName.Text);
             };
 
-            foreach( var kvp in _layer.GetValues())
-                dataGridViewTags.Rows.Add(kvp.Key.GetString(), kvp.Value.GetString());
+            foreach (Tag tag in _layer.Tags)
+                dataGridViewTags.Rows.Add(tag.Name, tag.StringValue);
+            //TODO add numbers
 
             dataGridViewTags.CellValueChanged += (sender, e) =>
             {

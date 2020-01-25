@@ -90,9 +90,9 @@ namespace PeachFox.TileMapEditor
                 g.ResetTransform();
                 for (int i = Layers.Count - 1; i >= 0; i--)
                 {
-                    LayerListItem layer = Layers[i];
-                    if (layer.Attributes.drawToViewPort && layer.Attributes.image != null)
-                        g.DrawImage(layer.Attributes.image, 0,0);
+                    Layer layer = Layers[i].Layer;
+                    if (layer.DrawToViewport && layer.Image != null)
+                        g.DrawImage(layer.Image, 0,0);
                 }
                 g.ScaleTransform(ScaleRatio * ZoomFactor, ScaleRatio * ZoomFactor);
                 g.TranslateTransform(TranslateX, TranslateY);

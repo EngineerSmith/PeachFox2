@@ -68,7 +68,7 @@ namespace PeachFox.TileMapEditor
 
             List<Layer> layers = new List<Layer>(Items.Count);
             for (int i = 0; i < Items.Count; i++)
-                layers.Add(Items[i].Attributes.layer);
+                layers.Add(Items[i].Layer);
 
             Tilemap.Layers = layers;
             Program.TileMapEditor.UpdateLayers();

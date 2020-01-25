@@ -122,7 +122,7 @@ namespace PeachFox
             SetBitmaskMode(BitmaskMode.Four);
         }
 
-        public void NewTilesetImage(TileSet.TileSetData tileSet, bool bitmask, object obj = null, int index = -1)
+        public void ShowTileEditor(TileSet.TileSetData tileSet, bool bitmask, object obj = null, int index = -1)
         {
             Show();
             Activate();
@@ -134,28 +134,25 @@ namespace PeachFox
             if (bitmask == false)
             {
                 tabControl.SelectedTab = tabPageQuads;
-                if (obj != null)
+                if (obj is ClassicTile classicTile)
                 {
-                    Tile tile = (Tile)obj;
-                    SetQuads(tile.Quad.Values);
-                    if (tile.Quad.Values.Count > 4)
-                        numericTime.Value = (decimal)tile.Time;
+                    SetQuads(classicTile.Quads);
+                    numericTime.Value = (decimal)classicTile.Time;
                 }
             }
             else
             {
                 if (obj == null)
                 {
-                    _bitmaskTiles = new BitmaskTiles()
-                    {
+                    _bitmaskTiles = new BitmaskTiles(){
                         Mode = _bitmaskButtons.Count,
                     };
                 }
                 else
                     _bitmaskTiles = (BitmaskTiles)obj;
                 tabControl.SelectedTab = tabPageBitmask;
+                ChangeBitmaskTile(0);
             }
-            ChangeBitmaskTile(0);
             _quadSettings.ImageWidth = image.Width;
             _quadSettings.ImageHeight = image.Height;
             CellSize = tileSet.CellSize;
@@ -189,7 +186,7 @@ namespace PeachFox
                     Quads = exportQuads,
                     Time = (float)numericTime.Value,
                     Thumbnail = _tileViewPort.GetThumbnail(45, 45),
-                    TileImage = _tileViewPort.GetImage(),
+                    TileImage = _tileViewPort.GetTileImage(),
                 };
                 _bitmaskTiles.Tiles.Add(tile);
             }
@@ -198,7 +195,7 @@ namespace PeachFox
                 tile.Quads = exportQuads;
                 tile.Time = (float)numericTime.Value;
                 tile.Thumbnail = _tileViewPort.GetThumbnail(45, 45);
-                tile.TileImage = _tileViewPort.GetImage();
+                tile.TileImage = _tileViewPort.GetTileImage();
             }
         }
 
@@ -206,9 +203,15 @@ namespace PeachFox
         {
             if (!_bitmaskMode)
             {
-                var quads = _quadList.ExportQuads();
-                Tile tile = new Tile(new Quad(quads), _tileSetData.ExportString, quads.Count > 4 ? (double?)numericTime.Value : null);
-                Program.TileMapEditor.NewTile(tile, _tileViewPort.GetImage(), _tileViewPort.GetThumbnail(40, 40), previousIndex);
+                ClassicTile tile = new ClassicTile()
+                {
+                    Quads = _quadList.ExportQuads(),
+                    Image = _tileSetData.ExportString,
+                    Time = (float)numericTime.Value,
+                    Thumbnail = _tileViewPort.GetThumbnail(40, 40),
+                    TileImage = _tileViewPort.GetTileImage(),
+                };
+                Program.TileMapEditor.NewTile(tile, previousIndex);
             }
             else
             {
@@ -314,6 +317,8 @@ namespace PeachFox
 
         private void ChangeBitmaskTile(int bitmask = -1)
         {
+            if (_bitmaskMode == false)
+                return;
             if (bitmask == -1)
             {
                 bitmask = 0;

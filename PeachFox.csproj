@@ -76,7 +76,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Tilemap.cs" />
     <Compile Include="TileMapEditor\Cell.cs" />
-    <Compile Include="TileMapEditor\LayerAttributes.cs" />
     <Compile Include="TileMapEditor\LayerEditor.cs">
       <SubType>Form</SubType>
     </Compile>
