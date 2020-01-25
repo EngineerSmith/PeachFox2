@@ -36,14 +36,14 @@ function canvas.new(layers)
 end
 
 function canvas:updateCanvas()
-	lg.setCanvas(self.canvas)
-	lg.push()
-	lg.translate(self.orginX, self.orginY)
-	for _, v in ipairs(self.layers) do
-		v:drawStatic()
-	end
-	lg.pop()
-	lg.setCanvas()
+	self.canvas:renderTo(function()
+		lg.push()
+		lg.translate(self.orginX, self.orginY)
+		for _, v in ipairs(self.layers) do
+			v:drawStatic()
+		end
+		lg.pop()
+	end)
 end
 
 function canvas:draw()
