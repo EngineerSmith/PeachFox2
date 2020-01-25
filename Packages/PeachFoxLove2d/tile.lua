@@ -3,6 +3,21 @@ local lg = love.graphics
 local tile = {}
 tile.__index = tile
 
+--[[
+	Properties
+
+	.tags           Table used to create tile
+	-- Classic Tile
+	.image			Tileset of the tile                      @ Love2d Image
+	.Quads          Table of Love2d Quads                    @ Love2d Quad
+	.index          Index of quad to draw
+	.draw           Function, only given to classic tiles. This package doesn't directly support custom tiles
+	-- Animated tiles
+	.time       Time per animation frame/quad
+	.dTime      Records deltaTime for animation
+	.update     Function, only given to animated classic tiles
+]]
+
 local function update(self, dt)
 	self.dTime = self.dTime + dt
 	while self.dTime > self.time do
@@ -14,7 +29,7 @@ local function update(self, dt)
 	end
 end
 
-local function draw(self)
+local function draw(self, x, y)
 	lg.draw(self.image, self.quads[self.index], x, y)
 end
 
@@ -22,13 +37,13 @@ function tile.new(tbl, image)
 	local self = {}
 	setmetatable(self, tile)
 	
-	if tbl.time then --Make animated
+	if tbl.time then -- Make animated
 		self.update = update
 		self.time = tbl.time
 		self.dTime = 0
 	end
 	
-	if tbl.image and tbl.quad then
+	if tbl.image and tbl.quad then -- Make classic tile
 		self.draw = draw
 		self.image = image
 		
@@ -38,6 +53,8 @@ function tile.new(tbl, image)
 		end
 		assert(#self.quads ~= 0, "Tile Quads table invalid size of 0")
 		self.index = 1
+	else
+		self.draw = function(self, x, y) end -- This package only supports classic tiles
 	end
 
 	self.tags = tbl

@@ -3,12 +3,14 @@ local TILEMAP = require(PATH.."tilemap")
 
 local PeachFox = {}
 
+-- Imports exported lua PeachFox map
 function PeachFox.import(path, tilesets)
 	local tbl = require(path)
-	return PeachFox.newtilemap(tbl, tilesets)
+	return PeachFox.newTilemap(tbl, tilesets)
 end
 
-function PeachFox.newtilemap(tbl, tilesets)
+-- Create new tilemap from given table
+function PeachFox.newTilemap(tbl, tilesets)
 	return TILEMAP.new(tbl, tilesets)	
 end
 

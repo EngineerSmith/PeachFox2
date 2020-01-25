@@ -3,6 +3,12 @@ local insert = table.insert
 local map = {}
 map.__index = map
 
+--[[
+	Properties
+
+	.map			2D table of tiles [x][y][tile]
+]]
+
 function map.new(layers)
 	local self = {}
 	setmetatable(self, map)
@@ -20,6 +26,7 @@ function map.new(layers)
 	return self
 end
 
+-- Get all tag values for a key at a point
 function map:getTags(x, y, key)
 	local r = {}
 	for _, v in ipairs(self.map[x][y]) do
@@ -28,6 +35,8 @@ function map:getTags(x, y, key)
 	return r
 end
 
+-- Run a function for all vailded tags
+-- Optional, disgarded function
 function map:filter(key, value, func, disfunc)
 	if disfunc then -- To decrease checks
 		for _, v in ipairs(self.map) do

@@ -4,6 +4,18 @@ local sort = table.sort
 local layer = {}
 layer.__index = layer
 
+--[[
+	Properties
+
+	.tiles          Table of all tiles                       @ tile.lua
+	.static         Table of static tiles                    @ tile.lua
+	.animated       Table of tiles with update function      @ tile.lua
+	.maxX, .maxY    Max size (pixel units)
+	.minX, .minY    Min size (pixel units)
+	.tags           Table used to create tile, excluding the tables used for tiles
+	.isAnimated     Bool, true if there are tiles in .animated, set at creation
+]]
+
 local function sortTiles(a, b)
 	if a.data.image and b.data.image then 
 		return tostring(a.data.image) < tostring(b.data.image)
@@ -20,59 +32,49 @@ function layer.new(tbl, tiles)
 	self.static = {}
 	self.animated = {}
 	
-	self.max = {x=0,y=0}
-	self.min = {x=0,y=0}
-	
-	for _, v in ipairs(tbl) do
-		local tile = {x=v.x, y=v.y, data=tiles[v.tile], layer=self, tags = v}
-		if tile.tile.update then
-			insert(self.animated, tile)
-		else
-			insert(self.static, tile)
-		end
-		insert(self.tiles, tile)
-		if #tile.data.quads ~= 0 then
-			local _, _, w, h = tile.data.quads[1]:getViewport()
-			if v.x + w > self.max.x then self.max.x = v.x + w end
-			if v.y + h > self.max.y then self.max.y = v.y + h end	
-			if v.x < self.min.x then self.min.x = v.x end
-			if v.y < self.min.y then self.min.y = v.y end
-		end
-	end
-
+	self.maxX, self.maxY = 0, 0
+	self.minX, self.minY = 0, 0s
 	self.tags = {}
-	for k, v in pairs(tbl) do
-		if type(k) ~= "number" then
+
+	for k, v in pairs(tbl) do -- Using pair over ipair due to tags being within the same table
+		if type(k) == "number" then
+			local tile = {x=v.x, y=v.y, data=tiles[v.tile], layer=self, tags = v}
+			if tile.tile.update then
+				insert(self.animated, tile)
+			else
+				insert(self.static, tile)
+			end
+			insert(self.tiles, tile)
+			if #tile.data.quads ~= 0 then
+				local _, _, w, h = tile.data.quads[1]:getViewport() -- Could be an issue if size changes in animation
+				if v.x + w > self.maxX then self.maxX = v.x + w end
+				if v.y + h > self.maxY then self.maxY = v.y + h end	
+				if v.x < self.minX then self.minX = v.x end
+				if v.y < self.minY then self.minY = v.y end
+			end
+		else
 			self.tags[k] = v
 		end
 	end
 	
 	self.isAnimated = #self.animated ~= 0
 	
-	if #self.static > 1 then
-		sort(self.static, function(a, b) )
-	end
-	if #self.animated > 1 then
-		sort(self.animated, function(a, b) return tostring(a.data.image) < tostring(b.data.image) end)
-	end
+	-- Sorting tiles for sprite batching
+	sort(self.static, sortTiles)
+	sort(self.animated, sortTiles)
 	
 	return self
 end
 
+-- Run a function for all vailded tags
+-- Optional, disgarded function
 function layer:filter(key, value, func, disfunc)
-	if disfunc then
-		for _, tile in ipairs(self.tiles) do
-			if tile.data.tags[key] == value then
-				func(tile)
-			else
-				disfunc(tile)
-			end
-		end
-	else
-		for _, tile in ipairs(self.tiles) do
-			if tile.data.tags[key] == value then
-				func(tile)
-			end
+	disfunc = disfunc or function(t) end
+	for _, tile in ipairs(self.tiles) do
+		if tile.data.tags[key] == value then
+			func(tile)
+		else
+			disfunc(tile)
 		end
 	end
 end

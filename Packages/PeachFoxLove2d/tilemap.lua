@@ -9,6 +9,16 @@ local insert = table.insert
 local tilemap = {}
 tilemap.__index = tilemap
 
+--[[
+	Properties
+
+	.tiles          Table of all tiles                       @ tile.lua
+	.animatedTiles  Table of tiles with an update function   @ tile.lua
+	.layers         Table of all layers                      @ layer.lua
+	.canvases       Table of all canvases                    @ canvas.lua
+	.map            Table of tiles indexed by position       @ map.lua
+]]
+
 function tilemap.new(tbl, tilesets)
 	local self = {}
 	setmetatable(self, tilemap)
@@ -17,7 +27,7 @@ function tilemap.new(tbl, tilesets)
 	self:addLayers(tbl.layers)
 	
 	self:addCanvases(self.layers)
-	self:generateLinkedList()
+	self:generateMap()
 	
 	return self
 end
@@ -67,13 +77,14 @@ function tilemap:addCanvases(layers)
 	end
 end
 
+-- Redraw static tiles
 function tilemap:refreshStaticTiles()
 	for _, v in ipairs(self.canvases) do
 		v:updateCanvas()
 	end
 end
 
-function tilemap:generateLinkedList()
+function tilemap:generateMap()
 	self.map = MAP.new(self.layers)
 end
 
