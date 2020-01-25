@@ -34,8 +34,11 @@ namespace PeachFox
             this.openTilemapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveTilemapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.saveTileSetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadTileSetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cellSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTextBoxCellSize = new System.Windows.Forms.ToolStripTextBox();
             this.tileSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewTileSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editExistingTileSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,9 +51,7 @@ namespace PeachFox
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cellSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripTextBoxCellSize = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.groupBoxViewPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxRight.SuspendLayout();
@@ -299,11 +300,12 @@ namespace PeachFox
             this.fileToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newTilemapToolStripMenuItem,
+            this.toolStripSeparator2,
             this.openTilemapToolStripMenuItem,
             this.saveTilemapToolStripMenuItem,
             this.toolStripSeparator1,
-            this.saveTileSetsToolStripMenuItem,
-            this.loadTileSetsToolStripMenuItem});
+            this.saveProjectToolStripMenuItem,
+            this.loadProjectToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -312,40 +314,64 @@ namespace PeachFox
             // 
             this.newTilemapToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.newTilemapToolStripMenuItem.Name = "newTilemapToolStripMenuItem";
-            this.newTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newTilemapToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.newTilemapToolStripMenuItem.Text = "New Tilemap";
             // 
             // openTilemapToolStripMenuItem
             // 
             this.openTilemapToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.openTilemapToolStripMenuItem.Name = "openTilemapToolStripMenuItem";
-            this.openTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openTilemapToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.openTilemapToolStripMenuItem.Text = "Open Tilemap";
             // 
             // saveTilemapToolStripMenuItem
             // 
             this.saveTilemapToolStripMenuItem.Name = "saveTilemapToolStripMenuItem";
-            this.saveTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveTilemapToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.saveTilemapToolStripMenuItem.Text = "SaveAs Tilemap";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(182, 6);
             // 
-            // saveTileSetsToolStripMenuItem
+            // saveProjectToolStripMenuItem
             // 
-            this.saveTileSetsToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.saveTileSetsToolStripMenuItem.Name = "saveTileSetsToolStripMenuItem";
-            this.saveTileSetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveTileSetsToolStripMenuItem.Text = "Save Tile Sets";
+            this.saveProjectToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
+            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.saveProjectToolStripMenuItem.Text = "Save Project Settings";
             // 
-            // loadTileSetsToolStripMenuItem
+            // loadProjectToolStripMenuItem
             // 
-            this.loadTileSetsToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.loadTileSetsToolStripMenuItem.Name = "loadTileSetsToolStripMenuItem";
-            this.loadTileSetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.loadTileSetsToolStripMenuItem.Text = "Load Tile Sets";
+            this.loadProjectToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.loadProjectToolStripMenuItem.Name = "loadProjectToolStripMenuItem";
+            this.loadProjectToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.loadProjectToolStripMenuItem.Text = "Load Project Settings";
+            // 
+            // tileToolStripMenuItem
+            // 
+            this.tileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cellSizeToolStripMenuItem});
+            this.tileToolStripMenuItem.Name = "tileToolStripMenuItem";
+            this.tileToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.tileToolStripMenuItem.Text = "Tilemap";
+            // 
+            // cellSizeToolStripMenuItem
+            // 
+            this.cellSizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBoxCellSize});
+            this.cellSizeToolStripMenuItem.Name = "cellSizeToolStripMenuItem";
+            this.cellSizeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.cellSizeToolStripMenuItem.Text = "Cell Size";
+            // 
+            // toolStripTextBoxCellSize
+            // 
+            this.toolStripTextBoxCellSize.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolStripTextBoxCellSize.MaxLength = 12;
+            this.toolStripTextBoxCellSize.Name = "toolStripTextBoxCellSize";
+            this.toolStripTextBoxCellSize.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBoxCellSize.ToolTipText = "Tilemap cellsize";
             // 
             // tileSetToolStripMenuItem
             // 
@@ -361,7 +387,7 @@ namespace PeachFox
             // 
             this.addNewTileSetToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.addNewTileSetToolStripMenuItem.Name = "addNewTileSetToolStripMenuItem";
-            this.addNewTileSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addNewTileSetToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.addNewTileSetToolStripMenuItem.Text = "Add new Tile Set";
             // 
             // editExistingTileSetToolStripMenuItem
@@ -370,7 +396,7 @@ namespace PeachFox
             this.editExistingTileSetToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox});
             this.editExistingTileSetToolStripMenuItem.Name = "editExistingTileSetToolStripMenuItem";
-            this.editExistingTileSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editExistingTileSetToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.editExistingTileSetToolStripMenuItem.Text = "Edit existing Tile Set";
             // 
             // toolStripComboBox
@@ -411,29 +437,10 @@ namespace PeachFox
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
             // 
-            // tileToolStripMenuItem
+            // toolStripSeparator2
             // 
-            this.tileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cellSizeToolStripMenuItem});
-            this.tileToolStripMenuItem.Name = "tileToolStripMenuItem";
-            this.tileToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.tileToolStripMenuItem.Text = "Tilemap";
-            // 
-            // cellSizeToolStripMenuItem
-            // 
-            this.cellSizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBoxCellSize});
-            this.cellSizeToolStripMenuItem.Name = "cellSizeToolStripMenuItem";
-            this.cellSizeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.cellSizeToolStripMenuItem.Text = "Cell Size";
-            // 
-            // toolStripTextBoxCellSize
-            // 
-            this.toolStripTextBoxCellSize.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.toolStripTextBoxCellSize.MaxLength = 12;
-            this.toolStripTextBoxCellSize.Name = "toolStripTextBoxCellSize";
-            this.toolStripTextBoxCellSize.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBoxCellSize.ToolTipText = "Tilemap cellsize";
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(182, 6);
             // 
             // TileMapEditorForm
             // 
@@ -481,8 +488,8 @@ namespace PeachFox
         private System.Windows.Forms.ToolStripMenuItem tileSetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewTileSetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editExistingTileSetToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveTileSetsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadTileSetsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveProjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
@@ -509,4 +516,5 @@ namespace PeachFox
         private System.Windows.Forms.ToolStripMenuItem tileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cellSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBoxCellSize;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }}

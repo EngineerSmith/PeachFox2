@@ -13,7 +13,7 @@ namespace PeachFox
         private TileMapViewPort _tileMapViewPort;
         public int CellSize { get => _tileMapViewPort.CellSize; }
 
-        private Dictionary<string, TileSet.TileSetData> _tilesets = new Dictionary<string, TileSet.TileSetData>();
+        private ProjectSettings _projectSettings = new ProjectSettings();
 
         private Tilemap _tilemap;
 
@@ -39,48 +39,40 @@ namespace PeachFox
 
             editExistingTileSetToolStripMenuItem.Click += (sender, e) =>
             {
-                Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), false, SelectCallback);
+                Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), false, SelectCallback);
             };
 
             toolStripComboBox.SelectedIndexChanged += (sender, e) =>
             {
                 if (toolStripComboBox.SelectedItem != null)
-                    if (_tilesets.ContainsKey(toolStripComboBox.SelectedItem.ToString()))
+                    if (_projectSettings.TileSets.ContainsKey(toolStripComboBox.SelectedItem.ToString()))
                     {
-                        Program.NewTileSetNewForm(NewTileSetCallback, _tilesets[toolStripComboBox.SelectedItem.ToString()]);
+                        Program.NewTileSetNewForm(NewTileSetCallback, _projectSettings.TileSets[toolStripComboBox.SelectedItem.ToString()]);
                         return;
                     }
-                Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), false, SelectCallback);
+                Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), false, SelectCallback);
             };
 
             SetTileSelectionMenuItem();
 
-            loadTileSetsToolStripMenuItem.Click += (sender, e) =>
+            loadProjectToolStripMenuItem.Click += (sender, e) =>
             {
-                openFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
+                openFileDialog.Filter = "(*.project)|*.project|All files (*.*)|*.*";
                 DialogResult result = openFileDialog.ShowDialog();
                 if (result == DialogResult.OK || result == DialogResult.Yes)
                 {
-                    TileSet.LuaTileSetLoad load = new TileSet.LuaTileSetLoad();
-                    load.Open(System.IO.File.ReadAllText(openFileDialog.FileName));
-                    _tilesets.Clear();
-                    foreach (var set in load.TileSetData)
-                        _tilesets[set.ExportString] = set;
+                    _projectSettings = Lua.LuaProjectSettings.FromLua(openFileDialog.FileName);
                     SetTileSelectionMenuItem();
                 }
             };
 
-            saveTileSetsToolStripMenuItem.Click += (sender, e) =>
+            saveProjectToolStripMenuItem.Click += (sender, e) =>
             {
-                saveFileDialog.Filter = "(*.tileset)|*.tileset|All files (*.*)|*.*";
+                saveFileDialog.Filter = "(*.project)|*.project|All files (*.*)|*.*";
                 DialogResult result = saveFileDialog.ShowDialog();
                 if (result == DialogResult.OK || result == DialogResult.Yes)
                 {
-                    TileSet.LuaTileSetLoad save = new TileSet.LuaTileSetLoad
-                    {
-                        TileSetData = new List<TileSet.TileSetData>(_tilesets.Values)
-                    };
-                    System.IO.File.WriteAllText(saveFileDialog.FileName, save.ToString());
+                    System.IO.File.WriteAllText(saveFileDialog.FileName, Lua.LuaProjectSettings.ToLua(_projectSettings));
                 }
             };
 
@@ -101,7 +93,7 @@ namespace PeachFox
                 {
                     try
                     {
-                        Tilemap map = LuaTilemap.LuaTilemap.FromLua(openFileDialog.FileName);
+                        Tilemap map = Lua.LuaTilemap.FromLua(openFileDialog.FileName);
                         OpenTilemap(16, map); //TODO add form prompt
                     }
                     catch(Exception ex)
@@ -123,10 +115,10 @@ namespace PeachFox
                     toolStripTextBoxCellSize.BackColor = Color.OrangeRed;
             };
 
-            createTileToolStripMenuItem.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
-            createBitmaskTileToolStripMenuItem.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewBitmaskTileSelectCallback);
+            createTileToolStripMenuItem.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), true, NewTileSelectCallback);
+            createBitmaskTileToolStripMenuItem.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), true, NewBitmaskTileSelectCallback);
 
-            buttonNewTile.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_tilesets.Keys), true, NewTileSelectCallback);
+            buttonNewTile.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), true, NewTileSelectCallback);
 
             buttonEditTile.Click += (sender, e) =>
             {
@@ -138,7 +130,7 @@ namespace PeachFox
                 }
                 Tile tile = _tilemap.Tiles[index];
                 if (tile is ClassicTile classicTile)
-                    Program.TileEditor.ShowTileEditor(_tilesets[classicTile.Image], false, classicTile, index);
+                    Program.TileEditor.ShowTileEditor(_projectSettings.TileSets[classicTile.Image], false, classicTile, index);
                 else //TODO
                 { }
             };
@@ -181,7 +173,7 @@ namespace PeachFox
             DialogResult result = saveFileDialog.ShowDialog();
             if (result == DialogResult.OK || result == DialogResult.Yes)
             {
-                System.IO.File.WriteAllText(saveFileDialog.FileName, LuaTilemap.LuaTilemap.ToLua(_tilemap));
+                System.IO.File.WriteAllText(saveFileDialog.FileName, Lua.LuaTilemap.ToLua(_tilemap));
             }
         }
 
@@ -213,17 +205,17 @@ namespace PeachFox
                     List<int> quads = classicTile.Quads;
                     if (quads.Count < 4)
                         continue;
-                    if (_tilesets.ContainsKey(classicTile.Image))
+                    if (_projectSettings.TileSets.ContainsKey(classicTile.Image))
                     {
-                        if (images.ContainsKey(_tilesets[classicTile.Image].Path) == false)
-                            images[_tilesets[classicTile.Image].Path] = new Bitmap(_tilesets[classicTile.Image].Path);
-                        _tileMapViewPort.Images[i] = ViewPort.CropImage(images[_tilesets[classicTile.Image].Path], quads[0], quads[1], quads[2], quads[3], quads[2], quads[3]);
+                        if (images.ContainsKey(_projectSettings.TileSets[classicTile.Image].Path) == false)
+                            images[_projectSettings.TileSets[classicTile.Image].Path] = new Bitmap(_projectSettings.TileSets[classicTile.Image].Path);
+                        _tileMapViewPort.Images[i] = ViewPort.CropImage(images[_projectSettings.TileSets[classicTile.Image].Path], quads[0], quads[1], quads[2], quads[3], quads[2], quads[3]);
 
-                        AddNewTileButton(tile, ViewPort.CropImage(images[_tilesets[classicTile.Image].Path], quads[0], quads[1], quads[2], quads[3], 40, 40));
+                        AddNewTileButton(tile, ViewPort.CropImage(images[_projectSettings.TileSets[classicTile.Image].Path], quads[0], quads[1], quads[2], quads[3], 40, 40));
                     }
                     else
                     {
-                        MessageBox.Show($"No tile set {classicTile.Image}, import tileset then re-import tilemap", "Missing textures");
+                        MessageBox.Show($"No tile set {classicTile.Image}, load your project settings or reimport TileSets!", "Missing textures");
                         NewTilemap(cellsize);
                         return;
                     }
@@ -254,7 +246,7 @@ namespace PeachFox
             {
                 if (tileSetData.PreviousExportString != null && tileSetData.PreviousExportString != tileSetData.ExportString)
                 {
-                    _tilesets.Remove(tileSetData.PreviousExportString);
+                    _projectSettings.TileSets.Remove(tileSetData.PreviousExportString);
                     if (_tilemap.Tiles != null)
                         foreach (Tile tile in _tilemap.Tiles)
                             if (tile is ClassicTile classicTile)
@@ -262,7 +254,7 @@ namespace PeachFox
                                     classicTile.Image = tileSetData.ExportString;
                 }
 
-                _tilesets[tileSetData.ExportString] = tileSetData;
+                _projectSettings.TileSets[tileSetData.ExportString] = tileSetData;
 
                 SetTileSelectionMenuItem();
             }
@@ -454,26 +446,26 @@ namespace PeachFox
         private void SetTileSelectionMenuItem()
         {
             toolStripComboBox.Items.Clear();
-            toolStripComboBox.Items.AddRange(new List<string>(_tilesets.Keys).ToArray());
+            toolStripComboBox.Items.AddRange(new List<string>(_projectSettings.TileSets.Keys).ToArray());
             editExistingTileSetToolStripMenuItem.Enabled = (toolStripComboBox.Items.Count != 0);
         }
 
         private void NewTileSelectCallback(string selectedName)
         {
             if (selectedName != null)
-                Program.TileEditor.ShowTileEditor(_tilesets[selectedName], false);
+                Program.TileEditor.ShowTileEditor(_projectSettings.TileSets[selectedName], false);
         }
 
         private void NewBitmaskTileSelectCallback(string selectedName)
         {
             if (selectedName != null)
-                Program.TileEditor.ShowTileEditor(_tilesets[selectedName], true);
+                Program.TileEditor.ShowTileEditor(_projectSettings.TileSets[selectedName], true);
         }
 
         private void SelectCallback(string selectedName)
         {
             if (selectedName != null)
-                Program.NewTileSetNewForm(NewTileSetCallback, _tilesets[selectedName]);
+                Program.NewTileSetNewForm(NewTileSetCallback, _projectSettings.TileSets[selectedName]);
         }
 
         private void NewTileSetCallback(TileSet.TileSetData tileSetData)

@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Lua\LuaProjectSettings.cs" />
+    <Compile Include="Lua\LuaRoot.cs" />
+    <Compile Include="ProjectSettings.cs" />
     <Compile Include="RandomString.cs" />
     <Compile Include="Flash.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -72,7 +75,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="TileEditor\TileViewPort.cs" />
-    <Compile Include="LuaTilemap.cs" />
+    <Compile Include="Lua\LuaTilemap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Tilemap.cs" />
     <Compile Include="TileMapEditor\Cell.cs" />
@@ -94,7 +97,6 @@
     </Compile>
     <Compile Include="TileMapEditor\SelectableButtons.cs" />
     <Compile Include="TileMapEditor\TileMapViewPort.cs" />
-    <Compile Include="TileSet\LuaTileSet.cs" />
     <Compile Include="TileSet\TileSet.cs" />
     <Compile Include="TileSet\TileSetNew.cs">
       <SubType>Form</SubType>
