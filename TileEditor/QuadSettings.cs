@@ -1,5 +1,7 @@
 ﻿using System.Windows.Forms;
 
+public delegate void OnQuadValueChange();
+
 namespace PeachFox.TileEditor
 {
     public class QuadSettings
@@ -80,10 +82,13 @@ namespace PeachFox.TileEditor
         private QuadList _list;
         private ExportSettings _exportSettings;
 
-        public QuadSettings(QuadList list, ExportSettings exportSettings)
+        private OnQuadValueChange _callback;
+
+        public QuadSettings(QuadList list, ExportSettings exportSettings, OnQuadValueChange callback = null)
         {
             _list = list;
             _exportSettings = exportSettings;
+            _callback = callback;
         }
 
         public void SetValues(int x, int y, int width, int height)
@@ -126,6 +131,7 @@ namespace PeachFox.TileEditor
             Y.Increment = Height.Value;
             SetMaximum();
             _exportSettings.Update();
+            _callback?.Invoke();
         }
 
         private void AddQuad(object sender, System.EventArgs e)
@@ -134,6 +140,7 @@ namespace PeachFox.TileEditor
             _list.List.SetSelected(index, true);
             _list.UpdateViewPort();
             _exportSettings.Update();
+            _callback?.Invoke();
         }
 
     }

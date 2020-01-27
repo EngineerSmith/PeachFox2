@@ -72,7 +72,7 @@ namespace PeachFox
                 ButtonExport = buttonExport
             };
 
-            _quadSettings = new QuadSettings(_quadList, _exportSettings)
+            _quadSettings = new QuadSettings(_quadList, _exportSettings, UpdateBitmaskTileButton)
             {
                 X = numericX,
                 Y = numericY,
@@ -342,15 +342,14 @@ namespace PeachFox
                 SetQuads(tile.Quads);
                 if (tile.Quads.Count > 4)
                     numericTime.Value = (decimal)tile.Time;
-                buttonTILE.Image = tile.Thumbnail;
-                buttonTILE.Refresh();
+                buttonTILE.BackgroundImage = tile.Thumbnail;
             }
             else
             {
                 SetQuads(null);
-                buttonTILE.Image = null;
-                buttonTILE.Refresh();
+                buttonTILE.BackgroundImage = null;
             }
+            buttonTILE.Refresh();
             _bitmaskSelected = bitmask;
         }
 
@@ -367,6 +366,17 @@ namespace PeachFox
         private BitmaskTile GetSelectedBitmaskTile()
         {
             return FindBitmaskTile(_bitmaskSelected);
+        }
+
+        private void UpdateBitmaskTileButton()
+        {
+            if (_bitmaskMode == false)
+                return;
+            if (_quadList.ExportQuads().Count > 0)
+                buttonTILE.BackgroundImage = _tileViewPort.GetThumbnail(45, 45);
+            else
+                buttonTILE.BackgroundImage = null;
+            buttonTILE.Refresh();
         }
     }
 }
