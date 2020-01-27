@@ -139,6 +139,8 @@ namespace PeachFox
                     SetQuads(classicTile.Quads);
                     numericTime.Value = (decimal)classicTile.Time;
                 }
+                else
+                    SetQuads(null);
             }
             else
             {
