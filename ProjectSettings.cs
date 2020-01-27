@@ -4,6 +4,6 @@ namespace PeachFox
 {
     public class ProjectSettings
     {
-        public readonly Dictionary<string, TileSet.TileSetData> TileSets = new Dictionary<string, TileSet.TileSetData>()
+        public readonly Dictionary<string, TileSet.TileSetData> TileSets = new Dictionary<string, TileSet.TileSetData>();
     }
 }

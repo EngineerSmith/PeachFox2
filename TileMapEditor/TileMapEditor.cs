@@ -21,7 +21,7 @@ namespace PeachFox
 
         private FlashableLayout _layoutTiles;
 
-        private SelectableButtons _tileButtons = new SelectableButtons();
+        private SelectableButtons _tileButtons = new SelectableButtons(true);
         private SelectableButtons _toolButtons = new SelectableButtons();
 
         public TileMapEditorForm()
