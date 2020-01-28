@@ -96,6 +96,9 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="TileMapEditor\SelectableButtons.cs" />
+    <Compile Include="TileMapEditor\TileMapEditorLayers.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TileMapEditor\TileMapEditorMenuStrip.cs">
       <SubType>Form</SubType>
     </Compile>

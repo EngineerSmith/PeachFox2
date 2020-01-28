@@ -12,8 +12,6 @@ namespace PeachFox
 
         private Tilemap _tilemap;
 
-        private LayerList _layerList;
-
         public TileMapEditorForm()
         {
             InitializeComponent();
@@ -24,37 +22,9 @@ namespace PeachFox
 
             AddMenuStrip();
 
-            buttonNewTile.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), true, NewTileSelectCallback);
-
-            buttonEditTile.Click += (sender, e) =>
-            {
-                int index = GetSelectedTileIndex();
-                if (index == -1)
-                {
-                    _layoutTiles.Flash();
-                    return;
-                }
-                Tile tile = _tilemap.Tiles[index];
-                if (tile is ClassicTile classicTile)
-                    Program.TileEditor.ShowTileEditor(_projectSettings.TileSets[classicTile.Image], false, classicTile, index);
-                else //TODO
-                { }
-            };
-
             AddTileUi();
 
-            _layerList = new LayerList(flowLayoutPanelLayers);
-
-            buttonLayerNew.Click += (sender, e) =>
-            {
-                Program.NewLayerEditorForm(LayerCallback);
-            };
-
-            buttonLayerEdit.Click += (sender, e) =>
-            {
-                if (_layerList.SelectedItem != null)
-                    Program.NewLayerEditorForm(LayerCallback, _layerList.SelectedItem.Layer);
-            };
+            AddLayerUi();
 
             AddTools();
 
@@ -76,8 +46,7 @@ namespace PeachFox
             _tilemap = new Tilemap();
             SetCellSize(cellsize);
             ClearTiles();
-            _layerList.Clear();
-            _layerList.Tilemap = _tilemap;
+            NewLayer(_tilemap);
             UpdateLayers();
 
             RedrawViewPort();
@@ -86,9 +55,9 @@ namespace PeachFox
         public void OpenTilemap(int cellsize, Tilemap tilemap)
         {
             _tilemap = tilemap;
-            _layerList.Tilemap = _tilemap;
             SetCellSize(cellsize);
             ClearTiles();
+            NewLayer(_tilemap);
 
             Dictionary<string, Image> images = new Dictionary<string, Image>();
             for (int i = 0; i < _tilemap.Tiles.Count; i++)
@@ -118,12 +87,8 @@ namespace PeachFox
                     AddNewTileButton(tile, null);
             }
 
-            _layerList.Clear();
-
             for (int i = 0; i < _tilemap.Layers.Count; i++)
-            {
                 _layerList.Add(_tilemap.Layers[i], toolTip);
-            }
 
             RedrawViewPort();
         }

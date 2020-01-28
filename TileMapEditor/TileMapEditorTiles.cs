@@ -15,6 +15,23 @@ namespace PeachFox
         {
             flowLayoutPanelTiles.Click += (sender, e) => { _tileButtons.SetSelectedButton(null); };
             _layoutTiles = new FlashableLayout(flowLayoutPanelTiles);
+
+            buttonNewTile.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), true, NewTileSelectCallback);
+
+            buttonEditTile.Click += (sender, e) =>
+            {
+                int index = GetSelectedTileIndex();
+                if (index == -1)
+                {
+                    _layoutTiles.Flash();
+                    return;
+                }
+                Tile tile = _tilemap.Tiles[index];
+                if (tile is ClassicTile classicTile)
+                    Program.TileEditor.ShowTileEditor(_projectSettings.TileSets[classicTile.Image], false, classicTile, index);
+                else //TODO
+                { }
+            };
         }
 
         private void ClearTiles()
