@@ -9,15 +9,11 @@ namespace PeachFox
     {
         private void AddMenuStrip()
         {
-            addNewTileSetToolStripMenuItem.Click += (sender, e) =>
-            {
-                Program.NewTileSetNewForm(NewTileSetCallback);
-            };
+            addNewTileSetToolStripMenuItem.Click += (sender, e) 
+                    => Program.NewTileSetNewForm(NewTileSetCallback);
 
-            editExistingTileSetToolStripMenuItem.Click += (sender, e) =>
-            {
-                Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), false, SelectCallback);
-            };
+            editExistingTileSetToolStripMenuItem.Click += (sender, e) 
+                    => Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), false, SelectCallback);
 
             toolStripComboBox.SelectedIndexChanged += (sender, e) =>
             {
@@ -102,6 +98,6 @@ namespace PeachFox
             toolStripComboBox.Items.Clear();
             toolStripComboBox.Items.AddRange(new List<string>(_projectSettings.TileSets.Keys).ToArray());
             editExistingTileSetToolStripMenuItem.Enabled = (toolStripComboBox.Items.Count != 0);
-        }s
+        }
     }
 }

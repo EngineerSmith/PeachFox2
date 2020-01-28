@@ -128,7 +128,6 @@ namespace PeachFox
             RedrawViewPort();
         }
 
-        
 
         public void NewTileSet(TileSet.TileSetData tileSetData)
         {
@@ -149,8 +148,6 @@ namespace PeachFox
                 SetTileSelectionMenuItem();
             }
         }
-        
-        
 
         private void PaintTile()
         {
