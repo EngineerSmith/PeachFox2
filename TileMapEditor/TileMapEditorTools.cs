@@ -40,5 +40,60 @@ namespace PeachFox
             }
             return false;
         }
+
+        private void PaintTile()
+        {
+            Layer layer = _layerList.SelectedItem?.Layer;
+            if (layer == null)
+            {
+                _layerList.Flash();
+                return;
+            }
+            Button button = _tileButtons.SelectedButton;
+            if (button == null || button.Tag == null)
+            {
+                _layoutTiles.Flash();
+                return;
+            }
+            Tile tag = (Tile)button.Tag;
+            int index = _tilemap.Tiles.FindIndex(tile => tile == tag);
+            if (index == -1)
+            {
+                MessageBox.Show("Could not find selected Tile from selected Tile button");
+                return;
+            }
+
+            int layertileindex = layer.Tiles.FindIndex(tile => tile.X == _tileMapViewPort.GetCell.X && tile.Y == _tileMapViewPort.GetCell.Y);
+            if (layertileindex == -1)
+            {
+                LayerTile layerTile = new LayerTile
+                {
+                    Index = index,
+                    X = _tileMapViewPort.GetCell.X,
+                    Y = _tileMapViewPort.GetCell.Y,
+                };
+                layer.Tiles.Add(layerTile);
+            }
+            else
+            {
+                LayerTile layerTile = layer.Tiles[layertileindex];
+                layerTile.Index = index;
+            }
+        }
+
+        private void EraseTile()
+        {
+            Layer layer = _layerList.SelectedItem.Layer;
+            if (layer == null)
+            {
+                _layerList.Flash();
+                return;
+            }
+            if (layer.Tiles == null)
+                return;
+            int index = layer.Tiles.FindIndex(tile => tile.X == _tileMapViewPort.GetCell.X && tile.Y == _tileMapViewPort.GetCell.Y);
+            if (index != -1)
+                layer.Tiles.RemoveAt(index);
+        }
     }
 }
