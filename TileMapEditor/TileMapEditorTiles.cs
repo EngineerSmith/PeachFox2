@@ -19,8 +19,8 @@ namespace PeachFox
             buttonNewTile.Click += (sender, e) => Program.NewTileSetSelectionForm(new List<string>(_projectSettings.TileSets.Keys), true, NewTileSelectCallback);
 
             buttonEditTile.Click += (sender, e) =>
-            {
-                int index = GetSelectedTileIndex();
+            { 
+                int index = GetSelectedTileIndex(); //Rewrite
                 if (index == -1)
                 {
                     _layoutTiles.Flash();
@@ -80,28 +80,28 @@ namespace PeachFox
             if (previousIndex != -1)
             {
                 //TODO update existing
+                //Would need to know all the previous Tile indices - Bit order and others could change
             }
             else
             {
-                //TODO add new
+                foreach (Tile tile in tiles.GetTiles())
+                {
+                    _tilemap.Tiles.Add(tile);
+                    _tileMapViewPort.Images[_tilemap.Tiles.Count - 1] = tile.TileImage;
+                }
+                Button button = AddNewTileButton(tiles, tiles.Thumbnail);
+                _tileButtons.SetSelectedButton(button);
             }
         }
 
-        private Button AddNewTileButton(Tile tile, Image thumbnail)
+        private Button AddNewTileButton(object tag, Image thumbnail)
         {
             Button button = new Button
             {
                 Size = new Size(44, 44),
                 Image = thumbnail,
-                Tag = tile
+                Tag = tag
             };
-
-            if (thumbnail == null)
-            {
-                Tag name = tile.Tags.Find(tag => tag.Name == "name");
-                if (name != null)
-                    button.Text = name.StringValue;
-            }
 
             _tileButtons.Add(button);
 
@@ -113,21 +113,44 @@ namespace PeachFox
                 b.Dispose();
                 if (button.Image != null)
                     g.DrawImage(button.Image, 2, 2);
+                //g.DrawString(button.Text, ); // TODO draw text
             };
+
             string tip = "";
-            if (tile is ClassicTile classicTile)
+            if (tag is ClassicTile classicTile)
             {
                 tip += $"{classicTile.Image}\n";
                 List<int> quads = classicTile.Quads;
                 for (int i = 0; i < quads.Count; i += 4)
                     tip += $"{quads[i]},{quads[i + 1]},{quads[i + 2]},{quads[i + 3]}  ";
             }
-            tip += "\nTags:\n";
-            foreach (Tag tag in tile.Tags)
-                tip += $"{tag}\n";
-            toolTip.SetToolTip(button, tip);
-            flowLayoutPanelTiles.Controls.Add(button);
 
+            tip += "\nTags:\n";
+            if (tag is Tile tile)
+            {
+                foreach (Tag t in tile.Tags)
+                    tip += $"{t}\n";
+                if (thumbnail == null)
+                {
+                    Tag name = tile.Tags.Find(t => t.Name == "name");
+                    if (name != null)
+                        button.Text = name.StringValue;
+                }
+            } 
+            else if (tag is TileEditor.BitmaskTiles bitmaskTiles)
+            {
+                foreach (BitmaskTile btile in bitmaskTiles.Tiles)
+                {
+                    tip += $"[{btile.Bit}]:";
+                    foreach (Tag t in btile.Tags)
+                        tip += $"{t}, ";
+                    tip += "\n";
+                }
+            }
+
+            toolTip.SetToolTip(button, tip);
+
+            flowLayoutPanelTiles.Controls.Add(button);
             return button;
         }
 
