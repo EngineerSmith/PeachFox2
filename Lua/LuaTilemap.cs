@@ -118,7 +118,12 @@ namespace PeachFox.Lua
 
             if (SearchForTag(tile.Tags, "image") && SearchForTag(tile.Tags, "quad"))
             {
-                tile = GetClassicTile(root);
+                if (SearchForTag(tile.Tags, "bitmaskBit"))
+                {
+                    //TODO
+                }
+                else
+                    tile = GetClassicTile(root);
                 RemoveTag(ref tile.Tags, "image");
                 RemoveTag(ref tile.Tags, "quad");
                 RemoveTag(ref tile.Tags, "time");
