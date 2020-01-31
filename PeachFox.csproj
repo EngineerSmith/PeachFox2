@@ -68,6 +68,9 @@
     <Compile Include="TileEditor\ExportSettings.cs" />
     <Compile Include="TileEditor\QuadList.cs" />
     <Compile Include="TileEditor\QuadSettings.cs" />
+    <Compile Include="TileEditor\ShowBitmaskTiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TileEditor\TileEditor.cs">
       <SubType>Form</SubType>
     </Compile>

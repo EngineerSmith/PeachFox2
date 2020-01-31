@@ -37,6 +37,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             this.labelTime = new System.Windows.Forms.Label();
             this.numericTime = new System.Windows.Forms.NumericUpDown();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.buttonShowAll = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.viewPort)).BeginInit();
             this.groupBoxViewPort.SuspendLayout();
             this.groupBoxControls.SuspendLayout();
@@ -188,6 +189,7 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             // 
             // tabPageBitmask
             // 
+            this.tabPageBitmask.Controls.Add(this.buttonShowAll);
             this.tabPageBitmask.Controls.Add(this.checkBoxBitmaskMode);
             this.tabPageBitmask.Controls.Add(this.buttonMask128);
             this.tabPageBitmask.Controls.Add(this.buttonMask64);
@@ -535,6 +537,15 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
             // 
             this.toolTip.AutomaticDelay = 200;
             // 
+            // buttonShowAll
+            // 
+            this.buttonShowAll.Location = new System.Drawing.Point(153, 129);
+            this.buttonShowAll.Name = "buttonShowAll";
+            this.buttonShowAll.Size = new System.Drawing.Size(23, 23);
+            this.buttonShowAll.TabIndex = 10;
+            this.toolTip.SetToolTip(this.buttonShowAll, "Show All Tiles");
+            this.buttonShowAll.UseVisualStyleBackColor = true;
+            // 
             // TileEditorForm
             // 
             this.ClientSize = new System.Drawing.Size(684, 391);
@@ -615,4 +626,5 @@ namespace PeachFox{    partial class TileEditorForm    {		        /// <summa
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Button buttonTileTags;
         private System.Windows.Forms.CheckBox checkBoxBitmaskMode;
+        private System.Windows.Forms.Button buttonShowAll;
     }}

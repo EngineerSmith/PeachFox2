@@ -35,6 +35,9 @@ namespace PeachFox.TileEditor
             }
         }
 
+        public List<string> Notes;
+        public bool ShowNotes = false;
+
         private int _cellSize = 16;
         public int CellSize
         {
