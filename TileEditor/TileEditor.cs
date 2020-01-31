@@ -105,6 +105,8 @@ namespace PeachFox
                         {
                             Mode = _bitmaskButtons.Count,
                         };
+                        ChangeBitmaskTile(0);
+                        UpdateBitmaskTileButton();
                     }
                     else
                         tabControl.SelectedTab = tabPageQuads;
@@ -131,6 +133,7 @@ namespace PeachFox
             Bitmap image = new Bitmap(tileSet.Path);
             _tileViewPort.Image = image;
             previousIndex = index;
+            buttonTILE.BackgroundImage = null;
             if (bitmask == false)
             {
                 tabControl.SelectedTab = tabPageQuads;
@@ -146,12 +149,16 @@ namespace PeachFox
             {
                 if (obj == null)
                 {
-                    _bitmaskTiles = new BitmaskTiles(){
+                    _bitmaskTiles = new BitmaskTiles()
+                    {
                         Mode = _bitmaskButtons.Count,
                     };
                 }
                 else
+                {
                     _bitmaskTiles = (BitmaskTiles)obj;
+                    UpdateBitmaskTileButton();
+                }
                 tabControl.SelectedTab = tabPageBitmask;
                 ChangeBitmaskTile(0);
             }
@@ -192,12 +199,16 @@ namespace PeachFox
                 };
                 _bitmaskTiles.Tiles.Add(tile);
             }
-            else if (tile != null)
+            else if (tile != null && exportQuads.Count > 0)
             {
                 tile.Quads = exportQuads;
                 tile.Time = (float)numericTime.Value;
                 tile.Thumbnail = _tileViewPort.GetThumbnail(45, 45);
                 tile.TileImage = _tileViewPort.GetTileImage();
+            }
+            else if (tile != null)
+            {
+                _bitmaskTiles.Tiles.Remove(tile);
             }
         }
 
@@ -219,6 +230,15 @@ namespace PeachFox
             {
                 ChangeBitmaskTile(0);
                 _bitmaskTiles.Thumbnail = _tileViewPort.GetThumbnail(40, 40);
+                if (_bitmaskTiles.Tiles.Count != (_bitmaskTiles.Mode ^ 2))
+                {
+                    DialogResult result = MessageBox.Show(
+                        $"You're have selected {_bitmaskTiles.Tiles.Count} for your bitmasked tile out of the required {_bitmaskTiles.Mode ^ 2}. Are you sure you want to continue?\n" +
+                        "If you have a missing tiles and their bit is selected. It will remove that tile from the tilemap.",
+                        "Warning",MessageBoxButtons.OKCancel);
+                    if (result != DialogResult.OK)
+                        return;
+                }
                 Program.TileMapEditor.NewBitmaskTile(_bitmaskTiles, previousIndex);
             }
         }

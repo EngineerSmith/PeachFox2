@@ -89,13 +89,20 @@ namespace PeachFox
                 LayerTile layerTile = layer.Tiles[layertileindex];
                 layerTile.Index = index;
             }
-            if (button.Tag is TileEditor.BitmaskTiles bitmaskTiles2) //TODO fix naming
-            {
+            if (button.Tag is TileEditor.BitmaskTiles bitmaskTilesUpdate)
+            { 
                 foreach (Cell c in tilesToUpdate)
                 {
-                    int bit = GetBitValue(c, layer, bitmaskTiles2, out _);
-                    index = _tilemap.Tiles.FindIndex(tile => tile == bitmaskTiles2.GetTile(bit));
                     int tileindex = FindTile(c, layer);
+                    int bit = GetBitValue(c, layer, bitmaskTilesUpdate, out _);
+                    Tile t = bitmaskTilesUpdate.GetTile(bit);
+                    if (t == null)
+                    {
+                        MessageBox.Show($"Missing bit tile {bit}, tile removed from [{c.X};{c.Y}]","",MessageBoxButtons.OK);
+                        layer.Tiles.RemoveAt(tileindex);
+                        continue;
+                    }
+                    index = _tilemap.Tiles.FindIndex(tile => tile == t);
                     if (tileindex != -1)
                     {
                         LayerTile layerTile = layer.Tiles[tileindex];
