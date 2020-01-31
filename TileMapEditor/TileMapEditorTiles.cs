@@ -20,7 +20,7 @@ namespace PeachFox
 
             buttonEditTile.Click += (sender, e) =>
             { 
-                int index = GetSelectedTileIndex(); //Rewrite
+                int index = GetSelectedTileIndex(); // TODO Rewrite
                 if (index == -1)
                 {
                     _layoutTiles.Flash();
@@ -113,7 +113,7 @@ namespace PeachFox
                 b.Dispose();
                 if (button.Image != null)
                     g.DrawImage(button.Image, 2, 2);
-                //g.DrawString(button.Text, ); // TODO draw text
+                //g.DrawString(button.Text, ); // TODO draw text, or icon?
             };
 
             string tip = "";
@@ -159,7 +159,10 @@ namespace PeachFox
             Button button = _tileButtons.SelectedButton;
             if (button == null || button.Tag == null)
                 return -1;
-            return _tilemap.Tiles.FindIndex(tile => tile == (Tile)button.Tag);
+            if (button.Tag is Tile tile)
+                return _tilemap.Tiles.FindIndex(t => t == tile);
+            else
+                return -1;
         }
     }
 }

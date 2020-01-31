@@ -28,19 +28,32 @@ namespace PeachFox.TileEditor
             }
         }
 
+        public bool IsTileInBitmask(Tile tile)
+        {
+            Tag id = tile.Tags.Find(tag => tag.Name == "bitmaskId");
+            return id != null ? id.StringValue == Id : false;
+        }
+
+        public Tile GetTile(int bit)
+        {
+            return Tiles.Find(t => t.Bit == bit);
+        }
+
         public List<Tile> GetTiles()
         {
             foreach (var tile in Tiles)
             {
                 List<Tag> tags = tile.Tags.FindAll(tag => tag.Name == "bitmaskId" || tag.Name == "bitmaskMode" || tag.Name == "bitmaskBit");
                 if (tags.Count == 3)
-                    foreach(Tag tag in tags)
+                {
+                    foreach (Tag tag in tags)
                         if (tag.Name == "bitmaskId")
                             tag.SetString(Id);
                         else if (tag.Name == "bitmaskMode")
                             tag.SetNumber(Mode);
                         else if (tag.Name == "bitmaskBit")
                             tag.SetNumber(tile.Bit);
+                }
                 else
                     tile.Tags.AddRange(new List<Tag>() { new Tag("bitmaskId", Id), new Tag("bitmaskMode", Mode), new Tag("bitmaskBit", tile.Bit) });
             }

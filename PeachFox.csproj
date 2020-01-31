@@ -62,6 +62,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tag.cs" />
     <Compile Include="TileEditor\BitmaskTile.cs" />
     <Compile Include="TileEditor\ButtonRemove.cs" />
     <Compile Include="TileEditor\ExportSettings.cs" />
@@ -96,21 +97,11 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="TileMapEditor\SelectableButtons.cs" />
-    <Compile Include="TileMapEditor\TileMapEditorLayers.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TileMapEditor\TileMapEditorMenuStrip.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TileMapEditor\TileMapEditorTiles.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TileMapEditor\TileMapEditorTools.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TileMapEditor\TileMapEditorViewport.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="TileMapEditor\TileMapEditorLayers.cs" />
+    <Compile Include="TileMapEditor\TileMapEditorMenuStrip.cs" />
+    <Compile Include="TileMapEditor\TileMapEditorTiles.cs" />
+    <Compile Include="TileMapEditor\TileMapEditorTools.cs" />
+    <Compile Include="TileMapEditor\TileMapEditorViewport.cs" />
     <Compile Include="TileMapEditor\TileMapViewPort.cs" />
     <Compile Include="TileSet\TileSet.cs" />
     <Compile Include="TileSet\TileSetNew.cs">
