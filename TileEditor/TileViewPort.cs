@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -35,13 +36,13 @@ namespace PeachFox.TileEditor
             }
         }
 
-        public List<string> Notes;
+        public List<int> Notes = new List<int>();
         public bool ShowNotes = false;
 
         private int _cellSize = 16;
         public int CellSize
         {
-            get => _cellSize; 
+            get => _cellSize;
             set
             {
                 _cellSize = value;
@@ -69,7 +70,7 @@ namespace PeachFox.TileEditor
 
         public void Dispose()
         {
-            if (Image != null) 
+            if (Image != null)
                 Image.Dispose();
         }
 
@@ -84,11 +85,11 @@ namespace PeachFox.TileEditor
 
         public Image GetThumbnail(int width = 100, int height = 100)
         {
-            if (Quads.Count < 4 || Image == null) 
+            if (Quads.Count < 4 || Image == null)
                 return null;
             return CropImage(Image, Quads[0], Quads[1], Quads[2], Quads[3], width, height);
-        }        
-        
+        }
+
         public Image GetTileImage()
         {
             if (Quads.Count < 4 || Image == null)
@@ -113,7 +114,7 @@ namespace PeachFox.TileEditor
         }
         protected override void Draw(object sender, PaintEventArgs e)
         {
-            if (Image == null) 
+            if (Image == null)
                 return;
 
             Graphics g = e.Graphics;
@@ -124,7 +125,7 @@ namespace PeachFox.TileEditor
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             g.DrawImage(Image, 0, 0);
 
-            Pen p = new Pen(CellColor, 1/ZoomFactor);
+            Pen p = new Pen(CellColor, 1 / ZoomFactor);
             float penDistanceOffset = 0.5f; // Width * ZoomFactor / 2. // (Width * ZoomFactor) will always be 1
             for (int y = 0; y < CellCountY + 1; y++)
                 g.DrawLine(p, -penDistanceOffset, y * CellSize - penDistanceOffset, CellCountX * CellSize - penDistanceOffset, y * CellSize - penDistanceOffset);
@@ -134,15 +135,38 @@ namespace PeachFox.TileEditor
 
             if (Quads != null)
             {
-                Pen SelectedPen = new Pen(SelectedColor, (1 / ZoomFactor) * 1.5f);
-                Pen QuadPen = new Pen(QuadColor, (1 / ZoomFactor) * 1.5f);
-                for (int i = 0; i < Quads.Count; i += 5)
-                    g.DrawRectangle(Quads[i + 4] != 0 ? SelectedPen : QuadPen,
-                        Quads[i] - penDistanceOffset, Quads[i + 1] - penDistanceOffset, Quads[i + 2], Quads[i + 3]);
-                
-                SelectedPen.Dispose();
-                QuadPen.Dispose();
+                if (ShowNotes == false)
+                {
+                    Pen SelectedPen = new Pen(SelectedColor, (1 / ZoomFactor) * 1.5f);
+                    Pen QuadPen = new Pen(QuadColor, (1 / ZoomFactor) * 1.5f);
+                    for (int i = 0; i < Quads.Count; i += 5)
+                        g.DrawRectangle(Quads[i + 4] != 0 ? SelectedPen : QuadPen,
+                            Quads[i] - penDistanceOffset, Quads[i + 1] - penDistanceOffset, Quads[i + 2], Quads[i + 3]);
+                    SelectedPen.Dispose();
+                    QuadPen.Dispose();
+                }
+                else
+                {
+                    for (int i = 0; i < Quads.Count; i += 5)
+                    {
+                        Color c = GetColorFromBit(Notes[i/5]);
+                        g.DrawRectangle(new Pen(c, (1 / ZoomFactor) * 1.5f),
+                                        Quads[i] - penDistanceOffset, Quads[i + 1] - penDistanceOffset, Quads[i + 2], Quads[i + 3]);
+                        
+                        string text = Notes[i/5].ToString();
+                        SizeF size = g.MeasureString(text, Control.DefaultFont);
+                        g.DrawString(text, Control.DefaultFont, new SolidBrush(c), 
+                            Quads[i] + Quads[i+2]/2 - size.Width/2, Quads[i+1] + Quads[i+3]/2 - size.Height/2);
+
+                    }
+                }
             }
+        }
+
+        private Color GetColorFromBit(int bit)
+        {
+            Random rnd = new Random(bit);
+            return Color.FromArgb(rnd.Next(50, 200), rnd.Next(50, 200), rnd.Next(50, 200));
         }
     }
 }

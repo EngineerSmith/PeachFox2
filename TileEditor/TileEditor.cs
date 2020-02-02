@@ -121,6 +121,8 @@ namespace PeachFox
                     SetBitmaskMode(BitmaskMode.Four);
             };
 
+            AddShowBitmaskTiles();
+
             SetBitmaskMode(BitmaskMode.Four);
         }
 
@@ -236,7 +238,7 @@ namespace PeachFox
                         $"You're have selected {_bitmaskTiles.Tiles.Count} for your bitmasked tile out of the required {_bitmaskTiles.Mode ^ 2}. Are you sure you want to continue?\n" +
                         "If you have a missing tiles and their bit is selected. It will remove that tile from the tilemap.",
                         "Warning",MessageBoxButtons.OKCancel);
-                    if (result != DialogResult.OK)
+                    if (result == DialogResult.Cancel)
                         return;
                 }
                 Program.TileMapEditor.NewBitmaskTile(_bitmaskTiles, previousIndex);
