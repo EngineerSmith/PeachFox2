@@ -66,8 +66,9 @@ function tilemap:addCanvases(layers)
 	
 	for _, layer in ipairs(layers) do
 		if layer.isAnimated and #stack ~= 0 then
+			insert(stack, layer)
 			insert(self.canvases, CANVAS.new(stack))
-			stack = {layer}
+			stack = {}
 		else
 			insert(stack, layer)
 		end
