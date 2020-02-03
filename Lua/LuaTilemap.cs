@@ -7,8 +7,8 @@ using System.Linq;
 /// ----
 ///local tiles =
 ///{
-///     {quad={ 0, 0,16,16}, image="tileset.base"}, -- Basic tile
-///     {quad={ 0,16,16,16, 16,16,16,16}, time=0.1, image="tileset.base"}, --Animated Tile
+///     {quad={ 0, 0,16,16}, image="tileset.base"}, -- Classic tile
+///     {quad={ 0,16,16,16, 16,16,16,16}, time=0.1, image="tileset.base"}, -- Classic Animated Tile
 ///}
 ///
 ///local layers =
@@ -50,11 +50,11 @@ namespace PeachFox.Lua
             LsonDict tiles = map["tiles"].GetDict();
             tilemap.Tiles = new List<Tile>(tiles.Count());
             for (int i = 0; i < tiles.Count(); i++)
-                tilemap.Tiles[i] = GetTile(tiles[i + 1].GetDict());
+                tilemap.Tiles.Add(GetTile(tiles[i + 1].GetDict()));
             LsonDict layers = map["layers"].GetDict();
             tilemap.Layers = new List<Layer>(layers.Count());
             for (int i = 0; i < layers.Count(); i++)
-                tilemap.Layers[i] = GetLayer(tiles[i + 1].GetDict());
+                tilemap.Layers.Add(GetLayer(tiles[i + 1].GetDict()));
             return tilemap;
         }
 
@@ -116,7 +116,7 @@ namespace PeachFox.Lua
                 Tags = GetTags(root)
             };
 
-            if (SearchForTag(tile.Tags, "image") && SearchForTag(tile.Tags, "quad"))
+            if (SearchForTag(tile.Tags, "image") && root.GetValue("quad") != null)
             {
                 if (SearchForTag(tile.Tags, "bitmaskBit"))
                 {
@@ -125,7 +125,6 @@ namespace PeachFox.Lua
                 else
                     tile = GetClassicTile(root);
                 RemoveTag(ref tile.Tags, "image");
-                RemoveTag(ref tile.Tags, "quad");
                 RemoveTag(ref tile.Tags, "time");
             }
 
@@ -157,7 +156,7 @@ namespace PeachFox.Lua
             LsonDict quads = root.GetValue("quad").GetDict();
             tile.Quads = new List<int>(quads.Count());
             for (int i = 0; i < quads.Count(); i++)
-                tile.Quads[i] = quads[i + 1].GetInt();
+                tile.Quads.Add(quads[i + 1].GetInt());
             if (tile.Quads.Count() > 4)
                 tile.Time = (float)root.GetValue("time").GetDouble();
             return tile;
@@ -208,7 +207,7 @@ namespace PeachFox.Lua
             };
             layer.Tiles = new List<LayerTile>(root.Root.Count() - layer.Tags.Count());
             for (int i = 0; i < layer.Tiles.Count(); i++)
-                layer.Tiles[i] = GetLayerTile(root.Root[i + 1].GetDict());
+                layer.Tiles.Add(GetLayerTile(root.Root[i + 1].GetDict()));
             return layer;
         }
     }
