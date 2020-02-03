@@ -37,8 +37,9 @@ end
 
 function canvas:updateCanvas()
 	lg.setCanvas(self.canvas)
-	lg.push()
-	lg.orgin()
+	lg.push('all')
+	lg.origin()
+	lg.setColor(1,1,1,1)
 	lg.translate(self.orginX, self.orginY)
 	for _, v in ipairs(self.layers) do
 		v:drawStatic()
