@@ -16,7 +16,7 @@ tilemap.__index = tilemap
 	.animatedTiles  Table of tiles with an update function   @ tile.lua
 	.layers         Table of all layers                      @ layer.lua
 	.canvases       Table of all canvases                    @ canvas.lua
-	.map            Table of tiles indexed by position       @ map.lua
+	.map            Table of tiles indexed by drawn position @ map.lua
 ]]
 
 function tilemap.new(tbl, tilesets)
