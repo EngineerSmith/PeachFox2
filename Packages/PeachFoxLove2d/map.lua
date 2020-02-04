@@ -42,7 +42,7 @@ function map:filter(key, value, func, disfunc)
 		for _, v in ipairs(self.map) do
 			for _, tiles in ipairs(v) do
 				for _, tile in ipairs(tiles) do
-					if tile.tags[key] == value do
+					if tile.tags[key] == value then
 						func(tile)
 					else
 						disfunc(tile)
@@ -54,7 +54,7 @@ function map:filter(key, value, func, disfunc)
 		for _, v in ipairs(self.map) do
 			for _, tiles in ipairs(v) do
 				for _, tile in ipairs(tiles) do
-					if tile.tags[key] == value do
+					if tile.tags[key] == value then
 						func(tile)
 					end
 				end

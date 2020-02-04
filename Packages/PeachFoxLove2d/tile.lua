@@ -49,7 +49,7 @@ function tile.new(tbl, image)
 		
 		self.quads = {}
 		for i=1, #tbl.quad, 4 do
-			table.insert(self.quads, lg.newQuad(tbl.quad[i], tbl.quad[i+1], tbl.quad[i+2], tbl.quad[i+3], tbl.image:getDimensions()))
+			table.insert(self.quads, lg.newQuad(tbl.quad[i], tbl.quad[i+1], tbl.quad[i+2], tbl.quad[i+3], self.image:getDimensions()))
 		end
 		assert(#self.quads ~= 0, "Tile Quads table invalid size of 0")
 		self.index = 1

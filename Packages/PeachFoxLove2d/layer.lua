@@ -33,13 +33,13 @@ function layer.new(tbl, tiles)
 	self.animated = {}
 	
 	self.maxX, self.maxY = 0, 0
-	self.minX, self.minY = 0, 0s
+	self.minX, self.minY = 0, 0
 	self.tags = {}
 
 	for k, v in pairs(tbl) do -- Using pair over ipair due to tags being within the same table
 		if type(k) == "number" then
 			local tile = {x=v.x, y=v.y, data=tiles[v.tile], layer=self, tags = v}
-			if tile.tile.update then
+			if tile.data.update then
 				insert(self.animated, tile)
 			else
 				insert(self.static, tile)
