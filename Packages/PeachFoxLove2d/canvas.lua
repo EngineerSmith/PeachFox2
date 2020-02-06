@@ -6,10 +6,10 @@ canvas.__index = canvas
 --[[
 	Properties
 
-	.tiles           Table of all tiles                       @ tile.lua
-	.layers          Table of layers this canvas draws        @ layer.lua
-	.canvas          Canvas drawn to                          @ Love2d Canvas
-	.orginX, .orginY Orgin of the canvas
+	.tiles             Table of all tiles                       @ tile.lua
+	.layers            Table of layers this canvas draws        @ layer.lua
+	.canvas            Canvas drawn to                          @ Love2d Canvas
+	.originX, .originY Origin of the canvas
 ]]
 
 function canvas.new(layers)
@@ -28,7 +28,7 @@ function canvas.new(layers)
 	end
 	
 	self.canvas = lg.newCanvas(maxX-minX, maxY-minY)
-	self.orginX, self.orginY = minX, minY
+	self.originX, self.originY = minX, minY
 	
 	self:updateCanvas()
 	
@@ -40,18 +40,18 @@ function canvas:updateCanvas()
 	lg.push('all')
 	lg.origin()
 	lg.setColor(1,1,1,1)
-	lg.translate(self.orginX, self.orginY)
-	for _, v in ipairs(self.layers) do
-		v:drawStatic()
+	lg.translate(self.originX, self.originY)
+	for _, layer in ipairs(self.layers) do
+		layer:drawStatic()
 	end
 	lg.pop()
 	lg.setCanvas()
 end
 
 function canvas:draw()
-	lg.draw(self.canvas, -self.orginX, -self.orginY)
-	for _, v in ipairs(self.layers) do
-		v:drawAnimated()
+	lg.draw(self.canvas, -self.originX, -self.originY)
+	for _, layer in ipairs(self.layers) do
+		layer:drawAnimated()
 	end
 end
 
