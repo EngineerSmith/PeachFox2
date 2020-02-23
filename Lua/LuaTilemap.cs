@@ -54,7 +54,7 @@ namespace PeachFox.Lua
             LsonDict layers = map["layers"].GetDict();
             tilemap.Layers = new List<Layer>(layers.Count());
             for (int i = 0; i < layers.Count(); i++)
-                tilemap.Layers.Add(GetLayer(tiles[i + 1].GetDict()));
+                tilemap.Layers.Add(GetLayer(layers[i + 1].GetDict()));
             return tilemap;
         }
 
@@ -121,6 +121,7 @@ namespace PeachFox.Lua
                 if (SearchForTag(tile.Tags, "bitmaskBit"))
                 {
                     //TODO
+                    tile = GetClassicTile(root);
                 }
                 else
                     tile = GetClassicTile(root);
@@ -178,7 +179,7 @@ namespace PeachFox.Lua
         {
             if (root == null)
                 return null;
-            return new LayerTile
+            return new LayerTile // TODO add tags
             {
                 Index = root.GetValue("tile").GetInt() - 1,
                 X = root.GetValue("x").GetInt(),
@@ -206,7 +207,7 @@ namespace PeachFox.Lua
                 Tags = GetTags(root),
             };
             layer.Tiles = new List<LayerTile>(root.Root.Count() - layer.Tags.Count());
-            for (int i = 0; i < layer.Tiles.Count(); i++)
+            for (int i = 0; i < layer.Tiles.Capacity; i++)
                 layer.Tiles.Add(GetLayerTile(root.Root[i + 1].GetDict()));
             return layer;
         }

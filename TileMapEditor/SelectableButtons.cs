@@ -108,8 +108,8 @@ namespace PeachFox.TileMapEditor
 
         private void SetBorderColor(Button button, Color c)
         {
-            if ((SelectMultiple == false && button != SelectedButton) ||
-                (SelectMultiple && SelectedButtons.Contains(button) == false))
+            if ((SelectedButtons.Count() == 0 && button != SelectedButton) ||
+                (SelectMultiple && SelectedButtons.Count() != 0 && SelectedButtons.Contains(button) == false))
                 button.FlatAppearance.BorderColor = c;
         }
     }
