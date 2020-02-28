@@ -40,7 +40,7 @@ function canvas:updateCanvas()
 	lg.push('all')
 	lg.origin()
 	lg.setColor(1,1,1,1)
-	lg.translate(self.originX, self.originY)
+	lg.translate(-self.originX, -self.originY)
 	for _, layer in ipairs(self.layers) do
 		layer:drawStatic()
 	end
@@ -49,7 +49,7 @@ function canvas:updateCanvas()
 end
 
 function canvas:draw()
-	lg.draw(self.canvas, -self.originX, -self.originY)
+	lg.draw(self.canvas, self.originX, self.originY)
 	for _, layer in ipairs(self.layers) do
 		layer:drawAnimated()
 	end

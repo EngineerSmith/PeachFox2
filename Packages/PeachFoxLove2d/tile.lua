@@ -56,7 +56,7 @@ function tile.new(tbl, image)
 	else
 		self.draw = function(self, x, y) end -- This package only supports classic tiles
 	end
-
+	
 	self.tags = tbl
 	
 	return self
